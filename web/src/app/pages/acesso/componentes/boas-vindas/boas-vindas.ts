@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map } from 'rxjs';
 import { AuthService } from '../../../../common/auth/auth.service';
 import { mensagemDeErro } from '../../../../common/erros';
 import { Marca } from '../../../../common/marca/marca';
@@ -51,6 +51,10 @@ export class BoasVindas {
   /** Uma linha por lugar escolhido: nome + quanto tem hoje. */
   protected readonly linhas = new FormArray<LinhaConta>([]);
   protected readonly outra = new FormControl('', { nonNullable: true });
+  /** Habilita o "Adicionar" só com algo digitado (signal: a tela atualiza a cada tecla). */
+  protected readonly outraPreenchida = toSignal(this.outra.valueChanges.pipe(map((v) => v.trim().length > 0)), {
+    initialValue: false,
+  });
 
   private readonly valores = toSignal(this.linhas.valueChanges, { initialValue: [] });
   protected readonly escolhidas = computed(() => this.valores().map((l) => (l.descricao ?? '').toLowerCase()));

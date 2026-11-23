@@ -18,14 +18,23 @@
       }
     </mat-chip-set>
 
-    <form class="outra" (ngSubmit)="adicionarOutra()">
+    <!-- Sem <form>: um submit de formulário recarregaria a página -->
+    <div class="outra">
       <mat-form-field subscriptSizing="dynamic">
         <mat-label>Outro lugar</mat-label>
-        <input matInput [formControl]="outra" placeholder="Ex.: Mercado Pago, cofrinho" />
+        <input
+          #campoOutra
+          matInput
+          [formControl]="outra"
+          placeholder="Ex.: Mercado Pago, cofrinho"
+          (keydown.enter)="$event.preventDefault(); adicionarOutra()"
+        />
         <mat-icon matPrefix>add</mat-icon>
       </mat-form-field>
-      <button matButton="outlined" type="submit" [disabled]="!outra.value.trim()">Adicionar</button>
-    </form>
+      <button matButton="outlined" type="button" (click)="adicionarOutra(); campoOutra.focus()" [disabled]="!outraPreenchida()">
+        Adicionar
+      </button>
+    </div>
 
     <!-- Quanto tem em cada um -->
     @if (linhas.length > 0) {
