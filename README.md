@@ -52,7 +52,7 @@ Sobem um PostgreSQL descartável sozinhos (pelo Docker):
 
 ```bash
 cd api
-./mvnw test                 # 15 testes: saldo, filtros, transferência, login, cookie, CSRF, isolamento entre usuários
+./mvnw test                 # 16 testes: saldo, filtros, transferência, login, cookie, CSRF, isolamento entre usuários
 ```
 
 ### Compilar para produção

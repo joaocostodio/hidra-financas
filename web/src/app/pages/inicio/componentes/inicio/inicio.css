@@ -126,6 +126,13 @@ section {
 
 /* ---------- Últimas transações ---------- */
 .linha {
+  width: 100%;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -136,6 +143,16 @@ section {
 
 .linha:last-child {
   border-bottom: 0;
+  border-radius: 0 0 var(--raio-grande) var(--raio-grande);
+}
+
+.linha:hover {
+  background: var(--superficie-2);
+}
+
+.linha:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: -2px;
 }
 
 .linha strong {

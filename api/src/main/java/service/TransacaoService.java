@@ -148,7 +148,10 @@ public class TransacaoService {
         Conta conta = contas.buscar(form.contaId(), usuario);
         Categoria categoria = categorias.buscar(form.categoriaId(), usuario);
 
-        transacao.descricao = Validar.texto(form.descricao(), "a descrição", 500);
+        // Descrição opcional: sem ela, a transação leva o nome da categoria ("Alimentação")
+        transacao.descricao = form.descricao() == null || form.descricao().isBlank()
+                ? categoria.descricao
+                : Validar.texto(form.descricao(), "a descrição", 500);
         transacao.valor = Validar.valorPositivo(form.valor());
         transacao.tipo = validarTipo(form.tipo());
         transacao.datatransacao = Validar.data(form.datatransacao());

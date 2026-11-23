@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { IniciaisPipe } from '../formatos';
 import { Marca } from '../marca/marca';
 import { BotaoTema } from '../tema/botao-tema';
+import { AnotarService } from '../../pages/transacoes/services/anotar.service';
 
 interface ItemMenu {
   rota: string;
@@ -45,6 +46,7 @@ interface ItemMenu {
 })
 export class Layout {
   protected readonly auth = inject(AuthService);
+  protected readonly anotar = inject(AnotarService);
 
   /** Tela estreita (celular): o menu vira gaveta. */
   protected readonly celular = toSignal(

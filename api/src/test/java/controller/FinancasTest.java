@@ -223,6 +223,17 @@ class FinancasTest {
     }
 
     @Test
+    void semDescricaoUsaONomeDaCategoria() {
+        String sessao = novoUsuario();
+        int nubank = criarConta(sessao, "Nubank", "0");
+        int alimentacao = categoria(sessao, "Alimentação");
+        como(sessao).body(Map.of("descricao", " ", "valor", "25.90", "tipo", "S",
+                        "contaId", nubank, "categoriaId", alimentacao))
+                .post("/transacoes").then().statusCode(201)
+                .body("descricao", equalTo("Alimentação"));
+    }
+
+    @Test
     void categoriaComIcone() {
         String sessao = novoUsuario();
         // As padrão já vêm com ícone

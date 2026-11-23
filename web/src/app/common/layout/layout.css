@@ -95,8 +95,31 @@
   padding: 32px 32px 48px;
 }
 
+/* Botão "+ Anotar" fixo no canto */
+.anotar {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 20;
+  --mat-fab-extended-container-height: 56px;
+  --mat-fab-container-color: var(--verde);
+  --mat-fab-foreground-color: var(--sobre-verde);
+  --mat-fab-container-shape: 18px;
+  font-size: 16px;
+}
+
+/* Espaço no fim da página para o botão não cobrir o último item */
+.conteudo {
+  padding-bottom: 104px;
+}
+
 @media (max-width: 860px) {
   .conteudo {
-    padding: 20px 14px 32px;
+    padding: 20px 14px 96px;
+  }
+
+  .anotar {
+    right: 16px;
+    bottom: 16px;
   }
 }

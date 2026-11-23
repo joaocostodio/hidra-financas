@@ -35,6 +35,7 @@
   --sobre-destaque: #ffffff;
   --marca-gradiente: linear-gradient(90deg, #0b7a4e, #18b877);
   --topo-fundo: rgb(243 246 245 / 92%);
+  --snack-acao: #7ee2b4; /* botão do aviso (fundo escuro) */
   --sombra: 0 1px 2px rgb(20 40 30 / 6%), 0 6px 20px rgb(20 40 30 / 6%);
   --sombra-forte: 0 2px 6px rgb(20 40 30 / 8%), 0 18px 48px rgb(20 40 30 / 12%);
 
@@ -74,6 +75,7 @@ html[data-tema='escuro'] {
   --sobre-destaque: #f2fbf6;
   --marca-gradiente: linear-gradient(90deg, #a9b4bd, #eef1f4 45%, #a9b4bd);
   --topo-fundo: rgb(20 25 29 / 92%);
+  --snack-acao: #0b7a4e; /* botão do aviso (fundo claro) */
   --sombra: 0 1px 2px rgb(0 0 0 / 25%), 0 6px 20px rgb(0 0 0 / 20%);
   --sombra-forte: 0 2px 6px rgb(0 0 0 / 30%), 0 18px 48px rgb(0 0 0 / 40%);
 }
@@ -151,7 +153,7 @@ html {
   --mat-datepicker-calendar-container-background-color: var(--superficie);
   --mat-snack-bar-container-color: var(--texto);
   --mat-snack-bar-supporting-text-color: var(--superficie);
-  --mat-snack-bar-button-color: var(--verde-suave);
+  --mat-snack-bar-button-color: var(--snack-acao);
   --mat-tooltip-container-color: var(--texto);
   --mat-tooltip-supporting-text-color: var(--superficie);
   --mat-button-filled-container-shape: 12px;

@@ -4,8 +4,8 @@
     <p>Seu dinheiro em todas as contas.</p>
   </div>
   <div class="acoes">
-    <button matButton="outlined" (click)="novaTransacao('S')"><mat-icon>remove</mat-icon>Despesa</button>
-    <button matButton="filled" (click)="novaTransacao('E')"><mat-icon>add</mat-icon>Receita</button>
+    <button matButton="outlined" (click)="novaTransacao('S')"><mat-icon>arrow_upward</mat-icon>Saiu dinheiro</button>
+    <button matButton="outlined" (click)="novaTransacao('E')"><mat-icon>arrow_downward</mat-icon>Entrou dinheiro</button>
   </div>
 </div>
 
@@ -84,7 +84,7 @@
       <a matButton routerLink="/transacoes">Ver todas</a>
     </div>
     @for (t of r.ultimas; track t.id) {
-      <div class="linha">
+      <button type="button" class="linha" (click)="abrir(t)">
         <div class="duas-linhas">
           <span class="ico-tx" [class.entrada]="t.tipo === 'E'">
             <mat-icon>{{ t.categoriaIcone | iconeTransacao }}</mat-icon>
@@ -97,11 +97,11 @@
         <strong class="num" [class.entrada]="t.tipo === 'E'">
           {{ t.tipo === 'E' ? '+' : '−' }} {{ t.valor | currency }}
         </strong>
-      </div>
+      </button>
     } @empty {
       <div class="vazio">
         <mat-icon>receipt_long</mat-icon>
-        Nenhuma transação ainda. Lance uma receita ou despesa.
+        Nada anotado ainda. Use o botão <b>+ Anotar</b> para registrar um gasto ou uma entrada.
       </div>
     }
   </section>

@@ -52,5 +52,11 @@
     <main class="conteudo">
       <router-outlet />
     </main>
+
+    <!-- Botão fixo: anotar uma movimentação de qualquer tela -->
+    <button matFab extended class="anotar" (click)="anotar.abrir()" aria-label="Anotar um gasto ou entrada">
+      <mat-icon>add</mat-icon>
+      Anotar
+    </button>
   </mat-sidenav-content>
 </mat-sidenav-container>

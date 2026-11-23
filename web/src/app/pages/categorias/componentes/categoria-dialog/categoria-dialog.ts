@@ -34,7 +34,8 @@ import { CategoriaService } from '../../services/categoria.service';
 })
 export class CategoriaDialog {
   private readonly service = inject(CategoriaService);
-  private readonly ref = inject(MatDialogRef<CategoriaDialog, boolean>);
+  /** Fecha com a categoria salva, true se excluiu, ou nada se cancelou. */
+  private readonly ref = inject(MatDialogRef<CategoriaDialog, Categoria | boolean>);
   private readonly dialog = inject(MatDialog);
   private readonly aviso = inject(MatSnackBar);
   protected readonly categoria = inject<Categoria | null>(MAT_DIALOG_DATA);
@@ -67,9 +68,10 @@ export class CategoriaDialog {
     this.salvando.set(true);
     this.erro.set('');
     this.service.salvar({ descricao: v.descricao.trim(), icone: v.icone }, this.categoria?.id).subscribe({
-      next: () => {
+      next: (salva) => {
         this.aviso.open(this.categoria ? 'Categoria atualizada' : 'Categoria criada', 'OK', { duration: 3000 });
-        this.ref.close(true);
+        // Devolve a categoria salva (a janela de anotar já a deixa escolhida)
+        this.ref.close(salva);
       },
       error: (e) => {
         this.erro.set(mensagemDeErro(e));

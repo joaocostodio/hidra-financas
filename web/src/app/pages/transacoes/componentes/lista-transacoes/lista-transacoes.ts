@@ -1,9 +1,8 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
+import { Component, Injector, OnInit, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -19,7 +18,7 @@ import { Conta } from '../../../contas/model/conta.model';
 import { ContaService } from '../../../contas/services/conta.service';
 import { TipoTransacao, Transacao } from '../../model/transacao.model';
 import { TransacaoService } from '../../services/transacao.service';
-import { TransacaoDialog } from '../transacao-dialog/transacao-dialog';
+import { AnotarService } from '../../services/anotar.service';
 
 /**
  * Lista de transações com filtros por conta, categoria e tipo.
@@ -48,8 +47,9 @@ export class ListaTransacoes implements OnInit {
   private readonly service = inject(TransacaoService);
   private readonly contaService = inject(ContaService);
   private readonly categoriaService = inject(CategoriaService);
-  private readonly dialog = inject(MatDialog);
+  private readonly anotar = inject(AnotarService);
   private readonly router = inject(Router);
+  private readonly injector = inject(Injector);
 
   // Filtros vindos da URL (withComponentInputBinding)
   readonly contaId = input<string>();
@@ -101,7 +101,14 @@ export class ListaTransacoes implements OnInit {
       this.carregar();
     });
 
-    this.carregar();
+    // Primeira carga e de novo sempre que algo for anotado/excluído (de qualquer tela)
+    effect(
+      () => {
+        this.anotar.versao();
+        untracked(() => this.carregar());
+      },
+      { injector: this.injector },
+    );
   }
 
   protected carregar(): void {
@@ -131,13 +138,7 @@ export class ListaTransacoes implements OnInit {
 
   /** Clique numa linha: detalha (editar / excluir). */
   protected abrir(transacao?: Transacao): void {
-    this.dialog
-      .open(TransacaoDialog, {
-        data: { transacao, contaId: this.filtros.controls.contaId.value },
-        width: '520px',
-      })
-      .afterClosed()
-      .subscribe((mudou) => mudou && this.carregar());
+    this.anotar.abrir({ transacao, contaId: this.filtros.controls.contaId.value });
   }
 }
 
