@@ -5,7 +5,11 @@ Para conferir cada item pedido em poucos minutos. Para cada requisito há três 
 
 Os testes ficam todos em [`api/src/test/java/controller/FinancasTest.java`](../api/src/test/java/controller/FinancasTest.java)
 e rodam com `cd api` → `mvnw.cmd test` (Windows) ou `./mvnw test` (Linux/Mac). Resultado esperado:
-`Tests run: 23` (FinancasTest) e `Tests run: 4` (BancoDaNuvemTest), todos com `Failures: 0, Errors: 0`.
+`Tests run: 23` (FinancasTest), `Tests run: 4` (BancoDaNuvemTest) e `Tests run: 4` (ChavesDaNuvemTest), todos com
+`Failures: 0, Errors: 0`.
+
+> **Versão no ar:** <https://hidra-financas.onrender.com> (Render + Neon, grátis). Se ninguém acessou nos últimos
+> 15 minutos, o primeiro acesso demora cerca de 1 minuto enquanto o servidor acorda.
 
 > **Sem instalar nada:** se o aluno mandou um link `https://….trycloudflare.com`, o sistema está rodando no
 > notebook dele e dá para usar direto pelo navegador (crie uma conta na aba **Criar conta**). Como funciona:

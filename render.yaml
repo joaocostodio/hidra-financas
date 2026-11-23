@@ -11,10 +11,7 @@ services:
     healthCheckPath: /
     autoDeploy: true
     envVars:
-      # Valores secretos: o Render pede na criação e guarda só no painel (nunca no Git)
+      # Valor secreto: o Render pede na criação e guarda só no painel (nunca no Git).
+      # As chaves do JWT não precisam ser informadas: a API gera e guarda no banco (config/ChavesDaNuvem.java).
       - key: DATABASE_URL
-        sync: false
-      - key: JWT_CHAVE_PRIVADA
-        sync: false
-      - key: JWT_CHAVE_PUBLICA
         sync: false

@@ -123,7 +123,7 @@ Sobem um PostgreSQL descartável sozinhos (pelo Docker):
 
 ```bash
 cd api
-./mvnw test                 # 27 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários, banco da nuvem
+./mvnw test                 # 31 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários, banco e chaves da nuvem
 ```
 
 ### Compilar para produção
@@ -136,9 +136,10 @@ cd web && npm run build     # gera web/dist/web
 O jeito mais simples é a imagem Docker da raiz, que junta os dois: `docker build -t hidra-financas .`
 (é a que roda no Render). Nela a API atende em `/api` e entrega também o site.
 
-Em produção o token precisa de chaves RSA próprias (em dev o Quarkus gera sozinho). Elas **não** vão para o Git:
-ficam nas variáveis de ambiente `JWT_CHAVE_PRIVADA` e `JWT_CHAVE_PUBLICA` (o conteúdo em Base64, sem as linhas
-BEGIN/END), e o banco em `DATABASE_URL`. Como gerar: [docs/hospedagem-render.md](docs/hospedagem-render.md).
+Em produção só é preciso informar o banco, na variável `DATABASE_URL`. As chaves RSA que assinam o token (em dev o
+Quarkus gera sozinho) são geradas na primeira vez e guardadas no próprio banco, nunca no Git; quem preferir pode
+passar as suas em `JWT_CHAVE_PRIVADA` e `JWT_CHAVE_PUBLICA` (Base64, sem as linhas BEGIN/END).
+Detalhes: [docs/hospedagem-render.md](docs/hospedagem-render.md).
 
 ## Estrutura
 
