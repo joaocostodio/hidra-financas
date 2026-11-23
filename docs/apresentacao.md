@@ -40,5 +40,5 @@ Conta e Categoria viram cadastros; o filtro do Excel vira o filtro da tela; as s
 - **Onde tem POO?** Encapsulamento da senha no `Usuario`; herança de `PanacheEntity`; cada objeto com sua
   responsabilidade (`Conta.saldo()`, `Transacao.ehTransferencia()`); exceções próprias herdando de
   `RuntimeException`.
-- **Como testaram?** `mvnw test`: 14 testes de ponta a ponta (saldo, filtros, transferência, login, cookie,
+- **Como testaram?** `mvnw test`: 15 testes de ponta a ponta (saldo, filtros, transferência, login, cookie,
   CSRF e isolamento entre usuários).
