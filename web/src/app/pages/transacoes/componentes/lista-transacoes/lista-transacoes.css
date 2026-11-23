@@ -1,0 +1,60 @@
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.filtros mat-form-field {
+  flex: 1 1 200px;
+  max-width: 280px;
+}
+
+.tipo {
+  --mat-button-toggle-selected-state-background-color: var(--verde-suave);
+  --mat-button-toggle-selected-state-text-color: var(--verde);
+  --mat-button-toggle-height: 48px;
+}
+
+.totais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 0 4px 12px;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.totais b {
+  margin-left: 4px;
+}
+
+section {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.valor {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.espacado {
+  margin: 14px;
+}
+
+@media (max-width: 860px) {
+  .filtros mat-form-field {
+    max-width: none;
+  }
+
+  .mat-column-categoria,
+  .mat-column-conta {
+    display: none;
+  }
+}

@@ -1,0 +1,102 @@
+.moldura {
+  height: 100vh;
+  background: var(--fundo-app);
+}
+
+/* ---------- Menu lateral ---------- */
+.lateral {
+  width: 248px;
+  display: flex;
+  background: var(--superficie);
+  border-right: 1px solid var(--borda);
+  --mat-sidenav-container-shape: 0;
+}
+
+.lateral ::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px 14px;
+}
+
+.logo {
+  display: block;
+  padding: 0 10px 22px;
+  text-decoration: none;
+}
+
+.itens {
+  padding: 0;
+  --mat-list-active-indicator-shape: 10px;
+  --mat-list-active-indicator-color: var(--verde-suave);
+  --mat-list-list-item-leading-icon-color: var(--texto-suave);
+  --mat-list-list-item-label-text-color: var(--texto-suave);
+}
+
+.itens a {
+  margin-bottom: 2px;
+  border-radius: 10px;
+}
+
+.itens a.ativo {
+  --mat-list-list-item-leading-icon-color: var(--verde);
+  --mat-list-list-item-label-text-color: var(--verde);
+  --mat-list-list-item-hover-leading-icon-color: var(--verde);
+  --mat-list-list-item-hover-label-text-color: var(--verde);
+  --mat-list-list-item-focus-label-text-color: var(--verde);
+  font-weight: 600;
+}
+
+/* Usuário logado, no pé do menu */
+.quem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 4px 0 8px;
+  border-top: 1px solid var(--borda);
+}
+
+.dados {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.dados b,
+.dados small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dados small {
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+/* ---------- Conteúdo ---------- */
+.principal {
+  background: var(--fundo-app);
+}
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  gap: 8px;
+  background: rgb(12 13 17 / 92%);
+  border-bottom: 1px solid var(--borda);
+  backdrop-filter: blur(8px);
+}
+
+.conteudo {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 32px 48px;
+}
+
+@media (max-width: 860px) {
+  .conteudo {
+    padding: 20px 14px 32px;
+  }
+}

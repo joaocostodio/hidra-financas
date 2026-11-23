@@ -1,0 +1,68 @@
+.acesso {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background:
+    radial-gradient(circle at 50% 0%, rgb(61 220 151 / 10%), transparent 55%),
+    var(--fundo-app);
+}
+
+.caixa {
+  width: min(420px, 100%);
+  padding: 32px 32px 24px;
+  box-shadow: var(--sombra);
+}
+
+.marca {
+  margin-bottom: 26px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 650;
+}
+
+.caixa > p {
+  margin: 4px 0 22px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.enviar {
+  height: 44px;
+  margin-top: 8px;
+}
+
+.enviar mat-spinner {
+  --mat-progress-spinner-active-indicator-color: var(--tinta);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  border-radius: var(--raio);
+  background: var(--aviso-suave);
+  border: 1px solid var(--aviso-borda);
+  color: var(--aviso);
+  font-size: 13px;
+}
+
+.trocar {
+  margin: 20px 0 0;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.trocar a {
+  font-weight: 600;
+  text-decoration: none;
+}

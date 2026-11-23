@@ -1,0 +1,25 @@
+mat-dialog-content {
+  min-width: min(380px, 78vw);
+}
+
+mat-form-field {
+  margin-bottom: 6px;
+}
+
+.saldo-atual {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: var(--raio);
+  background: var(--superficie-2);
+}
+
+.saldo-atual b {
+  font-size: 18px;
+}
+
+.perigo {
+  --mat-button-text-label-text-color: var(--erro);
+}

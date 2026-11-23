@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{ categoria ? 'Detalhes da categoria' : 'Nova categoria' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+  <mat-dialog-content>
+    @if (erro()) {
+      <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+    }
+    <mat-form-field>
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="descricao" placeholder="Ex.: Alimentação, Salário, Pets" cdkFocusInitial />
+      <mat-error>Informe a descrição</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    @if (categoria) {
+      <button matButton type="button" class="perigo" (click)="excluir()"><mat-icon>delete</mat-icon>Excluir</button>
+    }
+    <span class="espaco"></span>
+    <button matButton type="button" mat-dialog-close>Cancelar</button>
+    <button matButton="filled" type="submit" [disabled]="salvando()">Salvar</button>
+  </mat-dialog-actions>
+</form>

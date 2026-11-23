@@ -1,0 +1,40 @@
+.caixa {
+  max-width: 640px;
+  padding: 24px;
+}
+
+.contas {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0 12px;
+  margin-bottom: 10px;
+}
+
+.seta {
+  display: grid;
+  place-items: center;
+  height: 56px;
+  color: var(--verde);
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.criar {
+  margin-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .contas {
+    grid-template-columns: 1fr;
+  }
+
+  .seta {
+    height: auto;
+    margin: -4px 0 10px;
+    transform: rotate(90deg);
+  }
+}

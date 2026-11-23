@@ -1,0 +1,13 @@
+# Quebra de linha padronizada (LF) no repositório, em qualquer sistema.
+# Evita diffs falsos entre Windows e Linux e os avisos "LF will be replaced by CRLF".
+* text=auto eol=lf
+
+# Scripts do Windows precisam de CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binários
+*.png binary
+*.jpg binary
+*.ico binary
+*.jar binary

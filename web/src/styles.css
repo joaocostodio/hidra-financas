@@ -1,0 +1,405 @@
+/*
+ * Hidra Finanças: identidade visual da Hidra (fundo escuro, verde e prata), a mesma do banco-hidra.
+ * O tema do Angular Material vem pronto (azure-blue.css) e aqui as cores dele são trocadas pelas
+ * da Hidra, só com CSS (variáveis --mat-sys-*).
+ */
+
+/* ---------- Tokens da Hidra ---------- */
+:root {
+  --verde: #3ddc97;
+  --verde-claro: #5fe3a9;
+  --verde-escuro: #14714a;
+  --verde-suave: rgb(61 220 151 / 12%);
+  --verde-borda: rgb(61 220 151 / 32%);
+  --prata: #c3cad2;
+  --prata-clara: #eef1f4;
+  --prata-escura: #8a939d;
+  --prata-gradiente: linear-gradient(90deg, #8a939d, #eef1f4 45%, #a9b1ba 70%, #e2e6ea);
+  --fundo-app: #0c0d11;
+  --superficie: #16181e;
+  --superficie-2: #1c1f27;
+  --superficie-3: #252833;
+  --borda: #2c303b;
+  --borda-forte: #3a3e4b;
+  --texto: #e8ebef;
+  --texto-suave: #9aa3ad;
+  --tinta: #06140d; /* texto em cima do verde */
+  --erro: #ff7a7a;
+  --aviso: #f0b866;
+  --aviso-suave: rgb(240 184 102 / 10%);
+  --aviso-borda: rgb(240 184 102 / 32%);
+  --raio: 10px;
+  --raio-grande: 14px;
+  --sombra: 0 12px 40px rgb(0 0 0 / 55%), 0 2px 8px rgb(0 0 0 / 40%);
+  --fonte: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --mono: 'Cascadia Code', 'Cascadia Mono', Consolas, monospace;
+  --altura-rodape: 28px;
+}
+
+/* ---------- Angular Material com as cores da Hidra (tema escuro) ---------- */
+html {
+  color-scheme: dark;
+
+  --mat-sys-primary: var(--verde);
+  --mat-sys-on-primary: var(--tinta);
+  --mat-sys-primary-container: var(--verde-escuro);
+  --mat-sys-on-primary-container: #d6fbe9;
+  --mat-sys-primary-fixed: #8ff0c4;
+  --mat-sys-primary-fixed-dim: var(--verde);
+  --mat-sys-on-primary-fixed: var(--tinta);
+  --mat-sys-on-primary-fixed-variant: var(--verde-escuro);
+  --mat-sys-inverse-primary: var(--verde-escuro);
+  --mat-sys-surface-tint: var(--verde);
+
+  --mat-sys-secondary: var(--prata);
+  --mat-sys-on-secondary: #1b1e23;
+  --mat-sys-secondary-container: var(--superficie-3);
+  --mat-sys-on-secondary-container: var(--texto);
+  --mat-sys-secondary-fixed: var(--prata-clara);
+  --mat-sys-secondary-fixed-dim: var(--prata);
+  --mat-sys-on-secondary-fixed: #1b1e23;
+  --mat-sys-on-secondary-fixed-variant: var(--superficie-3);
+
+  --mat-sys-tertiary: #8ff0c4;
+  --mat-sys-on-tertiary: var(--tinta);
+  --mat-sys-tertiary-container: var(--verde-escuro);
+  --mat-sys-on-tertiary-container: #d6fbe9;
+  --mat-sys-tertiary-fixed: #d6fbe9;
+  --mat-sys-tertiary-fixed-dim: #8ff0c4;
+  --mat-sys-on-tertiary-fixed: var(--tinta);
+  --mat-sys-on-tertiary-fixed-variant: var(--verde-escuro);
+
+  --mat-sys-error: var(--erro);
+  --mat-sys-on-error: #3a0a0a;
+  --mat-sys-error-container: #5c1b1b;
+  --mat-sys-on-error-container: #ffd9d9;
+
+  --mat-sys-background: var(--fundo-app);
+  --mat-sys-on-background: var(--texto);
+  --mat-sys-surface: var(--fundo-app);
+  --mat-sys-surface-dim: var(--fundo-app);
+  --mat-sys-surface-bright: var(--borda);
+  --mat-sys-surface-container-lowest: #0a0b0e;
+  --mat-sys-surface-container-low: #121318;
+  --mat-sys-surface-container: var(--superficie);
+  --mat-sys-surface-container-high: var(--superficie-2);
+  --mat-sys-surface-container-highest: var(--superficie-3);
+  --mat-sys-surface-variant: var(--superficie-3);
+  --mat-sys-on-surface: var(--texto);
+  --mat-sys-on-surface-variant: var(--texto-suave);
+  --mat-sys-inverse-surface: var(--texto);
+  --mat-sys-inverse-on-surface: var(--superficie);
+  --mat-sys-outline: #4a4f5d;
+  --mat-sys-outline-variant: var(--borda);
+  --mat-sys-scrim: #000;
+  --mat-sys-shadow: #000;
+
+  /* Tipografia: a mesma fonte em tudo */
+  --mat-sys-display-large-font: var(--fonte);
+  --mat-sys-display-medium-font: var(--fonte);
+  --mat-sys-display-small-font: var(--fonte);
+  --mat-sys-headline-large-font: var(--fonte);
+  --mat-sys-headline-medium-font: var(--fonte);
+  --mat-sys-headline-small-font: var(--fonte);
+  --mat-sys-title-large-font: var(--fonte);
+  --mat-sys-title-medium-font: var(--fonte);
+  --mat-sys-title-small-font: var(--fonte);
+  --mat-sys-body-large-font: var(--fonte);
+  --mat-sys-body-medium-font: var(--fonte);
+  --mat-sys-body-small-font: var(--fonte);
+  --mat-sys-label-large-font: var(--fonte);
+  --mat-sys-label-medium-font: var(--fonte);
+  --mat-sys-label-small-font: var(--fonte);
+
+  /* Ajustes de componentes */
+  --mat-dialog-container-shape: 18px;
+  --mat-dialog-container-color: var(--superficie);
+  --mat-table-background-color: transparent;
+  --mat-paginator-container-background-color: transparent;
+  --mat-menu-container-color: var(--superficie-2);
+  --mat-snack-bar-container-color: var(--superficie-3);
+  --mat-snack-bar-supporting-text-color: var(--texto);
+  --mat-snack-bar-button-color: var(--verde);
+  --mat-tooltip-container-color: var(--superficie-3);
+  --mat-tooltip-supporting-text-color: var(--texto);
+  --mat-datepicker-calendar-container-background-color: var(--superficie-2);
+  --mat-select-panel-background-color: var(--superficie-2);
+  --mat-chip-selected-container-color: var(--verde-suave);
+  --mat-chip-selected-label-text-color: var(--verde);
+  --mat-chip-selected-outline-width: 1px;
+  --mat-chip-outline-color: var(--borda-forte);
+}
+
+.mat-mdc-chip-selected {
+  border: 1px solid var(--verde-borda);
+}
+
+/* ---------- Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--fundo-app);
+  color: var(--texto);
+  font: 14px/1.45 var(--fonte);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--verde);
+}
+
+code,
+kbd,
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.num {
+  font-size: 0.95em;
+}
+
+::selection {
+  background: var(--verde-suave);
+}
+
+/* Ícones: Material Symbols */
+.mat-icon {
+  font-variation-settings: 'FILL' 0, 'opsz' 24;
+}
+
+.icone-cheio {
+  font-variation-settings: 'FILL' 1, 'opsz' 24;
+}
+
+/* ---------- Peças visuais reutilizadas pelas telas ---------- */
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-grande);
+}
+
+.cartao-cab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.cartao-cab h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.espaco {
+  flex: 1;
+}
+
+.titulo-pagina {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.titulo-pagina h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 650;
+}
+
+.titulo-pagina p {
+  margin: 2px 0 0;
+  color: var(--texto-suave);
+}
+
+.titulo-pagina .acoes {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.muted {
+  color: var(--texto-suave);
+}
+
+.entrada {
+  color: var(--verde);
+}
+
+.saida {
+  color: var(--prata);
+}
+
+.dir {
+  text-align: right;
+}
+
+/* Avatar com iniciais */
+.avatar {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tinta);
+  background: linear-gradient(135deg, #8ff0c4, #2fbf80);
+}
+
+.avatar.prata {
+  background: linear-gradient(135deg, #eef1f4, #8a939d);
+}
+
+/* Ícone redondo de transação */
+.ico-tx {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: var(--superficie-2);
+  color: var(--prata);
+}
+
+.ico-tx .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.ico-tx.entrada {
+  background: var(--verde-suave);
+  color: var(--verde);
+}
+
+/* Pessoa ou transação: ícone + duas linhas */
+.duas-linhas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.duas-linhas small {
+  display: block;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+/* Tabelas do Material */
+.mat-mdc-table .mat-mdc-header-cell {
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mat-mdc-table .mat-mdc-row:hover .mat-mdc-cell {
+  background: rgb(255 255 255 / 2%);
+}
+
+.mat-mdc-table .dir {
+  text-align: right;
+}
+
+.mat-mdc-table .mat-mdc-row.clicavel {
+  cursor: pointer;
+}
+
+.mat-mdc-cell,
+.mat-mdc-header-cell {
+  border-bottom-color: var(--borda) !important;
+}
+
+.mat-mdc-cell:first-child,
+.mat-mdc-header-cell:first-child {
+  padding-left: 20px !important;
+}
+
+.mat-mdc-cell:last-child,
+.mat-mdc-header-cell:last-child {
+  padding-right: 20px !important;
+}
+
+.mat-mdc-paginator {
+  border-top: 1px solid var(--borda);
+}
+
+/* Linha vazia / carregando dentro de cartões */
+.vazio {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.vazio .mat-icon {
+  display: block;
+  margin: 0 auto 8px;
+  color: var(--prata-escura);
+}
+
+/* Mensagem de erro geral em formulários */
+.erro-geral {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  border-radius: var(--raio);
+  background: rgb(255 122 122 / 8%);
+  border: 1px solid rgb(255 122 122 / 30%);
+  color: #ffb3b3;
+  font-size: 13px;
+}
+
+.erro-geral .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--erro);
+}
+
+/* Diálogos */
+.mat-mdc-dialog-container .mat-mdc-dialog-title {
+  font-weight: 650;
+}
+
+.dialogo-largo .mat-mdc-dialog-content {
+  min-width: min(440px, 80vw);
+}
+
+.campos-lado-a-lado {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 14px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .campos-lado-a-lado {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Valor negativo (saldo no vermelho) */
+.negativo {
+  color: var(--erro);
+}

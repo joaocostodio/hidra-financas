@@ -1,0 +1,80 @@
+<div class="titulo-pagina">
+  <div>
+    <h2>Transferir entre contas</h2>
+    <p>Passar dinheiro de uma conta sua para outra (ex.: sacar do banco para a carteira).</p>
+  </div>
+</div>
+
+@if (carregado() && contas().length < 2) {
+  <div class="cartao vazio">
+    <mat-icon>swap_horiz</mat-icon>
+    Para transferir você precisa de pelo menos duas contas.
+    <div><a matButton="filled" routerLink="/contas" class="criar">Cadastrar conta</a></div>
+  </div>
+} @else {
+  <form class="cartao caixa" [formGroup]="form" (ngSubmit)="transferir()">
+    @if (erro()) {
+      <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+    }
+
+    <div class="contas">
+      <mat-form-field>
+        <mat-label>De (origem)</mat-label>
+        <mat-select formControlName="origemId">
+          @for (c of contas(); track c.id) {
+            <mat-option [value]="c.id">{{ c.descricao }}</mat-option>
+          }
+        </mat-select>
+        @if (origem(); as o) {
+          <mat-hint>Saldo: {{ o.saldo | currency }}</mat-hint>
+        }
+        <mat-error>Escolha a conta de origem</mat-error>
+      </mat-form-field>
+
+      <span class="seta"><mat-icon>arrow_forward</mat-icon></span>
+
+      <mat-form-field>
+        <mat-label>Para (destino)</mat-label>
+        <mat-select formControlName="destinoId">
+          @for (c of destinos(); track c.id) {
+            <mat-option [value]="c.id">{{ c.descricao }}</mat-option>
+          }
+        </mat-select>
+        @if (destino(); as d) {
+          <mat-hint>Saldo: {{ d.saldo | currency }}</mat-hint>
+        }
+        <mat-error>Escolha a conta de destino</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="campos-lado-a-lado">
+      <mat-form-field>
+        <mat-label>Valor</mat-label>
+        <span matTextPrefix>R$&nbsp;</span>
+        <input matInput type="number" step="0.01" min="0.01" formControlName="valor" />
+        <mat-error>Informe um valor maior que zero</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Data</mat-label>
+        <input matInput [matDatepicker]="calendario" formControlName="datatransacao" />
+        <mat-datepicker-toggle matIconSuffix [for]="calendario" />
+        <mat-datepicker #calendario />
+        <mat-error>Informe a data</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Descrição (opcional)</mat-label>
+      <input matInput formControlName="descricao" placeholder="Ex.: Saque para a semana" />
+    </mat-form-field>
+
+    <div class="rodape">
+      <a matButton routerLink="/transacoes">Ver transações</a>
+      <span class="espaco"></span>
+      <button matButton="filled" type="submit" [disabled]="enviando()">
+        <mat-icon>swap_horiz</mat-icon>Transferir
+      </button>
+    </div>
+  </form>
+}

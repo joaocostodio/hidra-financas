@@ -1,0 +1,144 @@
+section {
+  margin-bottom: 28px;
+}
+
+.rotulo {
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+/* ---------- Saldo geral + mês ---------- */
+.topo-resumo {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.topo-resumo .cartao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 20px;
+}
+
+.saldo-geral {
+  background:
+    radial-gradient(circle at 100% 0%, rgb(61 220 151 / 14%), transparent 60%),
+    var(--superficie) !important;
+  border-color: var(--verde-borda) !important;
+}
+
+.valor-grande {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.mes strong {
+  font-size: 19px;
+  font-weight: 650;
+}
+
+/* ---------- Saldo por conta ---------- */
+.secao-cab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.secao-cab h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.contas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.conta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+}
+
+.conta:hover {
+  border-color: var(--verde-borda);
+  transform: translateY(-2px);
+}
+
+.ico-conta {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--verde-suave);
+  color: var(--verde);
+}
+
+.conta .nome {
+  color: var(--texto-suave);
+}
+
+.conta strong {
+  font-size: 21px;
+  font-weight: 650;
+}
+
+.conta small {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.conta small .mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.criar {
+  margin-top: 14px;
+}
+
+/* ---------- Últimas transações ---------- */
+.linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.linha:last-child {
+  border-bottom: 0;
+}
+
+.linha strong {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .topo-resumo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .saldo-geral {
+    grid-column: 1 / -1;
+  }
+}

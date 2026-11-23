@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: hidra-financas-db
+    environment:
+      POSTGRES_DB: financeiro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      # 5434 no PC para não brigar com o Postgres da aula (5432) nem com o do banco-hidra (5433)
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - hidra-financas-dados:/var/lib/postgresql/data
+
+volumes:
+  hidra-financas-dados:

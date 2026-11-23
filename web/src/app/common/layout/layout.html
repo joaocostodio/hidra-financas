@@ -1,0 +1,55 @@
+<mat-sidenav-container class="moldura">
+  <mat-sidenav
+    #gaveta
+    class="lateral"
+    [mode]="celular() ? 'over' : 'side'"
+    [opened]="!celular()"
+  >
+    <a routerLink="/" class="logo" aria-label="Início"><app-marca /></a>
+
+    <mat-nav-list class="itens" aria-label="Menu">
+      @for (item of menu; track item.rota) {
+        <a
+          mat-list-item
+          [routerLink]="item.rota"
+          routerLinkActive="ativo"
+          #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: !!item.exato }"
+          [activated]="rla.isActive"
+          [attr.aria-current]="rla.isActive ? 'page' : null"
+          (click)="celular() && gaveta.close()"
+        >
+          <mat-icon matListItemIcon [class.icone-cheio]="rla.isActive">{{ item.icone }}</mat-icon>
+          <span matListItemTitle>{{ item.nome }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <span class="espaco"></span>
+
+    <div class="quem">
+      <span class="avatar">{{ auth.usuario()?.nome | iniciais }}</span>
+      <div class="dados">
+        <b>{{ auth.usuario()?.nome }}</b>
+        <small>{{ auth.usuario()?.email }}</small>
+      </div>
+      <button matIconButton (click)="auth.sair()" matTooltip="Sair" aria-label="Sair">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="principal">
+    @if (celular()) {
+      <mat-toolbar class="topo">
+        <button matIconButton (click)="gaveta.toggle()" aria-label="Abrir menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <app-marca />
+      </mat-toolbar>
+    }
+    <main class="conteudo">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

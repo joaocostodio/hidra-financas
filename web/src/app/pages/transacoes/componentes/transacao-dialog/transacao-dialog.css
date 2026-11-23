@@ -1,0 +1,60 @@
+.tipo {
+  display: flex;
+  width: 100%;
+  margin: 4px 0 18px;
+  --mat-button-toggle-selected-state-background-color: var(--verde-suave);
+  --mat-button-toggle-selected-state-text-color: var(--verde);
+}
+
+.tipo mat-button-toggle {
+  flex: 1;
+}
+
+.tipo .despesa.mat-button-toggle-checked {
+  --mat-button-toggle-selected-state-background-color: rgb(195 202 210 / 12%);
+  --mat-button-toggle-selected-state-text-color: var(--prata-clara);
+}
+
+.tipo .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
+}
+
+.dica {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.dica .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.detalhe {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 18px;
+  margin: 0 0 16px;
+}
+
+.detalhe dt {
+  color: var(--texto-suave);
+}
+
+.detalhe dd {
+  margin: 0;
+}
+
+.perigo {
+  --mat-button-text-label-text-color: var(--erro);
+}
+
+mat-dialog-content {
+  min-width: min(440px, 78vw);
+}

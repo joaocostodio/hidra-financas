@@ -1,0 +1,60 @@
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.categoria {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.categoria:hover {
+  border-color: var(--verde-borda);
+}
+
+.principal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  background: none;
+  color: var(--texto);
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nome {
+  flex: 1;
+}
+
+.editar {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--texto-suave);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.categoria:hover .editar,
+.principal:focus-visible .editar {
+  opacity: 1;
+}
+
+.filtrar {
+  padding: 9px 16px;
+  border-top: 1px solid var(--borda);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.vazio {
+  grid-column: 1 / -1;
+}

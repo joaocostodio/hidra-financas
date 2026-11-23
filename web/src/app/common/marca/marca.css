@@ -1,0 +1,30 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+img {
+  width: 32px;
+  height: 32px;
+}
+
+.nome {
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+
+b {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+em {
+  font-style: normal;
+  font-weight: 700;
+  background: var(--prata-gradiente);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

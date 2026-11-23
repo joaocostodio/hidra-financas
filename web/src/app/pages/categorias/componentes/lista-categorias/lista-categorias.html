@@ -1,0 +1,36 @@
+<div class="titulo-pagina">
+  <div>
+    <h2>Categorias</h2>
+    <p>Para saber com o que o dinheiro entra e sai.</p>
+  </div>
+  <div class="acoes">
+    <button matButton="filled" (click)="abrir()"><mat-icon>add</mat-icon>Nova categoria</button>
+  </div>
+</div>
+
+@if (carregando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+@if (erro()) {
+  <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+}
+
+<div class="grade">
+  @for (c of categorias(); track c.id) {
+    <div class="cartao categoria">
+      <button class="principal" type="button" (click)="abrir(c)" [attr.aria-label]="'Editar ' + c.descricao">
+        <span class="ico-tx entrada"><mat-icon>{{ c.descricao | iconeCategoria }}</mat-icon></span>
+        <span class="nome">{{ c.descricao }}</span>
+        <mat-icon class="editar">edit</mat-icon>
+      </button>
+      <a class="filtrar" routerLink="/transacoes" [queryParams]="{ categoriaId: c.id }">Ver transações</a>
+    </div>
+  } @empty {
+    @if (!carregando()) {
+      <div class="cartao vazio">
+        <mat-icon>sell</mat-icon>
+        Nenhuma categoria. Crie uma (ex.: "Alimentação", "Salário").
+      </div>
+    }
+  }
+</div>
