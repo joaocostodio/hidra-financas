@@ -31,6 +31,8 @@ flowchart LR
 - O site chama a API pelo próprio endereço (`/api/...`) e o `ng serve` repassa para `localhost:8090`
   (`web/proxy.conf.json`). Por isso o cookie é do mesmo site e não precisa de CORS.
 - A API só escuta em `127.0.0.1` em desenvolvimento (`application.properties`).
+- **No ar** (<https://hidra-financas.onrender.com>) é um container só: o Quarkus entrega o site e a API em `/api`,
+  e o banco fica no Neon. Detalhes e diagrama em [hospedagem-render.md](hospedagem-render.md).
 
 ## 2. Camadas da API
 

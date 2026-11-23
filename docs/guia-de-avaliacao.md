@@ -87,3 +87,31 @@ curl -i -b cookies.txt -X POST -H "Content-Type: application/json" \
 - [Arquitetura](arquitetura.md): camadas, diagramas (requisição, modelo de dados, fixos) e decisões.
 - [Especificações das telas](specs/): o que cada tela faz, no formato "Quando... então...".
 - [Roteiro da apresentação](apresentacao.md).
+- [Hospedagem](hospedagem-render.md): como a versão no ar funciona (Render + Neon).
+
+## 7. Relação com os projetos da aula
+
+### Atividade prática de 28/09 (`atividade-poo-api.pdf`)
+
+| Item | Onde está |
+|---|---|
+| a) Repositório novo no GitHub | <https://github.com/joaocostodio/hidra-financas> |
+| b) Tabelas `categoria`, `conta` e `transacao` no PostgreSQL | Criadas pelo Hibernate a partir das entidades, com os mesmos tipos do `financeiro.sql` da aula: `descricao varchar(500)`, `valor numeric(12,2)`, `tipo varchar(1)`, `datatransacao date`, chaves estrangeiras `conta_id` e `categoria_id` |
+| c) Mapeamento das entidades | `entity/Categoria`, `Conta`, `Transacao` herdando de `PanacheEntity`, como no exemplo da aula |
+| d) PUT e DELETE em Categoria | `CategoriaController.atualizar` / `excluir` (o DELETE recusa categoria em uso) |
+| e) Controller de conta | `ContaController` (listar, buscar, criar, atualizar, excluir) |
+| f) Controller de transação | `TransacaoController` (com filtros, transferência e planilha) |
+| g) Commit e push | Histórico no GitHub |
+
+### O que mudou em relação ao `finance-api` e ao `finance-ui`
+
+| Na aula | Aqui | Por quê |
+|---|---|---|
+| A entidade entra e sai direto da API | DTOs (`record`) em `dto/Dtos.java` | Não expõe campos internos nem aceita campos que o cliente não deveria mandar |
+| Sem validação | Regras no service (`Validar`, `*Service`) | Valor negativo, conta de outra pessoa, nome repetido... viram erro 422/404 |
+| Sem login | JWT em cookie httpOnly | Pedido do trabalho final |
+| CORS liberado para `localhost:4200` | Proxy do `ng serve` (mesmo endereço) | Não precisa de CORS; o cookie fica `SameSite=Strict` |
+| `categoria_id NOT NULL` | Pode ser nulo | Transferência não tem categoria (no `finance-api` a transferência também não define categoria) |
+| `@Path("transacao")` e `/por-conta/{id}` | `/transacoes?contaId=&categoriaId=...` | Plural como `/contas` e `/categorias`; um endpoint só com filtros combináveis |
+| Transferência em dois `persist` soltos | `@Transactional` + código comum nas duas partes | Grava as duas ou nenhuma; excluir uma exclui as duas |
+| `finance-ui`: só cadastro de contas, com dados falsos se a API falhar | Todas as telas ligadas à API | Mesmas instruções de Angular (`web/.github/instructions`) e mesmo formato de spec (`docs/specs`) |

@@ -8,6 +8,9 @@ Projeto da disciplina de **Programação Orientada a Objetos** — EC04 / 2026 �
 Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/finance-api) e
 [finance-ui](https://github.com/tiagoseibel/finance-ui).
 
+**No ar:** <https://hidra-financas.onrender.com> — crie uma conta e use (cada pessoa só vê os próprios dados).
+Se ninguém acessou nos últimos 15 minutos, o primeiro acesso leva cerca de 1 minuto enquanto o servidor acorda.
+
 ![Tela inicial: saldo de cada conta e geral, resumo do mês e "Para onde foi o dinheiro" com os limites](docs/imagens/02-inicio.png)
 
 ## Documentação
@@ -36,6 +39,10 @@ componente/serviço do site tem um comentário dizendo o que faz.
 | Transferência entre contas | Botão **Passar entre contas** (no Início, em Contas e em Movimentações) — `POST /transacoes/transferencia` (uma saída + uma entrada) |
 | Tela inicial com saldo por conta e geral | Tela **Início** — `GET /resumo` (mais o resumo do mês com o gráfico "Para onde foi o dinheiro") |
 | Autenticação JWT em cookie httpOnly | `AuthController` + `CookieSessao`: o token vai no cookie `financas_sessao` (HttpOnly, SameSite=Strict) |
+
+A atividade prática de 28/09 (API Quarkus com `categoria`, `conta` e `transacao`, PUT/DELETE de categoria e
+controllers de conta e transação) também está coberta: ver a seção "Relação com os projetos da aula" no
+[guia de avaliação](docs/guia-de-avaliacao.md#7-relação-com-os-projetos-da-aula).
 
 ### Além do pedido
 
@@ -153,7 +160,7 @@ hidra-financas/
 │       ├── dto/                o que entra e sai da API (records)
 │       ├── security/           cookie da sessão, proteção CSRF, usuário logado
 │       ├── exception/          erros de regra → HTTP 422 / 404 / 401
-│       └── config/             só na nuvem: banco pela DATABASE_URL e rotas do site
+│       └── config/             só na nuvem: banco pela DATABASE_URL, chaves do JWT e rotas do site
 ├── web/                        Angular 22 + Material (porta 4200)
 │   └── src/app/
 │       ├── common/             login (auth), layout com menu lateral, componentes reutilizáveis
@@ -162,6 +169,7 @@ hidra-financas/
 │   ├── guia-de-avaliacao.md    requisito → tela → código → teste
 │   ├── arquitetura.md          camadas, diagramas e decisões
 │   ├── apresentacao.md         roteiro da apresentação
+│   ├── hospedagem-render.md    versão no ar (Render + Neon)
 │   ├── specs/                  especificação de cada tela
 │   └── imagens/                capturas de tela usadas na documentação
 ├── docker-compose.yml          PostgreSQL do desenvolvimento
@@ -223,6 +231,9 @@ O site segue as instruções da disciplina (`web/.github/instructions/projeto-an
 
 Todas as rotas (menos cadastro e login) exigem o cookie de sessão. Erros voltam como `{"erro": "mensagem"}`:
 **422** regra de negócio, **404** não encontrado, **401** sem login, **403** sem o cabeçalho `X-Requested-With`.
+
+As rotas abaixo são as da API no notebook (`http://localhost:8090/...`). Pelo site elas ficam em `/api/...`
+(no notebook o `ng serve` repassa; no ar, em `https://hidra-financas.onrender.com/api/...`).
 
 | Método | Rota | O que faz |
 |---|---|---|
