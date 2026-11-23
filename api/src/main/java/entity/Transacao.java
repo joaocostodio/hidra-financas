@@ -42,6 +42,10 @@ public class Transacao extends PanacheEntity {
     @Column(length = 36)
     public String transferencia;
 
+    /** Se foi lançada por um gasto/entrada fixo que se repete todo mês (nulo nas comuns). */
+    @ManyToOne
+    public TransacaoFixa fixa;
+
     public boolean ehTransferencia() {
         return transferencia != null;
     }

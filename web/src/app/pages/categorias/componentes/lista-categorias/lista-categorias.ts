@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,7 +13,7 @@ import { CategoriaDialog } from '../categoria-dialog/categoria-dialog';
 /** Cadastro de categorias: lista, nova, clicar para detalhar (salvar / excluir). */
 @Component({
   selector: 'app-lista-categorias',
-  imports: [RouterLink, MatButtonModule, MatIconModule, MatProgressBarModule],
+  imports: [RouterLink, CurrencyPipe, MatButtonModule, MatIconModule, MatProgressBarModule],
   templateUrl: './lista-categorias.html',
   styleUrl: './lista-categorias.css',
 })

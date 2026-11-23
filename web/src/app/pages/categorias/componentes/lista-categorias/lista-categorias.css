@@ -32,6 +32,13 @@
 
 .nome {
   flex: 1;
+  min-width: 0;
+}
+
+.limite {
+  display: block;
+  color: var(--texto-suave);
+  font-size: 12.5px;
 }
 
 .editar {

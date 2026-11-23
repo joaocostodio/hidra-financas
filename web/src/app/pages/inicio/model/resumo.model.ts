@@ -21,6 +21,8 @@ export interface GastoCategoria {
   categoria: string;
   icone: string;
   total: number;
+  /** Limite por mês da categoria (null = sem limite). */
+  limiteMensal: number | null;
 }
 
 /** Date → "2026-11". */

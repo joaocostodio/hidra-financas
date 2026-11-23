@@ -46,7 +46,7 @@ public class CategoriaService {
     public void excluir(Long id, Usuario usuario) {
         Categoria categoria = buscar(id, usuario);
         if (categoria.emUso()) {
-            throw new RegraException("Essa categoria está em uso em transações e não pode ser excluída");
+            throw new RegraException("Essa categoria está em uso em movimentações (ou gastos fixos) e não pode ser excluída");
         }
         categoria.delete();
     }
@@ -58,6 +58,7 @@ public class CategoriaService {
         }
         categoria.descricao = descricao;
         categoria.icone = validarIcone(form.icone());
+        categoria.limiteMensal = Validar.limite(form.limiteMensal());
     }
 
     /** Nome de ícone do Material Symbols: só letras minúsculas, números e "_" (ex.: "local_cafe"). */

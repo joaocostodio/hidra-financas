@@ -33,13 +33,30 @@ public class TransacaoService {
     @Inject
     CategoriaService categorias;
 
+    @Inject
+    FixaService fixas;
+
     /**
      * Transações do usuário, das mais novas para as mais antigas.
-     * Os filtros são opcionais: por conta, por categoria e por tipo (E/S).
+     * Os filtros são opcionais: por conta, por categoria, por tipo (E/S), por mês ("2026-11") e por texto
+     * na descrição. Antes de listar, lança os gastos/entradas fixos que já venceram.
      */
-    public List<Transacao> listar(Usuario usuario, Long contaId, Long categoriaId, String tipo) {
+    public List<Transacao> listar(Usuario usuario, Long contaId, Long categoriaId, String tipo,
+                                  String mes, String busca) {
+        fixas.gerarPendentes(usuario);
         StringBuilder where = new StringBuilder("conta.usuario = :usuario");
         Parameters parametros = Parameters.with("usuario", usuario);
+        YearMonth periodo = Validar.mes(mes);
+        if (periodo != null) {
+            where.append(" and datatransacao between :inicio and :fim");
+            parametros.and("inicio", periodo.atDay(1)).and("fim", periodo.atEndOfMonth());
+        }
+        if (busca != null && !busca.isBlank()) {
+            // Parâmetro (nunca texto do usuário concatenado na consulta); % e _ digitados valem como texto
+            String termo = busca.trim().toLowerCase().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
+            where.append(" and lower(descricao) like :busca escape '\\'");
+            parametros.and("busca", "%" + termo + "%");
+        }
         if (contaId != null) {
             where.append(" and conta.id = :conta");
             parametros.and("conta", contaId);
@@ -63,12 +80,18 @@ public class TransacaoService {
         return transacao;
     }
 
-    /** Lança uma receita (E) ou despesa (S). */
+    /**
+     * Lança uma receita (E) ou despesa (S). Com "repetir", também cria um fixo que o sistema lança
+     * sozinho todo mês, no mesmo dia.
+     */
     @Transactional
     public Transacao lancar(TransacaoForm form, Usuario usuario) {
         Transacao transacao = new Transacao();
         preencher(transacao, form, usuario);
         transacao.persist();
+        if (Boolean.TRUE.equals(form.repetir())) {
+            fixas.criarAPartirDe(transacao);
+        }
         return transacao;
     }
 
@@ -123,7 +146,12 @@ public class TransacaoService {
      * Tela inicial: saldo de cada conta e geral (sempre de hoje), e do mês escolhido: entradas, saídas e
      * para onde foi o dinheiro (saídas por categoria). Também as últimas transações.
      */
-    public ResumoDto resumo(Usuario usuario, YearMonth mes) {
+    public ResumoDto resumo(Usuario usuario, String mesTexto) {
+        fixas.gerarPendentes(usuario);
+        YearMonth mes = Validar.mes(mesTexto);
+        if (mes == null) {
+            mes = YearMonth.now();
+        }
         List<ContaDto> lista = Conta.doUsuario(usuario).stream().map(ContaDto::de).toList();
         BigDecimal saldoGeral = lista.stream().map(ContaDto::saldo).reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -146,11 +174,11 @@ public class TransacaoService {
      */
     private static List<GastoCategoriaDto> gastosPorCategoria(Usuario usuario, LocalDate inicio, LocalDate fim) {
         List<Object[]> linhas = Transacao.getEntityManager().createQuery("""
-                        select c.id, c.descricao, c.icone, sum(t.valor)
+                        select c.id, c.descricao, c.icone, sum(t.valor), c.limiteMensal
                         from Transacao t join t.categoria c
                         where t.conta.usuario = :usuario and t.tipo = :saida
                           and t.datatransacao between :inicio and :fim
-                        group by c.id, c.descricao, c.icone
+                        group by c.id, c.descricao, c.icone, c.limiteMensal
                         order by sum(t.valor) desc""", Object[].class)
                 .setParameter("usuario", usuario)
                 .setParameter("saida", Transacao.SAIDA)
@@ -159,7 +187,7 @@ public class TransacaoService {
                 .getResultList();
         return linhas.stream()
                 .map(l -> new GastoCategoriaDto((Long) l[0], (String) l[1],
-                        l[2] == null ? Categoria.ICONE_PADRAO : (String) l[2], (BigDecimal) l[3]))
+                        l[2] == null ? Categoria.ICONE_PADRAO : (String) l[2], (BigDecimal) l[3], (BigDecimal) l[4]))
                 .toList();
     }
 

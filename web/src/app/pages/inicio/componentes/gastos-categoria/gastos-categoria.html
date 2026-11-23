@@ -9,16 +9,30 @@
       <li>
         <a
           class="barra"
+          [class.perto]="b.situacao === 'perto'"
+          [class.passou]="b.situacao === 'passou'"
           routerLink="/transacoes"
-          [queryParams]="{ categoriaId: b.categoriaId }"
+          [queryParams]="{ categoriaId: b.categoriaId, mes: mesApi() || null }"
           [matTooltip]="(b.total | currency) + ' · ' + (b.parte | percent: '1.0-0') + ' do que saiu em ' + mes() + '. Clique para ver.'"
           matTooltipPosition="above"
         >
           <span class="ico-tx"><mat-icon>{{ b.icone }}</mat-icon></span>
           <span class="corpo">
             <span class="topo">
-              <span class="nome">{{ b.categoria }}</span>
-              <span class="valor num">{{ b.total | currency }}</span>
+              <span class="nome">
+                {{ b.categoria }}
+                @if (b.situacao === 'passou') {
+                  <span class="aviso passou"><mat-icon>error</mat-icon>Passou do limite</span>
+                } @else if (b.situacao === 'perto') {
+                  <span class="aviso perto"><mat-icon>warning</mat-icon>Perto do limite</span>
+                }
+              </span>
+              <span class="valor num">
+                {{ b.total | currency }}
+                @if (b.limiteMensal) {
+                  <span class="de-limite">de {{ b.limiteMensal | currency }}</span>
+                }
+              </span>
               <span class="parte num">{{ b.parte | percent: '1.0-0' }}</span>
             </span>
             <span class="trilho" aria-hidden="true">

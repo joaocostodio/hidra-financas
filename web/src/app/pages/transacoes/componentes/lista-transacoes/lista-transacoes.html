@@ -4,13 +4,47 @@
     <p>Tudo o que entrou e saiu. Clique numa linha para corrigir ou excluir.</p>
   </div>
   <div class="acoes">
+    <button matButton="outlined" (click)="verFixas()" matTooltip="Gastos e entradas que se repetem todo mês">
+      <mat-icon>event_repeat</mat-icon>Fixos
+    </button>
+    <button matButton="outlined" (click)="baixarPlanilha()" [disabled]="baixando()" matTooltip="Baixar o que está na tela para abrir no Excel">
+      <mat-icon>download</mat-icon>Baixar planilha
+    </button>
     <a matButton="outlined" routerLink="/transferencia"><mat-icon>swap_horiz</mat-icon>Passar entre contas</a>
-    <button matButton="filled" (click)="abrir()"><mat-icon>add</mat-icon>Anotar</button>
   </div>
 </div>
 
 <!-- Filtros -->
 <form class="cartao filtros" [formGroup]="filtros">
+  <!-- Mês -->
+  <div class="navegar" role="group" aria-label="Escolher o mês">
+    <button matIconButton type="button" (click)="trocarMes(-1)" aria-label="Mês anterior" matTooltip="Mês anterior">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span class="nome-mes" aria-live="polite">{{ nomeMes() }}</span>
+    <button
+      matIconButton
+      type="button"
+      (click)="trocarMes(1)"
+      [disabled]="ehMesAtual()"
+      aria-label="Próximo mês"
+      matTooltip="Próximo mês"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+  <button matButton type="button" class="todos" (click)="todosOsMeses()">
+    {{ mesEscolhido() ? 'Ver todos os meses' : 'Só um mês' }}
+  </button>
+
+  <mat-form-field subscriptSizing="dynamic" class="busca">
+    <mat-label>Procurar</mat-label>
+    <input matInput formControlName="busca" placeholder="Ex.: uber, mercado" autocomplete="off" />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <span class="quebra"></span>
+
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Conta</mat-label>
     <mat-select formControlName="contaId">
@@ -74,6 +108,9 @@
             <mat-icon>{{ t.categoriaIcone | iconeTransacao }}</mat-icon>
           </span>
           <span>{{ t.descricao }}</span>
+          @if (t.fixa) {
+            <mat-icon class="fixa" matTooltip="Fixo: se repete todo mês" aria-label="Fixo, se repete todo mês">event_repeat</mat-icon>
+          }
         </div>
       </td>
     </ng-container>
@@ -108,7 +145,13 @@
       <td class="vazio" [attr.colspan]="colunas.length">
         @if (!carregando()) {
           <mat-icon>receipt_long</mat-icon>
-          {{ temFiltro() ? 'Nada encontrado com esses filtros.' : 'Nada anotado ainda. Use o botão + Anotar.' }}
+          @if (temFiltro()) {
+            Nada encontrado com esses filtros.
+          } @else if (mesEscolhido()) {
+            Nada anotado em {{ nomeMes() }}. Use o botão + Anotar.
+          } @else {
+            Nada anotado ainda. Use o botão + Anotar.
+          }
         }
       </td>
     </tr>

@@ -83,6 +83,50 @@
     background 0.12s;
 }
 
+/* Limite: o texto e o ícone dizem a situação; a cor da barra só reforça */
+.de-limite {
+  margin-left: 4px;
+  color: var(--texto-suave);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.aviso {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+  padding: 1px 8px 1px 5px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  vertical-align: 1px;
+}
+
+.aviso .mat-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+}
+
+.aviso.perto {
+  background: var(--aviso-suave);
+  color: var(--aviso);
+}
+
+.aviso.passou {
+  background: var(--erro-suave);
+  color: var(--erro);
+}
+
+.barra.perto .preenchido {
+  background: var(--aviso);
+}
+
+.barra.passou .preenchido {
+  background: var(--erro);
+}
+
 .vazio-gastos {
   display: flex;
   align-items: center;

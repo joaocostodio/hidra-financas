@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,10 @@ public class Categoria extends PanacheEntity {
     /** Nome do ícone (fonte Material Symbols), escolhido pelo usuário: "restaurant", "pets"... */
     @Column(length = 40)
     public String icone;
+
+    /** Quanto a pessoa quer gastar no máximo por mês nessa categoria (opcional). */
+    @Column(precision = 12, scale = 2)
+    public BigDecimal limiteMensal;
 
     @ManyToOne(optional = false)
     public Usuario usuario;
@@ -46,8 +51,9 @@ public class Categoria extends PanacheEntity {
         return icone == null || icone.isBlank() ? ICONE_PADRAO : icone;
     }
 
+    /** Usada em alguma transação ou num gasto fixo? (aí não pode ser excluída) */
     public boolean emUso() {
-        return Transacao.count("categoria", this) > 0;
+        return Transacao.count("categoria", this) > 0 || TransacaoFixa.count("categoria", this) > 0;
     }
 
     public static List<Categoria> doUsuario(Usuario usuario) {

@@ -262,6 +262,108 @@ class FinancasTest {
     }
 
     @Test
+    void filtraPorMesEPorTexto() {
+        String sessao = novoUsuario();
+        int nubank = criarConta(sessao, "Nubank", "0");
+        int transporte = categoria(sessao, "Transporte");
+        como(sessao).body(Map.of("descricao", "Uber para o trabalho", "valor", "20", "tipo", "S",
+                "datatransacao", "2026-11-03", "contaId", nubank, "categoriaId", transporte)).post("/transacoes");
+        como(sessao).body(Map.of("descricao", "Ônibus", "valor", "5", "tipo", "S",
+                "datatransacao", "2026-11-04", "contaId", nubank, "categoriaId", transporte)).post("/transacoes");
+        como(sessao).body(Map.of("descricao", "UBER de outubro", "valor", "30", "tipo", "S",
+                "datatransacao", "2026-10-20", "contaId", nubank, "categoriaId", transporte)).post("/transacoes");
+        como(sessao).body(Map.of("descricao", "100% off_", "valor", "1", "tipo", "S",
+                "datatransacao", "2026-10-21", "contaId", nubank, "categoriaId", transporte)).post("/transacoes");
+
+        como(sessao).queryParam("mes", "2026-11").get("/transacoes").then().body("", hasSize(2));
+        // Busca sem diferenciar maiúsculas
+        como(sessao).queryParam("busca", "uber").get("/transacoes").then().body("", hasSize(2));
+        como(sessao).queryParam("busca", "uber").queryParam("mes", "2026-11").get("/transacoes").then()
+                .body("", hasSize(1)).body("[0].descricao", equalTo("Uber para o trabalho"));
+        // % e _ digitados são texto, não curinga
+        como(sessao).queryParam("busca", "%").get("/transacoes").then().body("", hasSize(1));
+        como(sessao).queryParam("mes", "13-2026").get("/transacoes").then().statusCode(422);
+    }
+
+    @Test
+    void limiteDaCategoriaApareceNosGastos() {
+        String sessao = novoUsuario();
+        int nubank = criarConta(sessao, "Nubank", "0");
+        int lazer = categoria(sessao, "Lazer");
+        como(sessao).body(Map.of("descricao", "Lazer", "icone", "celebration", "limiteMensal", "300"))
+                .put("/categorias/" + lazer).then().statusCode(200).body("limiteMensal", equalTo(300.0f));
+        lancar(sessao, nubank, lazer, "S", "250").statusCode(201);
+
+        como(sessao).queryParam("mes", "2026-11").get("/resumo").then()
+                .body("gastosPorCategoria[0].limiteMensal", equalTo(300.0f))
+                .body("gastosPorCategoria[0].total", equalTo(250.0f));
+        // Limite zero = sem limite; negativo = erro
+        como(sessao).body(Map.of("descricao", "Lazer", "limiteMensal", "0")).put("/categorias/" + lazer).then()
+                .statusCode(200).body("limiteMensal", nullValue());
+        como(sessao).body(Map.of("descricao", "Lazer", "limiteMensal", "-5")).put("/categorias/" + lazer).then()
+                .statusCode(422);
+    }
+
+    @Test
+    void baixaPlanilhaCsv() {
+        String sessao = novoUsuario();
+        int nubank = criarConta(sessao, "Nubank", "0");
+        int alimentacao = categoria(sessao, "Alimentação");
+        como(sessao).body(Map.of("descricao", "=1+1 mercado", "valor", "25.90", "tipo", "S",
+                "datatransacao", "2026-11-10", "contaId", nubank, "categoriaId", alimentacao)).post("/transacoes");
+
+        String csv = como(sessao).queryParam("mes", "2026-11").get("/transacoes/planilha").then()
+                .statusCode(200)
+                .contentType(containsString("text/csv"))
+                .header("Content-Disposition", containsString("movimentacoes-2026-11.csv"))
+                .extract().asString();
+        org.hamcrest.MatcherAssert.assertThat(csv, containsString("Data;Descrição;Categoria;Conta;Tipo;Valor"));
+        org.hamcrest.MatcherAssert.assertThat(csv, containsString("10/11/2026;\"'=1+1 mercado\";\"Alimentação\";\"Nubank\";Saiu;-25,90"));
+    }
+
+    @Test
+    void fixoSeRepeteTodoMes() {
+        String sessao = novoUsuario();
+        int nubank = criarConta(sessao, "Nubank", "0");
+        int moradia = categoria(sessao, "Moradia");
+        // Aluguel fixo que começou há 2 meses: o sistema lança os meses que faltam sozinho
+        String inicio = java.time.LocalDate.now().minusMonths(2).withDayOfMonth(1).toString();
+        como(sessao).body(Map.of("descricao", "Aluguel", "valor", "1000", "tipo", "S", "datatransacao", inicio,
+                        "contaId", nubank, "categoriaId", moradia, "repetir", true))
+                .post("/transacoes").then().statusCode(201).body("fixa", is(true));
+
+        como(sessao).queryParam("busca", "aluguel").get("/transacoes").then()
+                .body("", hasSize(3)).body("fixa", everyItem(is(true)));
+        int fixa = como(sessao).get("/fixas").then().statusCode(200).body("", hasSize(1))
+                .body("[0].dia", equalTo(1)).extract().path("[0].id");
+        // Abrir de novo não lança em dobro
+        como(sessao).get("/resumo").then().statusCode(200);
+        como(sessao).queryParam("busca", "aluguel").get("/transacoes").then().body("", hasSize(3));
+        // Conta com fixo não pode ser excluída
+        como(sessao).delete("/contas/" + nubank).then().statusCode(422);
+
+        // Parar de repetir: o que já foi lançado continua
+        como(sessao).delete("/fixas/" + fixa).then().statusCode(204);
+        como(sessao).get("/fixas").then().body("", hasSize(0));
+        como(sessao).queryParam("busca", "aluguel").get("/transacoes").then()
+                .body("", hasSize(3)).body("fixa", everyItem(is(false)));
+    }
+
+    @Test
+    void entraDepoisComAMesmaSenha() {
+        String email = "volta-" + UUID.randomUUID() + "@email.com";
+        given().contentType(ContentType.JSON).header("X-Requested-With", "teste")
+                .body(Map.of("nome", "Fulano", "email", email, "senha", "senha1234"))
+                .post("/auth/cadastro").then().statusCode(201);
+        // Outra sessão, só com e-mail e senha: entra e enxerga os próprios dados
+        String sessao = given().contentType(ContentType.JSON).header("X-Requested-With", "teste")
+                .body(Map.of("email", email, "senha", "senha1234"))
+                .post("/auth/login").then().statusCode(200).extract().cookie("financas_sessao");
+        como(sessao).get("/auth/eu").then().statusCode(200).body("email", equalTo(email));
+        como(sessao).get("/categorias").then().body("", hasSize(7));
+    }
+
+    @Test
     void semDescricaoUsaONomeDaCategoria() {
         String sessao = novoUsuario();
         int nubank = criarConta(sessao, "Nubank", "0");

@@ -46,7 +46,7 @@ public class ContaService {
     public void excluir(Long id, Usuario usuario) {
         Conta conta = buscar(id, usuario);
         if (conta.temTransacoes()) {
-            throw new RegraException("Essa conta tem transações. Exclua as transações antes de excluir a conta");
+            throw new RegraException("Essa conta tem movimentações (ou gastos fixos). Exclua-os antes de excluir a conta");
         }
         conta.delete();
     }

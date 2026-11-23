@@ -1,0 +1,44 @@
+.explica {
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+.lista li:last-child {
+  border-bottom: 0;
+}
+
+.dados {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dados small {
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.lista strong {
+  white-space: nowrap;
+}
+
+.vazio-fixas {
+  justify-content: center;
+  padding: 24px 0 !important;
+  color: var(--texto-suave);
+}

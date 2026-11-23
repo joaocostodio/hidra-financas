@@ -32,8 +32,9 @@ public class Conta extends PanacheEntity {
                 .subtract(Transacao.somar(this, Transacao.SAIDA));
     }
 
+    /** Tem transações ou gastos fixos? (aí não pode ser excluída) */
     public boolean temTransacoes() {
-        return Transacao.count("conta", this) > 0;
+        return Transacao.count("conta", this) > 0 || TransacaoFixa.count("conta", this) > 0;
     }
 
     public static List<Conta> doUsuario(Usuario usuario) {

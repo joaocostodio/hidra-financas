@@ -3,6 +3,7 @@ package dto;
 import entity.Categoria;
 import entity.Conta;
 import entity.Transacao;
+import entity.TransacaoFixa;
 import entity.Usuario;
 
 import java.math.BigDecimal;
@@ -45,21 +46,24 @@ public final class Dtos {
 
     // ---------- Categorias ----------
 
-    /** icone: nome de um ícone do Material Symbols (ex.: "pets"); vazio usa a etiqueta padrão. */
-    public record CategoriaForm(String descricao, String icone) {
+    /**
+     * icone: nome de um ícone do Material Symbols (ex.: "pets"); vazio usa a etiqueta padrão.
+     * limiteMensal: quanto quer gastar no máximo por mês (opcional; vazio ou 0 = sem limite).
+     */
+    public record CategoriaForm(String descricao, String icone, BigDecimal limiteMensal) {
     }
 
-    public record CategoriaDto(Long id, String descricao, String icone) {
+    public record CategoriaDto(Long id, String descricao, String icone, BigDecimal limiteMensal) {
         public static CategoriaDto de(Categoria c) {
-            return new CategoriaDto(c.id, c.descricao, c.iconeOuPadrao());
+            return new CategoriaDto(c.id, c.descricao, c.iconeOuPadrao(), c.limiteMensal);
         }
     }
 
     // ---------- Transações ----------
 
-    /** tipo: "E" (entrada) ou "S" (saída). */
+    /** tipo: "E" (entrada) ou "S" (saída). repetir: true = vira um fixo que se repete todo mês. */
     public record TransacaoForm(String descricao, BigDecimal valor, String tipo, LocalDate datatransacao,
-                                Long contaId, Long categoriaId) {
+                                Long contaId, Long categoriaId, Boolean repetir) {
     }
 
     public record TransferenciaForm(Long origemId, Long destinoId, BigDecimal valor, LocalDate datatransacao,
@@ -68,14 +72,25 @@ public final class Dtos {
 
     public record TransacaoDto(Long id, String descricao, BigDecimal valor, String tipo, LocalDate datatransacao,
                                Long contaId, String conta, Long categoriaId, String categoria,
-                               String categoriaIcone, boolean transferencia) {
+                               String categoriaIcone, boolean transferencia, boolean fixa) {
         public static TransacaoDto de(Transacao t) {
             return new TransacaoDto(t.id, t.descricao, t.valor, t.tipo, t.datatransacao,
                     t.conta.id, t.conta.descricao,
                     t.categoria == null ? null : t.categoria.id,
                     t.categoria == null ? null : t.categoria.descricao,
                     t.categoria == null ? null : t.categoria.iconeOuPadrao(),
-                    t.ehTransferencia());
+                    t.ehTransferencia(), t.fixa != null);
+        }
+    }
+
+    // ---------- Fixos (repetem todo mês) ----------
+
+    public record FixaDto(Long id, String descricao, BigDecimal valor, String tipo, int dia, LocalDate proxima,
+                          Long contaId, String conta, Long categoriaId, String categoria, String categoriaIcone) {
+        public static FixaDto de(TransacaoFixa f) {
+            return new FixaDto(f.id, f.descricao, f.valor, f.tipo, f.dia, f.proxima,
+                    f.conta.id, f.conta.descricao, f.categoria.id, f.categoria.descricao,
+                    f.categoria.iconeOuPadrao());
         }
     }
 
@@ -88,8 +103,9 @@ public final class Dtos {
                             List<TransacaoDto> ultimas) {
     }
 
-    /** Quanto saiu numa categoria no mês ("para onde foi o dinheiro"). */
-    public record GastoCategoriaDto(Long categoriaId, String categoria, String icone, BigDecimal total) {
+    /** Quanto saiu numa categoria no mês ("para onde foi o dinheiro"), e o limite dela, se tiver. */
+    public record GastoCategoriaDto(Long categoriaId, String categoria, String icone, BigDecimal total,
+                                    BigDecimal limiteMensal) {
     }
 
     // ---------- Erros ----------

@@ -18,6 +18,14 @@
       <mat-error>Digite o nome da categoria</mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Limite por mês (opcional)</mat-label>
+      <span matTextPrefix>R$&nbsp;</span>
+      <input matInput formControlName="limite" inputmode="decimal" placeholder="Ex.: 800,00" autocomplete="off" />
+      <mat-hint>O início avisa quando os gastos chegarem perto ou passarem disso</mat-hint>
+      <mat-error>Digite um valor como 800,00 (ou deixe vazio)</mat-error>
+    </mat-form-field>
+
     <span class="rotulo" id="rotulo-icone">Escolha um ícone</span>
     <div class="icones" role="radiogroup" aria-labelledby="rotulo-icone">
       @for (op of icones; track op.icone) {

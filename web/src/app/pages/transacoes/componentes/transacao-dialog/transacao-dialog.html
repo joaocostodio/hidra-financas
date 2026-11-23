@@ -120,6 +120,16 @@
         </mat-form-field>
       }
 
+      @if (!existente) {
+        <mat-slide-toggle formControlName="repetir" class="repetir">
+          Repetir todo mês <span class="muted">(aluguel, salário, academia...)</span>
+        </mat-slide-toggle>
+      } @else if (existente.fixa) {
+        <p class="muted dica">
+          <mat-icon>event_repeat</mat-icon> Este é um fixo: se repete todo mês. Para parar, use "Fixos" em Movimentações.
+        </p>
+      }
+
       @if (carregado() && contas().length === 0) {
         <p class="muted dica">
           <mat-icon>info</mat-icon>

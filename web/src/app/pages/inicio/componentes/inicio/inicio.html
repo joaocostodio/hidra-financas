@@ -51,7 +51,7 @@
             <a
               class="cartao conta"
               routerLink="/transacoes"
-              [queryParams]="{ contaId: c.id }"
+              [queryParams]="{ contaId: c.id, mes: 'todos' }"
               [matTooltip]="'Ver movimentações de ' + c.descricao"
             >
               <span class="ico-conta"><mat-icon>account_balance_wallet</mat-icon></span>
@@ -113,7 +113,7 @@
     </div>
 
     <h4>Para onde foi o dinheiro</h4>
-    <app-gastos-categoria [gastos]="r.gastosPorCategoria" [mes]="nomeMesCurto()" />
+    <app-gastos-categoria [gastos]="r.gastosPorCategoria" [mes]="nomeMesCurto()" [mesApi]="mes()" />
   </section>
 
   <!-- ---------- Últimas movimentações ---------- -->
@@ -121,7 +121,7 @@
     <div class="cartao-cab">
       <h3>Últimas movimentações</h3>
       <span class="espaco"></span>
-      <a matButton routerLink="/transacoes">Ver todas</a>
+      <a matButton routerLink="/transacoes" [queryParams]="{ mes: 'todos' }">Ver todas</a>
     </div>
     @for (t of r.ultimas; track t.id) {
       <button type="button" class="linha" (click)="abrir(t)">

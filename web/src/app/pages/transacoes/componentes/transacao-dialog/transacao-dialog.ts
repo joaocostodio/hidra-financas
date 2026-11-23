@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Confirmacao } from '../../../../common/confirmacao/confirmacao';
@@ -57,6 +58,7 @@ const CHAVE_ULTIMA_CONTA = 'hidra-financas.ultima-conta';
     MatSelectModule,
     MatDatepickerModule,
     MatIconModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './transacao-dialog.html',
   styleUrl: './transacao-dialog.css',
@@ -90,6 +92,8 @@ export class TransacaoDialog implements OnInit {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    /** Só ao anotar uma nova: o sistema lança de novo todo mês, no mesmo dia. */
+    repetir: new FormControl(false, { nonNullable: true }),
   });
 
   private readonly valores = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });
@@ -152,6 +156,7 @@ export class TransacaoDialog implements OnInit {
           datatransacao: paraDataApi(dataEscolhida(v.quando, v.data)),
           contaId: v.contaId!,
           categoriaId: v.categoriaId!,
+          repetir: !this.existente && v.repetir,
         },
         this.existente?.id,
       )

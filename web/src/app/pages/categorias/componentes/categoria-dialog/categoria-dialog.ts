@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Confirmacao } from '../../../../common/confirmacao/confirmacao';
+import { escreverValor, lerValor } from '../../../../common/dinheiro';
 import { mensagemDeErro } from '../../../../common/erros';
 import { ICONES_CATEGORIA } from '../../../../common/icones';
 import { Categoria } from '../../model/categoria.model';
@@ -50,6 +51,11 @@ export class CategoriaDialog {
       validators: [Validators.required, Validators.maxLength(150)],
     }),
     icone: new FormControl(this.categoria?.icone ?? 'sell', { nonNullable: true }),
+    // Texto, para aceitar o jeito brasileiro ("800,00"); vazio = sem limite
+    limite: new FormControl(this.categoria?.limiteMensal ? escreverValor(this.categoria.limiteMensal) : '', {
+      nonNullable: true,
+      validators: [(c) => (c.value === '' || lerValor(c.value) !== null ? null : { valor: true })],
+    }),
   });
 
   /** Valores do form como signal: a prévia (ícone + nome) atualiza enquanto a pessoa digita/escolhe. */
@@ -67,7 +73,8 @@ export class CategoriaDialog {
     const v = this.form.getRawValue();
     this.salvando.set(true);
     this.erro.set('');
-    this.service.salvar({ descricao: v.descricao.trim(), icone: v.icone }, this.categoria?.id).subscribe({
+    const limite = lerValor(v.limite);
+    this.service.salvar({ descricao: v.descricao.trim(), icone: v.icone, limiteMensal: limite || null }, this.categoria?.id).subscribe({
       next: (salva) => {
         this.aviso.open(this.categoria ? 'Categoria atualizada' : 'Categoria criada', 'OK', { duration: 3000 });
         // Devolve a categoria salva (a janela de anotar já a deixa escolhida)

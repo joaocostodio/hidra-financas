@@ -186,6 +186,11 @@ h3 {
   margin-top: 12px;
 }
 
+.repetir {
+  display: block;
+  margin-top: 16px;
+}
+
 .acoes {
   padding: 8px 24px 20px !important;
 }

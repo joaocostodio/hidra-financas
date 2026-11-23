@@ -1,7 +1,7 @@
 <div class="titulo-pagina">
   <div>
     <h2>Categorias</h2>
-    <p>Para saber com o que você gasta e de onde vem o dinheiro. Clique numa para trocar nome ou ícone.</p>
+    <p>Para saber com o que você gasta e de onde vem o dinheiro. Clique numa para trocar nome, ícone ou limite por mês.</p>
   </div>
   <div class="acoes">
     <button matButton="filled" (click)="abrir()"><mat-icon>add</mat-icon>Nova categoria</button>
@@ -20,10 +20,15 @@
     <div class="cartao categoria">
       <button class="principal" type="button" (click)="abrir(c)" [attr.aria-label]="'Editar ' + c.descricao">
         <span class="ico-tx entrada"><mat-icon>{{ c.icone }}</mat-icon></span>
-        <span class="nome">{{ c.descricao }}</span>
+        <span class="nome">
+          {{ c.descricao }}
+          @if (c.limiteMensal) {
+            <small class="limite">Até {{ c.limiteMensal | currency }} por mês</small>
+          }
+        </span>
         <mat-icon class="editar">edit</mat-icon>
       </button>
-      <a class="filtrar" routerLink="/transacoes" [queryParams]="{ categoriaId: c.id }">Ver movimentações</a>
+      <a class="filtrar" routerLink="/transacoes" [queryParams]="{ categoriaId: c.id, mes: 'todos' }">Ver movimentações</a>
     </div>
   } @empty {
     @if (!carregando()) {

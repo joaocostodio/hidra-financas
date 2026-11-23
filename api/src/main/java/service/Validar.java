@@ -4,11 +4,33 @@ import exception.RegraException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
 
 /** Validações usadas por mais de um service. */
 final class Validar {
 
     private Validar() {
+    }
+
+    /** "2026-11" → mês; vazio → null (sem filtro de mês). Formato errado vira erro 422. */
+    static YearMonth mes(String mes) {
+        if (mes == null || mes.isBlank()) {
+            return null;
+        }
+        try {
+            return YearMonth.parse(mes.trim());
+        } catch (DateTimeParseException e) {
+            throw new RegraException("Mês inválido: use o formato 2026-11");
+        }
+    }
+
+    /** Limite mensal de uma categoria: vazio ou zero = sem limite; senão, um valor positivo. */
+    static BigDecimal limite(BigDecimal limite) {
+        if (limite == null || limite.signum() == 0) {
+            return null;
+        }
+        return valorPositivo(limite);
     }
 
     /** Texto obrigatório: tira espaços das pontas e confere o tamanho. */

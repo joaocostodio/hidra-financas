@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Fixos (repetem todo mês)</h2>
+
+<mat-dialog-content>
+  <p class="muted explica">
+    O sistema anota sozinho, todo mês, no mesmo dia. Para criar um, ao anotar marque
+    <b>"Repetir todo mês"</b>.
+  </p>
+
+  @if (carregando()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+  @if (erro()) {
+    <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+  }
+
+  <ul class="lista">
+    @for (f of fixas(); track f.id) {
+      <li>
+        <span class="ico-tx" [class.entrada]="f.tipo === 'E'"><mat-icon>{{ f.categoriaIcone }}</mat-icon></span>
+        <div class="dados">
+          <b>{{ f.descricao }}</b>
+          <small>Todo dia {{ f.dia }} · {{ f.conta }} · próxima em {{ f.proxima | date: 'dd/MM/yyyy' }}</small>
+        </div>
+        <strong class="num" [class.entrada]="f.tipo === 'E'">
+          {{ f.tipo === 'E' ? '+' : '−' }} {{ f.valor | currency }}
+        </strong>
+        <button matButton type="button" class="perigo" (click)="pararDeRepetir(f)">Parar</button>
+      </li>
+    } @empty {
+      @if (!carregando()) {
+        <li class="vazio-fixas">
+          <mat-icon>event_repeat</mat-icon>
+          Nenhum fixo ainda. Ex.: aluguel, salário, academia.
+        </li>
+      }
+    }
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton="filled" type="button" (click)="fechar()">Fechar</button>
+</mat-dialog-actions>

@@ -16,6 +16,8 @@ export interface Transacao {
   categoriaIcone: string | null;
   /** Faz parte de uma transferência (não tem categoria e não se edita). */
   transferencia: boolean;
+  /** Foi lançada por um gasto/entrada fixo, que se repete todo mês. */
+  fixa: boolean;
 }
 
 export interface TransacaoForm {
@@ -25,6 +27,8 @@ export interface TransacaoForm {
   datatransacao: string;
   contaId: number;
   categoriaId: number;
+  /** Repetir todo mês, no mesmo dia (vira um fixo). */
+  repetir?: boolean;
 }
 
 export interface TransferenciaForm {
@@ -40,6 +44,27 @@ export interface FiltroTransacoes {
   contaId?: number | null;
   categoriaId?: number | null;
   tipo?: TipoTransacao | null;
+  /** "2026-11"; vazio = todos os meses. */
+  mes?: string | null;
+  /** Texto procurado na descrição. */
+  busca?: string | null;
+}
+
+/** Um gasto ou entrada fixo (repete todo mês). */
+export interface Fixa {
+  id: number;
+  descricao: string;
+  valor: number;
+  tipo: TipoTransacao;
+  /** Dia do mês em que acontece. */
+  dia: number;
+  /** Próxima vez que o sistema vai lançar ("2026-12-05"). */
+  proxima: string;
+  contaId: number;
+  conta: string;
+  categoriaId: number;
+  categoria: string;
+  categoriaIcone: string;
 }
 
 /** Date do datepicker → "2026-11-23" (sem fuso horário, para não virar o dia anterior). */

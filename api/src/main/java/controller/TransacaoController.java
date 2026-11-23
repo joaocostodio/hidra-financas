@@ -17,6 +17,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import security.UsuarioLogado;
+import service.Planilha;
 import service.TransacaoService;
 
 import java.util.List;
@@ -33,13 +34,34 @@ public class TransacaoController {
     @Inject
     UsuarioLogado logado;
 
-    /** GET /transacoes?contaId=1&categoriaId=2&tipo=S (todos os filtros são opcionais). */
+    /**
+     * GET /transacoes?contaId=1&categoriaId=2&tipo=S&mes=2026-11&busca=uber
+     * (todos os filtros são opcionais).
+     */
     @GET
     public List<TransacaoDto> listar(@QueryParam("contaId") Long contaId,
                                      @QueryParam("categoriaId") Long categoriaId,
-                                     @QueryParam("tipo") String tipo) {
-        return service.listar(logado.usuario(), contaId, categoriaId, tipo)
+                                     @QueryParam("tipo") String tipo,
+                                     @QueryParam("mes") String mes,
+                                     @QueryParam("busca") String busca) {
+        return service.listar(logado.usuario(), contaId, categoriaId, tipo, mes, busca)
                 .stream().map(TransacaoDto::de).toList();
+    }
+
+    /** Mesmos filtros, mas como planilha (CSV que o Excel abre direto). */
+    @GET
+    @Path("/planilha")
+    @Produces("text/csv; charset=UTF-8")
+    public Response planilha(@QueryParam("contaId") Long contaId,
+                             @QueryParam("categoriaId") Long categoriaId,
+                             @QueryParam("tipo") String tipo,
+                             @QueryParam("mes") String mes,
+                             @QueryParam("busca") String busca) {
+        String csv = Planilha.csv(service.listar(logado.usuario(), contaId, categoriaId, tipo, mes, busca));
+        String nome = "movimentacoes" + (mes == null || mes.isBlank() ? "" : "-" + mes.trim()) + ".csv";
+        return Response.ok(csv)
+                .header("Content-Disposition", "attachment; filename=\"" + nome.replaceAll("[^a-z0-9.-]", "") + "\"")
+                .build();
     }
 
     @GET
