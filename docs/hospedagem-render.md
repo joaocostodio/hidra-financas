@@ -3,6 +3,9 @@
 Versão do sistema que fica num endereço fixo com HTTPS, sem depender do notebook. É um extra: o trabalho continua
 rodando no notebook exatamente como no [README](../README.md).
 
+Como ela se comporta no dia a dia (tela de espera, limites gratuitos, o que fazer se algo der errado):
+[site-no-ar.md](site-no-ar.md).
+
 | Parte | Serviço | Plano grátis |
 |---|---|---|
 | Site + API (um container) | [Render](https://render.com) | Endereço fixo `https://hidra-financas.onrender.com`. Dorme depois de 15 min sem acesso; o primeiro acesso depois disso leva cerca de 1 minuto |

@@ -87,7 +87,8 @@ curl -i -b cookies.txt -X POST -H "Content-Type: application/json" \
 - [Arquitetura](arquitetura.md): camadas, diagramas (requisição, modelo de dados, fixos) e decisões.
 - [Especificações das telas](specs/): o que cada tela faz, no formato "Quando... então...".
 - [Roteiro da apresentação](apresentacao.md).
-- [Hospedagem](hospedagem-render.md): como a versão no ar funciona (Render + Neon).
+- [Hospedagem](hospedagem-render.md): como a versão no ar é montada (Render + Neon).
+- [Site no ar](site-no-ar.md): tela de espera no primeiro acesso, limites gratuitos e o que fazer se algo der errado.
 
 ## 7. Relação com os projetos da aula
 

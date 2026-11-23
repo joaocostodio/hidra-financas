@@ -9,7 +9,8 @@ Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/financ
 [finance-ui](https://github.com/tiagoseibel/finance-ui).
 
 **No ar:** <https://hidra-financas.onrender.com> — crie uma conta e use (cada pessoa só vê os próprios dados).
-Se ninguém acessou nos últimos 15 minutos, o primeiro acesso leva cerca de 1 minuto enquanto o servidor acorda.
+Se ninguém acessou nos últimos 15 minutos, o primeiro acesso leva cerca de 1 minuto enquanto o servidor acorda
+(aparece uma tela preta do Render; é normal, ver [site no ar](docs/site-no-ar.md)).
 
 ![Tela inicial: saldo de cada conta e geral, resumo do mês e "Para onde foi o dinheiro" com os limites](docs/imagens/02-inicio.png)
 
@@ -22,6 +23,7 @@ Se ninguém acessou nos últimos 15 minutos, o primeiro acesso leva cerca de 1 m
 | [Especificações das telas](docs/specs/) | O que cada tela faz, no formato "Quando… então…" |
 | [Roteiro da apresentação](docs/apresentacao.md) | Ordem da demonstração e respostas para as perguntas prováveis |
 | [Hospedagem (Render + Neon)](docs/hospedagem-render.md) | Versão sempre no ar, de graça: como funciona e passo a passo |
+| [Site no ar](docs/site-no-ar.md) | O que é normal (tela de espera de ~1 min), limites gratuitos e o que fazer se algo der errado |
 | Este README | Como executar, API completa, modelo de dados, POO e segurança |
 
 O código também é documentado: toda classe Java tem Javadoc explicando a responsabilidade dela, e todo
@@ -169,7 +171,8 @@ hidra-financas/
 │   ├── guia-de-avaliacao.md    requisito → tela → código → teste
 │   ├── arquitetura.md          camadas, diagramas e decisões
 │   ├── apresentacao.md         roteiro da apresentação
-│   ├── hospedagem-render.md    versão no ar (Render + Neon)
+│   ├── hospedagem-render.md    versão no ar (Render + Neon): como é montada
+│   ├── site-no-ar.md           versão no ar: funcionamento, limites e problemas
 │   ├── specs/                  especificação de cada tela
 │   └── imagens/                capturas de tela usadas na documentação
 ├── docker-compose.yml          PostgreSQL do desenvolvimento
