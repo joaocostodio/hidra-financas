@@ -1,0 +1,20 @@
+# Blueprint do Render: cria o serviço sozinho a partir deste repositório (Dashboard → New → Blueprint).
+# Passo a passo: docs/hospedagem-render.md
+services:
+  - type: web
+    name: hidra-financas
+    runtime: docker
+    plan: free
+    # Virgínia (EUA): a região do Render mais perto do Brasil. Crie o banco do Neon em "AWS US East 1 (N. Virginia)".
+    region: virginia
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      # Valores secretos: o Render pede na criação e guarda só no painel (nunca no Git)
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_CHAVE_PRIVADA
+        sync: false
+      - key: JWT_CHAVE_PUBLICA
+        sync: false

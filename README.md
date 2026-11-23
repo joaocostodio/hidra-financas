@@ -18,6 +18,7 @@ Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/financ
 | [Arquitetura](docs/arquitetura.md) | Camadas, diagramas (requisição autenticada, modelo de dados, fixos) e as decisões com o porquê |
 | [Especificações das telas](docs/specs/) | O que cada tela faz, no formato "Quando… então…" |
 | [Roteiro da apresentação](docs/apresentacao.md) | Ordem da demonstração e respostas para as perguntas prováveis |
+| [Hospedagem (Render + Neon)](docs/hospedagem-render.md) | Versão sempre no ar, de graça: como funciona e passo a passo |
 | Este README | Como executar, API completa, modelo de dados, POO e segurança |
 
 O código também é documentado: toda classe Java tem Javadoc explicando a responsabilidade dela, e todo
@@ -122,7 +123,7 @@ Sobem um PostgreSQL descartável sozinhos (pelo Docker):
 
 ```bash
 cd api
-./mvnw test                 # 23 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários
+./mvnw test                 # 27 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários, banco da nuvem
 ```
 
 ### Compilar para produção
@@ -132,13 +133,12 @@ cd api && ./mvnw package    # gera api/target/quarkus-app/quarkus-run.jar
 cd web && npm run build     # gera web/dist/web
 ```
 
-Em produção o token precisa de chaves RSA próprias (em dev o Quarkus gera sozinho). Elas **não** vão para o Git:
+O jeito mais simples é a imagem Docker da raiz, que junta os dois: `docker build -t hidra-financas .`
+(é a que roda no Render). Nela a API atende em `/api` e entrega também o site.
 
-```bash
-mkdir -p api/chaves
-openssl genrsa -out api/chaves/privada.pem 2048
-openssl rsa -in api/chaves/privada.pem -pubout -out api/chaves/publica.pem
-```
+Em produção o token precisa de chaves RSA próprias (em dev o Quarkus gera sozinho). Elas **não** vão para o Git:
+ficam nas variáveis de ambiente `JWT_CHAVE_PRIVADA` e `JWT_CHAVE_PUBLICA` (o conteúdo em Base64, sem as linhas
+BEGIN/END), e o banco em `DATABASE_URL`. Como gerar: [docs/hospedagem-render.md](docs/hospedagem-render.md).
 
 ## Estrutura
 
@@ -151,7 +151,8 @@ hidra-financas/
 │       ├── controller/         rotas REST
 │       ├── dto/                o que entra e sai da API (records)
 │       ├── security/           cookie da sessão, proteção CSRF, usuário logado
-│       └── exception/          erros de regra → HTTP 422 / 404 / 401
+│       ├── exception/          erros de regra → HTTP 422 / 404 / 401
+│       └── config/             só na nuvem: banco pela DATABASE_URL e rotas do site
 ├── web/                        Angular 22 + Material (porta 4200)
 │   └── src/app/
 │       ├── common/             login (auth), layout com menu lateral, componentes reutilizáveis
@@ -162,7 +163,9 @@ hidra-financas/
 │   ├── apresentacao.md         roteiro da apresentação
 │   ├── specs/                  especificação de cada tela
 │   └── imagens/                capturas de tela usadas na documentação
-└── docker-compose.yml          PostgreSQL
+├── docker-compose.yml          PostgreSQL do desenvolvimento
+├── Dockerfile                  imagem de produção (site + API num container)
+└── render.yaml                 publicação no Render (ver docs/hospedagem-render.md)
 ```
 
 O site segue as instruções da disciplina (`web/.github/instructions/projeto-angular.instructions.md`): só CSS,

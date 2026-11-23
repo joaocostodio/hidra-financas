@@ -1,0 +1,10 @@
+.git
+**/node_modules
+web/dist
+web/.angular
+api/target
+api/chaves
+docs
+.playwright-mcp
+*.pem
+.env

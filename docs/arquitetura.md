@@ -42,6 +42,7 @@ flowchart LR
 | Entity | `entity/` | Tabelas (Panache) e o comportamento de cada objeto (`Conta.saldo()`, `TransacaoFixa.gerarAte()`) | Saber de HTTP |
 | Security | `security/` | Cookie da sessão, proteção CSRF, quem é o usuário logado | — |
 | Exception | `exception/` | Exceções de regra e a tradução para HTTP (`TratadorDeErros`) | — |
+| Config | `config/` | Só na nuvem: banco pela `DATABASE_URL` e telas do site abertas direto ([hospedagem](hospedagem-render.md)) | Regra de negócio |
 
 Exemplo do caminho de "excluir uma categoria":
 
