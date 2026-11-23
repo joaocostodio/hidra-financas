@@ -19,6 +19,20 @@ import service.CategoriaService;
 
 import java.util.List;
 
+/**
+ * Rotas REST das categorias (Alimentação, Moradia, Salário...). Cada usuário tem as suas.
+ * <p>
+ * O controller só traduz HTTP ↔ objetos: recebe o {@link CategoriaForm}, chama o {@link CategoriaService}
+ * (onde ficam as regras: nome obrigatório e sem repetir, ícone válido, limite positivo, não excluir se estiver em
+ * uso) e devolve um {@link CategoriaDto}. O dono vem sempre do token ({@link UsuarioLogado}), nunca do corpo.
+ * <ul>
+ *   <li>GET /categorias — lista (ordem alfabética)</li>
+ *   <li>GET /categorias/{id} — busca uma (de outro usuário = 404)</li>
+ *   <li>POST /categorias — cria (201)</li>
+ *   <li>PUT /categorias/{id} — atualiza nome, ícone e limite mensal</li>
+ *   <li>DELETE /categorias/{id} — exclui (204; em uso = 422)</li>
+ * </ul>
+ */
 @Path("/categorias")
 @Authenticated
 @Consumes(MediaType.APPLICATION_JSON)

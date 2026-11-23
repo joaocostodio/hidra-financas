@@ -1,6 +1,19 @@
 import { Routes } from '@angular/router';
 import { logadoGuard } from './common/auth/auth.guards';
 
+/**
+ * Mapa de telas do site. Cada funcionalidade tem o seu arquivo em `pages/<funcionalidade>/routes` e só é
+ * baixada quando a pessoa abre a tela (lazy loading: `loadChildren` / `loadComponent`).
+ *
+ * | URL              | Tela                                              |
+ * |------------------|---------------------------------------------------|
+ * | /                | Início (saldo por conta e geral, resumo do mês)   |
+ * | /transacoes      | Movimentações (filtros, fixos, planilha)          |
+ * | /contas          | Contas                                            |
+ * | /categorias      | Categorias                                        |
+ * | /transferencia   | Passar entre contas                               |
+ * | /entrar          | Entrar  · /cadastro: Criar conta · /boas-vindas    |
+ */
 export const routes: Routes = [
   // Sistema: só logado, dentro da moldura com o menu lateral
   {

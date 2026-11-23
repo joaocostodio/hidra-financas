@@ -22,6 +22,21 @@ import service.TransacaoService;
 
 import java.util.List;
 
+/**
+ * Rotas REST das transações (no site: "Movimentações"): receitas (E), despesas (S) e transferências.
+ * <p>
+ * O controller só traduz HTTP ↔ objetos; as regras ficam no {@link TransacaoService}. O dono vem sempre do
+ * token ({@link UsuarioLogado}), nunca do corpo.
+ * <ul>
+ *   <li>GET /transacoes — lista com filtros opcionais (conta, categoria, tipo, mês e texto)</li>
+ *   <li>GET /transacoes/planilha — os mesmos filtros, como arquivo CSV para o Excel ({@link Planilha})</li>
+ *   <li>GET /transacoes/{id} — busca uma</li>
+ *   <li>POST /transacoes — lança (com {@code repetir: true} também cria um fixo mensal)</li>
+ *   <li>PUT /transacoes/{id} — corrige (transferência não se edita)</li>
+ *   <li>DELETE /transacoes/{id} — exclui (se for transferência, exclui as duas partes)</li>
+ *   <li>POST /transacoes/transferencia — passa dinheiro de uma conta para outra (uma saída + uma entrada)</li>
+ * </ul>
+ */
 @Path("/transacoes")
 @Authenticated
 @Consumes(MediaType.APPLICATION_JSON)

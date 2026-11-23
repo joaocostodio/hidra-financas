@@ -10,14 +10,16 @@ Resumo do mês (cartão):
 - Entrou, Saiu e Sobrou (ou "Gastou a mais") no mês
 - "Para onde foi o dinheiro": gráfico de barras horizontais, uma por categoria, do maior gasto para o menor,
   com ícone, nome, valor e % do que saiu no mês
+- Se a categoria tem limite por mês: "R$ 340,50 de R$ 300,00" e o aviso "Perto do limite" (a partir de 80%)
+  ou "Passou do limite" (acima de 100%), com ícone e texto (não depende só da cor)
 Últimas 5 movimentações
 
 # Comportamentos
-Quando abrir o componente, então carregar o resumo do mês atual
+Quando abrir o componente, então carregar o resumo do mês atual (antes, a API lança os fixos que já venceram)
 Quando trocar de mês, então carregar o resumo daquele mês (os saldos continuam sendo os de hoje)
 Quando passar o mouse numa barra, então mostrar valor e % ("R$ 508,85 · 27% do que saiu em novembro")
-Quando clicar numa barra, então abrir as movimentações daquela categoria
-Quando clicar no cartão de uma conta, então abrir as movimentações daquela conta
+Quando clicar numa barra, então abrir as movimentações daquela categoria naquele mês
+Quando clicar no cartão de uma conta, então abrir as movimentações daquela conta (todos os meses)
 Quando clicar numa das últimas movimentações, então abrir a janela para editar
 Quando algo for anotado ou excluído (de qualquer tela), então recarregar sozinha
 Quando não houver contas, então mostrar aviso com botão para cadastrar
@@ -33,4 +35,4 @@ não na cor. O comprimento é relativo ao maior gasto; o % é sobre o total que 
 # API
 Apis: GET http://localhost:8090/resumo?mes=2026-11 (sem mes = mês atual; formato errado = 422)
 Estrutura: mes, contas [{id, descricao, saldoInicial, saldo}], saldoGeral, entradasMes, saidasMes,
-gastosPorCategoria [{categoriaId, categoria, icone, total}], ultimas [movimentações]
+gastosPorCategoria [{categoriaId, categoria, icone, total, limiteMensal}], ultimas [movimentações]

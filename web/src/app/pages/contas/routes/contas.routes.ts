@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+/** /contas → cadastro de contas (onde o dinheiro fica: Nubank, Carteira...). */
 export const CONTAS_ROUTES: Routes = [
   {
     path: '',

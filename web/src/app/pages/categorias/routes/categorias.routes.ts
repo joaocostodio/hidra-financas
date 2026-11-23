@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+/** /categorias → cadastro de categorias (com ícone e limite por mês). */
 export const CATEGORIAS_ROUTES: Routes = [
   {
     path: '',

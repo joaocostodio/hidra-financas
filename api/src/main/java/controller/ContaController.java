@@ -19,6 +19,20 @@ import service.ContaService;
 
 import java.util.List;
 
+/**
+ * Rotas REST das contas (Nubank, Carteira, Poupança...): onde o usuário guarda dinheiro.
+ * <p>
+ * O controller só traduz HTTP ↔ objetos: recebe o {@link ContaForm}, chama o {@link ContaService} (regras) e
+ * devolve um {@link ContaDto}, que já vem com o saldo calculado ({@code Conta.saldo()}). O dono vem sempre do
+ * token ({@link UsuarioLogado}), nunca do corpo.
+ * <ul>
+ *   <li>GET /contas — lista com o saldo de cada uma</li>
+ *   <li>GET /contas/{id} — busca uma (de outro usuário = 404)</li>
+ *   <li>POST /contas — cria com descrição e saldo inicial (201)</li>
+ *   <li>PUT /contas/{id} — atualiza</li>
+ *   <li>DELETE /contas/{id} — exclui (204; com movimentações ou fixos = 422)</li>
+ * </ul>
+ */
 @Path("/contas")
 @Authenticated
 @Consumes(MediaType.APPLICATION_JSON)

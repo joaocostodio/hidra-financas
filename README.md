@@ -8,6 +8,21 @@ Projeto da disciplina de **Programação Orientada a Objetos** — EC04 / 2026 �
 Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/finance-api) e
 [finance-ui](https://github.com/tiagoseibel/finance-ui).
 
+![Tela inicial: saldo de cada conta e geral, resumo do mês e "Para onde foi o dinheiro" com os limites](docs/imagens/02-inicio.png)
+
+## Documentação
+
+| Documento | Para quê |
+|---|---|
+| **[Guia de avaliação](docs/guia-de-avaliacao.md)** | Cada requisito pedido → onde ver na tela, onde está no código e qual teste prova. Roteiro de 10 minutos |
+| [Arquitetura](docs/arquitetura.md) | Camadas, diagramas (requisição autenticada, modelo de dados, fixos) e as decisões com o porquê |
+| [Especificações das telas](docs/specs/) | O que cada tela faz, no formato "Quando… então…" |
+| [Roteiro da apresentação](docs/apresentacao.md) | Ordem da demonstração e respostas para as perguntas prováveis |
+| Este README | Como executar, API completa, modelo de dados, POO e segurança |
+
+O código também é documentado: toda classe Java tem Javadoc explicando a responsabilidade dela, e todo
+componente/serviço do site tem um comentário dizendo o que faz.
+
 ## O que foi pedido × onde está
 
 | Pedido | Onde está |
@@ -20,6 +35,25 @@ Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/financ
 | Transferência entre contas | Botão **Passar entre contas** (no Início, em Contas e em Movimentações) — `POST /transacoes/transferencia` (uma saída + uma entrada) |
 | Tela inicial com saldo por conta e geral | Tela **Início** — `GET /resumo` (mais o resumo do mês com o gráfico "Para onde foi o dinheiro") |
 | Autenticação JWT em cookie httpOnly | `AuthController` + `CookieSessao`: o token vai no cookie `financas_sessao` (HttpOnly, SameSite=Strict) |
+
+### Além do pedido
+
+| O quê | Onde está |
+|---|---|
+| Movimentações por mês e busca por texto | Tela **Movimentações**: ‹ mês › ou "Ver todos os meses", e o campo **Procurar** — `GET /transacoes?mes=2026-11&busca=uber` |
+| Gastos e entradas fixos (aluguel, salário...) | Ao anotar, **Repetir todo mês**: o sistema lança sozinho no mesmo dia (dia 31 vira o último dia em meses curtos). Botão **Fixos** em Movimentações para ver e parar — `/fixas` |
+| Limite mensal por categoria | Na categoria, **Limite por mês** (opcional); o Início mostra quanto já foi gasto do limite e avisa quando passa |
+| Baixar planilha para o Excel | Botão **Baixar planilha** em Movimentações (respeita os filtros) — `GET /transacoes/planilha` (CSV com `;`, vírgula nos centavos e datas dd/mm/aaaa) |
+| Datas digitadas no formato brasileiro | `common/data-br.adapter.ts`: "05/09/2026" é 5 de setembro |
+
+## Telas
+
+| | |
+|---|---|
+| ![Entrar](docs/imagens/01-entrar.png) **Entrar / Criar conta** | ![Movimentações](docs/imagens/03-movimentacoes.png) **Movimentações** com filtros por mês, texto, conta, categoria e tipo |
+| ![Anotar](docs/imagens/05-anotar.png) **+ Anotar** (com "Repetir todo mês") | ![Fixos](docs/imagens/04-fixos.png) **Fixos**: o que se repete todo mês |
+| ![Contas](docs/imagens/07-contas.png) **Contas** com saldo inicial e atual | ![Categorias](docs/imagens/06-categorias.png) **Categorias** com ícone e limite |
+| ![Tema escuro](docs/imagens/08-tema-escuro.png) **Tema escuro** | |
 
 ### Palavras do site × termos do pedido
 
@@ -64,7 +98,7 @@ Sobem um PostgreSQL descartável sozinhos (pelo Docker):
 
 ```bash
 cd api
-./mvnw test                 # 17 testes: saldo, filtros, transferência, login, cookie, CSRF, isolamento entre usuários
+./mvnw test                 # 22 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários
 ```
 
 ### Compilar para produção
@@ -88,7 +122,7 @@ openssl rsa -in api/chaves/privada.pem -pubout -out api/chaves/publica.pem
 hidra-financas/
 ├── api/                        Quarkus (porta 8090)
 │   └── src/main/java/
-│       ├── entity/             Usuario, Conta, Categoria, Transacao (Panache)
+│       ├── entity/             Usuario, Conta, Categoria, Transacao, TransacaoFixa (Panache)
 │       ├── service/            regras de negócio (TransacaoService, ContaService, ...)
 │       ├── controller/         rotas REST
 │       ├── dto/                o que entra e sai da API (records)
@@ -98,8 +132,12 @@ hidra-financas/
 │   └── src/app/
 │       ├── common/             login (auth), layout com menu lateral, componentes reutilizáveis
 │       └── pages/<funcionalidade>/{model, services, routes, componentes}
-├── docs/specs/                 especificação de cada tela
-├── docs/apresentacao.md        roteiro da apresentação
+├── docs/
+│   ├── guia-de-avaliacao.md    requisito → tela → código → teste
+│   ├── arquitetura.md          camadas, diagramas e decisões
+│   ├── apresentacao.md         roteiro da apresentação
+│   ├── specs/                  especificação de cada tela
+│   └── imagens/                capturas de tela usadas na documentação
 └── docker-compose.yml          PostgreSQL
 ```
 
@@ -113,14 +151,19 @@ O site segue as instruções da disciplina (`web/.github/instructions/projeto-an
 |---|---|
 | `Usuario` | nome, email (único), senhaHash (BCrypt) |
 | `Conta` | descricao, saldoInicial, usuario |
-| `Categoria` | descricao, usuario |
-| `Transacao` | descricao, valor, tipo (`E` entrada / `S` saída), datatransacao, conta, categoria, transferencia |
+| `Categoria` | descricao, icone, limiteMensal (opcional), usuario |
+| `Transacao` | descricao, valor, tipo (`E` entrada / `S` saída), datatransacao, conta, categoria, transferencia, fixa |
+| `TransacaoFixa` | descricao, valor, tipo, dia (1 a 31), conta, categoria, proxima (próxima data a lançar) |
 
 - **Saldo** de uma conta = saldo inicial + entradas − saídas (método `Conta.saldo()`). O sistema não guarda o saldo:
   ele é calculado a partir das transações, como numa planilha.
 - **Transferência** = duas transações com o mesmo código (`transferencia`): uma `S` na conta de origem e uma `E` na
   de destino, gravadas juntas (`@Transactional`: ou grava as duas, ou nenhuma). Excluir uma exclui as duas.
   Transferência não tem categoria e não conta como receita ou despesa no resumo do mês.
+- **Fixo** (`TransacaoFixa`) = um molde que se repete todo mês. Não há tarefa agendada: sempre que o Início ou as
+  Movimentações são abertos, o sistema lança o que já venceu (`gerarAte()`, que pode lançar vários meses de uma vez)
+  e avança a `proxima`. As linhas ficam travadas durante isso, para duas telas abertas juntas não lançarem em dobro.
+  Parar de repetir apaga o fixo, mas as transações já lançadas continuam.
 
 ## Conceitos de POO no código
 
@@ -129,7 +172,10 @@ O site segue as instruções da disciplina (`web/.github/instructions/projeto-an
 - **Herança**: todas as entidades herdam de `PanacheEntity` (ganham `id`, `persist()`, `delete()`, `find()`...).
   As exceções de regra herdam de `RuntimeException`.
 - **Responsabilidade de cada objeto**: a `Conta` sabe calcular o próprio saldo (`saldo()`) e dizer se tem transações
-  (`temTransacoes()`); a `Transacao` sabe se é transferência (`ehTransferencia()`).
+  (`temTransacoes()`); a `Transacao` sabe se é transferência (`ehTransferencia()`); a `Categoria` sabe se está em
+  uso (`emUso()`); a `TransacaoFixa` sabe lançar os meses que venceram (`gerarAte()`) e qual é o dia certo num mês
+  mais curto (`noDia()`).
+- **Objetos de valor imutáveis**: o que entra e sai da API são `record`s (`dto/Dtos.java`), sem setters.
 - **Camadas**: controller (HTTP) → service (regras) → entity (dados). O controller nunca tem regra de negócio.
 
 ## Segurança
@@ -158,10 +204,13 @@ Todas as rotas (menos cadastro e login) exigem o cookie de sessão. Erros voltam
 | GET | `/auth/eu` | Quem está logado |
 | GET / POST | `/contas` | Lista (com saldo) / cria (`descricao`, `saldoInicial`) |
 | GET / PUT / DELETE | `/contas/{id}` | Busca / atualiza / exclui (só sem transações) |
-| GET / POST | `/categorias` | Lista / cria (`descricao`) |
+| GET / POST | `/categorias` | Lista / cria (`descricao`, `icone`, `limiteMensal`) |
 | GET / PUT / DELETE | `/categorias/{id}` | Busca / atualiza / exclui (só se não estiver em uso) |
-| GET | `/transacoes?contaId=&categoriaId=&tipo=` | Lista com filtros opcionais |
-| POST | `/transacoes` | Lança: `descricao`, `valor`, `tipo` (E/S), `datatransacao`, `contaId`, `categoriaId` |
+| GET | `/transacoes?contaId=&categoriaId=&tipo=&mes=&busca=` | Lista com filtros opcionais |
+| GET | `/transacoes/planilha?...` | Os mesmos filtros, como CSV para o Excel |
+| POST | `/transacoes` | Lança: `descricao`, `valor`, `tipo` (E/S), `datatransacao`, `contaId`, `categoriaId`, `repetir` (opcional) |
 | GET / PUT / DELETE | `/transacoes/{id}` | Busca / atualiza / exclui |
 | POST | `/transacoes/transferencia` | `origemId`, `destinoId`, `valor`, `datatransacao`, `descricao` |
+| GET | `/fixas` | Gastos e entradas fixos (repetem todo mês) |
+| DELETE | `/fixas/{id}` | Para de repetir (o que já foi lançado continua) |
 | GET | `/resumo?mes=2026-11` | Saldo de cada conta e geral (hoje); receitas, despesas e gastos por categoria do mês; últimas transações |

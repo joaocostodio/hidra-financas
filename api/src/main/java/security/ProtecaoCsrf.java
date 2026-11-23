@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Segunda barreira contra CSRF, além do cookie SameSite=Strict: toda requisição que muda dados
  * (POST, PUT, DELETE) precisa do cabeçalho X-Requested-With. Um formulário de outro site não consegue
- * mandar cabeçalhos próprios. O site manda esse cabeçalho em todas as chamadas (sessao.interceptor.ts).
+ * mandar cabeçalhos próprios. O site manda esse cabeçalho em todas as chamadas (web/src/app/common/auth/auth.interceptor.ts).
  */
 @Provider
 @PreMatching

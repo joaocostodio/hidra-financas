@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 import { TemaService } from './common/tema/tema.service';
 
+/** Componente raiz: só tem o `<router-outlet>`, onde o Angular desenha a tela da URL atual. */
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],

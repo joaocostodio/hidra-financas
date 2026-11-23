@@ -16,6 +16,10 @@ import { AdaptadorDataBr } from './common/data-br.adapter';
 
 registerLocaleData(localePt);
 
+/**
+ * Configuração global do site (o que o Angular injeta em todos os componentes): rotas, HttpClient com o
+ * interceptor da sessão, datas e dinheiro no padrão brasileiro e a aparência padrão dos campos do Material.
+ */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
