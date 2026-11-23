@@ -1,0 +1,59 @@
+mat-dialog-content {
+  overflow-x: hidden;
+}
+
+/* Prévia da categoria */
+.previa {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-radius: var(--raio);
+  background: var(--superficie-2);
+}
+
+.ico-tx.grande {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+.ico-tx.grande .mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.previa .nome {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Grade de ícones */
+.rotulo {
+  display: block;
+  margin: 2px 0 8px;
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+
+.icones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 6px;
+}
+
+.icones button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  --mat-icon-button-icon-color: var(--texto-suave);
+  --mat-icon-button-state-layer-shape: 12px;
+  border: 1px solid transparent;
+}
+
+.icones button.escolhido {
+  --mat-icon-button-icon-color: var(--sobre-verde);
+  background: var(--verde);
+}

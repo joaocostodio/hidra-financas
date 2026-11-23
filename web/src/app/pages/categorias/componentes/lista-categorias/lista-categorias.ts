@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { mensagemDeErro } from '../../../../common/erros';
-import { IconeCategoriaPipe } from '../../../../common/formatos';
 import { Categoria } from '../../model/categoria.model';
 import { CategoriaService } from '../../services/categoria.service';
 import { CategoriaDialog } from '../categoria-dialog/categoria-dialog';
@@ -13,7 +12,7 @@ import { CategoriaDialog } from '../categoria-dialog/categoria-dialog';
 /** Cadastro de categorias: lista, nova, clicar para detalhar (salvar / excluir). */
 @Component({
   selector: 'app-lista-categorias',
-  imports: [RouterLink, MatButtonModule, MatIconModule, MatProgressBarModule, IconeCategoriaPipe],
+  imports: [RouterLink, MatButtonModule, MatIconModule, MatProgressBarModule],
   templateUrl: './lista-categorias.html',
   styleUrl: './lista-categorias.css',
 })
@@ -46,7 +45,7 @@ export class ListaCategorias implements OnInit {
 
   protected abrir(categoria?: Categoria): void {
     this.dialog
-      .open(CategoriaDialog, { data: categoria ?? null, width: '420px' })
+      .open(CategoriaDialog, { data: categoria ?? null, width: '500px', maxWidth: '94vw' })
       .afterClosed()
       .subscribe((mudou) => mudou && this.carregar());
   }

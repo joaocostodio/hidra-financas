@@ -12,7 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { mensagemDeErro } from '../../../../common/erros';
-import { IconeCategoriaPipe } from '../../../../common/formatos';
+import { IconeTransacaoPipe } from '../../../../common/formatos';
 import { Categoria } from '../../../categorias/model/categoria.model';
 import { CategoriaService } from '../../../categorias/services/categoria.service';
 import { Conta } from '../../../contas/model/conta.model';
@@ -39,7 +39,7 @@ import { TransacaoDialog } from '../transacao-dialog/transacao-dialog';
     MatSelectModule,
     MatIconModule,
     MatProgressBarModule,
-    IconeCategoriaPipe,
+    IconeTransacaoPipe,
   ],
   templateUrl: './lista-transacoes.html',
   styleUrl: './lista-transacoes.css',

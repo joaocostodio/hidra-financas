@@ -7,14 +7,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../../common/auth/auth.service';
 import { mensagemDeErro } from '../../../../common/erros';
-import { IconeCategoriaPipe } from '../../../../common/formatos';
+import { IconeTransacaoPipe } from '../../../../common/formatos';
 import { TransacaoDialog } from '../../../transacoes/componentes/transacao-dialog/transacao-dialog';
 import { Resumo } from '../../model/resumo.model';
 import { ResumoService } from '../../services/resumo.service';
 
 @Component({
   selector: 'app-inicio',
-  imports: [RouterLink, CurrencyPipe, DatePipe, MatButtonModule, MatIconModule, MatProgressBarModule, IconeCategoriaPipe],
+  imports: [RouterLink, CurrencyPipe, DatePipe, MatButtonModule, MatIconModule, MatProgressBarModule, IconeTransacaoPipe],
   templateUrl: './inicio.html',
   styleUrl: './inicio.css',
 })

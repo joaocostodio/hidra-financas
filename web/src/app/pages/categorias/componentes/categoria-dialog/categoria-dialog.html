@@ -1,15 +1,40 @@
-<h2 mat-dialog-title>{{ categoria ? 'Detalhes da categoria' : 'Nova categoria' }}</h2>
+<h2 mat-dialog-title>{{ categoria ? 'Editar categoria' : 'Nova categoria' }}</h2>
 
 <form [formGroup]="form" (ngSubmit)="salvar()">
   <mat-dialog-content>
     @if (erro()) {
       <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
     }
+
+    <!-- Prévia: como a categoria vai aparecer -->
+    <div class="previa" aria-hidden="true">
+      <span class="ico-tx entrada grande"><mat-icon>{{ previa().icone }}</mat-icon></span>
+      <span class="nome">{{ previa().descricao?.trim() || 'Nome da categoria' }}</span>
+    </div>
+
     <mat-form-field>
-      <mat-label>Descrição</mat-label>
-      <input matInput formControlName="descricao" placeholder="Ex.: Alimentação, Salário, Pets" cdkFocusInitial />
-      <mat-error>Informe a descrição</mat-error>
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="descricao" placeholder="Ex.: Mercado, Pets, Academia" cdkFocusInitial />
+      <mat-error>Digite o nome da categoria</mat-error>
     </mat-form-field>
+
+    <span class="rotulo" id="rotulo-icone">Escolha um ícone</span>
+    <div class="icones" role="radiogroup" aria-labelledby="rotulo-icone">
+      @for (op of icones; track op.icone) {
+        <button
+          matIconButton
+          type="button"
+          role="radio"
+          [class.escolhido]="previa().icone === op.icone"
+          [attr.aria-checked]="previa().icone === op.icone"
+          [attr.aria-label]="op.nome"
+          [matTooltip]="op.nome"
+          (click)="escolher(op.icone)"
+        >
+          <mat-icon>{{ op.icone }}</mat-icon>
+        </button>
+      }
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions>

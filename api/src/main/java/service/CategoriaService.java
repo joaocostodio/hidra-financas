@@ -57,5 +57,18 @@ public class CategoriaService {
             throw new RegraException("Você já tem uma categoria chamada \"" + descricao + "\"");
         }
         categoria.descricao = descricao;
+        categoria.icone = validarIcone(form.icone());
+    }
+
+    /** Nome de ícone do Material Symbols: só letras minúsculas, números e "_" (ex.: "local_cafe"). */
+    private static String validarIcone(String icone) {
+        if (icone == null || icone.isBlank()) {
+            return Categoria.ICONE_PADRAO;
+        }
+        String limpo = icone.trim();
+        if (!limpo.matches("[a-z0-9_]{1,40}")) {
+            throw new RegraException("Ícone inválido");
+        }
+        return limpo;
     }
 }

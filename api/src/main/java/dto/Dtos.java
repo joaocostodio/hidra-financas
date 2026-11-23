@@ -45,12 +45,13 @@ public final class Dtos {
 
     // ---------- Categorias ----------
 
-    public record CategoriaForm(String descricao) {
+    /** icone: nome de um ícone do Material Symbols (ex.: "pets"); vazio usa a etiqueta padrão. */
+    public record CategoriaForm(String descricao, String icone) {
     }
 
-    public record CategoriaDto(Long id, String descricao) {
+    public record CategoriaDto(Long id, String descricao, String icone) {
         public static CategoriaDto de(Categoria c) {
-            return new CategoriaDto(c.id, c.descricao);
+            return new CategoriaDto(c.id, c.descricao, c.iconeOuPadrao());
         }
     }
 
@@ -67,12 +68,13 @@ public final class Dtos {
 
     public record TransacaoDto(Long id, String descricao, BigDecimal valor, String tipo, LocalDate datatransacao,
                                Long contaId, String conta, Long categoriaId, String categoria,
-                               boolean transferencia) {
+                               String categoriaIcone, boolean transferencia) {
         public static TransacaoDto de(Transacao t) {
             return new TransacaoDto(t.id, t.descricao, t.valor, t.tipo, t.datatransacao,
                     t.conta.id, t.conta.descricao,
                     t.categoria == null ? null : t.categoria.id,
                     t.categoria == null ? null : t.categoria.descricao,
+                    t.categoria == null ? null : t.categoria.iconeOuPadrao(),
                     t.ehTransferencia());
         }
     }

@@ -5,21 +5,46 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** Categoria de uma transação: "Alimentação", "Salário", "Transporte"... Cada usuário tem as suas. */
 @Entity
 public class Categoria extends PanacheEntity {
 
+    /** Ícone usado quando a categoria não tem um escolhido (uma etiqueta). */
+    public static final String ICONE_PADRAO = "sell";
+
     @Column(nullable = false, length = 150)
     public String descricao;
+
+    /** Nome do ícone (fonte Material Symbols), escolhido pelo usuário: "restaurant", "pets"... */
+    @Column(length = 40)
+    public String icone;
 
     @ManyToOne(optional = false)
     public Usuario usuario;
 
-    /** As que todo usuário novo já ganha ao se cadastrar. */
-    public static final List<String> PADRAO =
-            List.of("Alimentação", "Moradia", "Transporte", "Saúde", "Lazer", "Salário", "Outros");
+    /** As que todo usuário novo já ganha ao se cadastrar, cada uma com seu ícone. */
+    public static final Map<String, String> PADRAO = padrao();
+
+    private static Map<String, String> padrao() {
+        Map<String, String> m = new LinkedHashMap<>();
+        m.put("Alimentação", "restaurant");
+        m.put("Moradia", "home");
+        m.put("Transporte", "directions_car");
+        m.put("Saúde", "medical_services");
+        m.put("Lazer", "celebration");
+        m.put("Salário", "work");
+        m.put("Outros", "more_horiz");
+        return m;
+    }
+
+    /** O ícone escolhido, ou a etiqueta padrão (categorias antigas não têm ícone). */
+    public String iconeOuPadrao() {
+        return icone == null || icone.isBlank() ? ICONE_PADRAO : icone;
+    }
 
     public boolean emUso() {
         return Transacao.count("categoria", this) > 0;

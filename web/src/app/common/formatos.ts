@@ -14,38 +14,13 @@ export class IniciaisPipe implements PipeTransform {
   }
 }
 
-/** Ícone (Material Symbols) de cada categoria; as criadas pelo usuário usam uma etiqueta. */
-export function iconeDaCategoria(categoria: string | null | undefined): string {
-  switch (categoria) {
-    case 'Alimentação':
-      return 'restaurant';
-    case 'Moradia':
-      return 'home';
-    case 'Transporte':
-      return 'directions_car';
-    case 'Saúde':
-      return 'medical_services';
-    case 'Lazer':
-      return 'celebration';
-    case 'Salário':
-      return 'work';
-    case 'Educação':
-      return 'school';
-    case 'Compras':
-      return 'shopping_bag';
-    case 'Outros':
-      return 'more_horiz';
-    case null:
-    case undefined:
-      return 'swap_horiz'; // transferência (não tem categoria)
-    default:
-      return 'sell';
-  }
-}
-
-@Pipe({ name: 'iconeCategoria' })
-export class IconeCategoriaPipe implements PipeTransform {
-  transform(categoria: string | null | undefined): string {
-    return iconeDaCategoria(categoria);
+/**
+ * Ícone de uma transação: o ícone escolhido na categoria (vem da API em "categoriaIcone").
+ * Transferência não tem categoria e usa as setas.
+ */
+@Pipe({ name: 'iconeTransacao' })
+export class IconeTransacaoPipe implements PipeTransform {
+  transform(categoriaIcone: string | null | undefined): string {
+    return categoriaIcone ?? 'swap_horiz';
   }
 }

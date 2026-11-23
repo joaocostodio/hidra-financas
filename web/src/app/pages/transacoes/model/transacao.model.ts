@@ -12,6 +12,8 @@ export interface Transacao {
   conta: string;
   categoriaId: number | null;
   categoria: string | null;
+  /** Ícone da categoria (nulo na transferência). */
+  categoriaIcone: string | null;
   /** Faz parte de uma transferência (não tem categoria e não se edita). */
   transferencia: boolean;
 }

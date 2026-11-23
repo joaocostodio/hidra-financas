@@ -217,9 +217,23 @@ class FinancasTest {
     @Test
     void categoriaComNomeRepetidoRecusada() {
         String sessao = novoUsuario();
-        como(sessao).body(Map.of("descricao", "Pets")).post("/categorias").then().statusCode(201)
-                .body("id", notNullValue());
+        como(sessao).body(Map.of("descricao", "Pets", "icone", "pets")).post("/categorias").then().statusCode(201)
+                .body("id", notNullValue()).body("icone", equalTo("pets"));
         como(sessao).body(Map.of("descricao", "pets")).post("/categorias").then().statusCode(422);
+    }
+
+    @Test
+    void categoriaComIcone() {
+        String sessao = novoUsuario();
+        // As padrão já vêm com ícone
+        como(sessao).get("/categorias").then()
+                .body("find { it.descricao == 'Alimentação' }.icone", equalTo("restaurant"));
+        // Sem ícone: usa a etiqueta
+        como(sessao).body(Map.of("descricao", "Diversos")).post("/categorias").then().statusCode(201)
+                .body("icone", equalTo("sell"));
+        // Ícone com caracteres inválidos é recusado
+        como(sessao).body(Map.of("descricao", "Hack", "icone", "<script>")).post("/categorias").then()
+                .statusCode(422);
     }
 
     // ---------- isolamento entre usuários ----------

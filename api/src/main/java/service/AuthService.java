@@ -42,9 +42,10 @@ public class AuthService {
         usuario.persist();
 
         // Todo usuário novo já começa com algumas categorias (ele pode renomear, excluir e criar outras)
-        for (String descricao : Categoria.PADRAO) {
+        for (var padrao : Categoria.PADRAO.entrySet()) {
             Categoria categoria = new Categoria();
-            categoria.descricao = descricao;
+            categoria.descricao = padrao.getKey();
+            categoria.icone = padrao.getValue();
             categoria.usuario = usuario;
             categoria.persist();
         }

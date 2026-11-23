@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -6,17 +7,30 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Confirmacao } from '../../../../common/confirmacao/confirmacao';
 import { mensagemDeErro } from '../../../../common/erros';
+import { ICONES_CATEGORIA } from '../../../../common/icones';
 import { Categoria } from '../../model/categoria.model';
 import { CategoriaService } from '../../services/categoria.service';
 
-/** Nova categoria ou detalhe de uma categoria (salvar / excluir). Fecha com true quando algo mudou. */
+/**
+ * Nova categoria ou detalhe de uma categoria (salvar / excluir), com a escolha do ícone.
+ * Fecha com true quando algo mudou.
+ */
 @Component({
   selector: 'app-categoria-dialog',
-  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatTooltipModule,
+  ],
   templateUrl: './categoria-dialog.html',
-  styleUrl: '../../../contas/componentes/conta-dialog/conta-dialog.css',
+  styleUrl: './categoria-dialog.css',
 })
 export class CategoriaDialog {
   private readonly service = inject(CategoriaService);
@@ -25,6 +39,7 @@ export class CategoriaDialog {
   private readonly aviso = inject(MatSnackBar);
   protected readonly categoria = inject<Categoria | null>(MAT_DIALOG_DATA);
 
+  protected readonly icones = ICONES_CATEGORIA;
   protected readonly salvando = signal(false);
   protected readonly erro = signal('');
 
@@ -33,16 +48,25 @@ export class CategoriaDialog {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(150)],
     }),
+    icone: new FormControl(this.categoria?.icone ?? 'sell', { nonNullable: true }),
   });
+
+  /** Valores do form como signal: a prévia (ícone + nome) atualiza enquanto a pessoa digita/escolhe. */
+  protected readonly previa = toSignal(this.form.valueChanges, { initialValue: this.form.getRawValue() });
+
+  protected escolher(icone: string): void {
+    this.form.controls.icone.setValue(icone);
+  }
 
   protected salvar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+    const v = this.form.getRawValue();
     this.salvando.set(true);
     this.erro.set('');
-    this.service.salvar({ descricao: this.form.getRawValue().descricao.trim() }, this.categoria?.id).subscribe({
+    this.service.salvar({ descricao: v.descricao.trim(), icone: v.icone }, this.categoria?.id).subscribe({
       next: () => {
         this.aviso.open(this.categoria ? 'Categoria atualizada' : 'Categoria criada', 'OK', { duration: 3000 });
         this.ref.close(true);

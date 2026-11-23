@@ -78,7 +78,7 @@
           <mat-select formControlName="categoriaId">
             @for (c of categorias(); track c.id) {
               <mat-option [value]="c.id">
-                <mat-icon>{{ c.descricao | iconeCategoria }}</mat-icon>{{ c.descricao }}
+                <mat-icon>{{ c.icone }}</mat-icon>{{ c.descricao }}
               </mat-option>
             }
           </mat-select>

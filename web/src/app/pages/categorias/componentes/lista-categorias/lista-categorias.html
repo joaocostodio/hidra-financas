@@ -19,7 +19,7 @@
   @for (c of categorias(); track c.id) {
     <div class="cartao categoria">
       <button class="principal" type="button" (click)="abrir(c)" [attr.aria-label]="'Editar ' + c.descricao">
-        <span class="ico-tx entrada"><mat-icon>{{ c.descricao | iconeCategoria }}</mat-icon></span>
+        <span class="ico-tx entrada"><mat-icon>{{ c.icone }}</mat-icon></span>
         <span class="nome">{{ c.descricao }}</span>
         <mat-icon class="editar">edit</mat-icon>
       </button>

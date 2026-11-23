@@ -14,7 +14,6 @@ import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Confirmacao } from '../../../../common/confirmacao/confirmacao';
 import { mensagemDeErro } from '../../../../common/erros';
-import { IconeCategoriaPipe } from '../../../../common/formatos';
 import { Categoria } from '../../../categorias/model/categoria.model';
 import { CategoriaService } from '../../../categorias/services/categoria.service';
 import { Conta } from '../../../contas/model/conta.model';
@@ -50,7 +49,6 @@ export interface DadosTransacaoDialog {
     MatSelectModule,
     MatDatepickerModule,
     MatIconModule,
-    IconeCategoriaPipe,
   ],
   templateUrl: './transacao-dialog.html',
   styleUrl: './transacao-dialog.css',
