@@ -1,0 +1,169 @@
+<div class="tela">
+  <!-- Lado esquerdo: o que é o app, em 3 passos -->
+  <aside class="apresentacao">
+    <app-marca />
+    <h1>Seu dinheiro organizado, <span>sem planilha</span>.</h1>
+    <p class="sub">É como anotar os gastos num caderno, só que o sistema faz as contas para você.</p>
+
+    <ol class="passos">
+      <li>
+        <span class="n">1</span>
+        <div>
+          <b>Diga onde tem dinheiro</b>
+          <small>Carteira, Nubank, poupança... e quanto tem em cada.</small>
+        </div>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <div>
+          <b>Anote o que entra e o que sai</b>
+          <small>Salário, mercado, Uber: em poucos segundos.</small>
+        </div>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <div>
+          <b>Veja quanto você tem</b>
+          <small>O saldo de cada lugar e o total, sempre atualizados.</small>
+        </div>
+      </li>
+    </ol>
+  </aside>
+
+  <!-- Lado direito: entrar / criar conta -->
+  <main class="lado-form">
+    <div class="tema"><app-botao-tema /></div>
+
+    <div class="cartao caixa">
+      <mat-tab-group
+        [selectedIndex]="indice()"
+        (selectedIndexChange)="trocarAba($event)"
+        mat-stretch-tabs
+        animationDuration="150ms"
+      >
+        <!-- ---------- Entrar ---------- -->
+        <mat-tab label="Entrar">
+          <form [formGroup]="login" (ngSubmit)="entrar()" class="form">
+            <h2>Que bom te ver de novo</h2>
+
+            @if (motivo() === 'expirou') {
+              <div class="aviso"><mat-icon>schedule</mat-icon> Por segurança, sua sessão terminou. Entre de novo.</div>
+            }
+            @if (erro() && abaAtual() === 'entrar') {
+              <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+            }
+
+            <mat-form-field>
+              <mat-label>E-mail</mat-label>
+              <input matInput type="email" formControlName="email" autocomplete="email" />
+              <mat-icon matPrefix>mail</mat-icon>
+              @if (login.controls.email.hasError('email')) {
+                <mat-error>Esse e-mail não parece certo</mat-error>
+              } @else {
+                <mat-error>Digite seu e-mail</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Senha</mat-label>
+              <input
+                matInput
+                [type]="verSenha() ? 'text' : 'password'"
+                formControlName="senha"
+                autocomplete="current-password"
+              />
+              <mat-icon matPrefix>lock</mat-icon>
+              <button
+                matIconButton
+                matSuffix
+                type="button"
+                (click)="verSenha.set(!verSenha())"
+                [attr.aria-label]="verSenha() ? 'Esconder senha' : 'Mostrar senha'"
+              >
+                <mat-icon>{{ verSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error>Digite sua senha</mat-error>
+            </mat-form-field>
+
+            <button matButton="filled" class="enviar" type="submit" [disabled]="enviando()">
+              @if (enviando()) {
+                <mat-spinner diameter="22" />
+              } @else {
+                Entrar
+              }
+            </button>
+
+            <p class="trocar">
+              Primeira vez aqui?
+              <button matButton type="button" (click)="trocarAba(1)">Criar uma conta grátis</button>
+            </p>
+          </form>
+        </mat-tab>
+
+        <!-- ---------- Criar conta ---------- -->
+        <mat-tab label="Criar conta">
+          <form [formGroup]="cadastro" (ngSubmit)="criarConta()" class="form">
+            <h2>Crie sua conta</h2>
+            <p class="muted dica">Leva menos de um minuto.</p>
+
+            @if (erro() && abaAtual() === 'cadastro') {
+              <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+            }
+
+            <mat-form-field>
+              <mat-label>Seu nome</mat-label>
+              <input matInput formControlName="nome" autocomplete="name" />
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error>Digite seu nome</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>E-mail</mat-label>
+              <input matInput type="email" formControlName="email" autocomplete="email" />
+              <mat-icon matPrefix>mail</mat-icon>
+              @if (cadastro.controls.email.hasError('email')) {
+                <mat-error>Esse e-mail não parece certo</mat-error>
+              } @else {
+                <mat-error>Digite seu e-mail</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Crie uma senha</mat-label>
+              <input
+                matInput
+                [type]="verSenha() ? 'text' : 'password'"
+                formControlName="senha"
+                autocomplete="new-password"
+              />
+              <mat-icon matPrefix>lock</mat-icon>
+              <button
+                matIconButton
+                matSuffix
+                type="button"
+                (click)="verSenha.set(!verSenha())"
+                [attr.aria-label]="verSenha() ? 'Esconder senha' : 'Mostrar senha'"
+              >
+                <mat-icon>{{ verSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+            <app-regras-senha [senha]="senhaNova()" />
+
+            <button matButton="filled" class="enviar" type="submit" [disabled]="enviando()">
+              @if (enviando()) {
+                <mat-spinner diameter="22" />
+              } @else {
+                Criar minha conta
+              }
+            </button>
+
+            <p class="trocar">
+              Já tem conta?
+              <button matButton type="button" (click)="trocarAba(0)">Entrar</button>
+            </p>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </main>
+</div>

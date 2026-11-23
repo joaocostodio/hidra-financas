@@ -1,0 +1,27 @@
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: -4px 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--texto-suave);
+  font-size: 13px;
+  transition: color 0.15s;
+}
+
+li .mat-icon {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+}
+
+li.ok {
+  color: var(--verde);
+}

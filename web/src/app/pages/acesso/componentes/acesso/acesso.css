@@ -1,0 +1,176 @@
+.tela {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(420px, 1.1fr);
+}
+
+/* ---------- Esquerda: apresentação ---------- */
+.apresentacao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px clamp(32px, 6vw, 88px);
+  background: var(--superficie);
+  border-right: 1px solid var(--borda);
+}
+
+h1 {
+  margin: 44px 0 12px;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 span {
+  color: var(--verde);
+}
+
+.sub {
+  margin: 0 0 36px;
+  max-width: 440px;
+  color: var(--texto-suave);
+  font-size: 17px;
+}
+
+.passos {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passos li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.n {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--verde-suave);
+  color: var(--verde);
+  font-weight: 700;
+}
+
+.passos b {
+  display: block;
+  font-size: 16px;
+}
+
+.passos small {
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+
+/* ---------- Direita: formulário ---------- */
+.lado-form {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 48px 24px;
+}
+
+.tema {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.caixa {
+  width: min(440px, 100%);
+  overflow: hidden;
+  box-shadow: var(--sombra-forte);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 30px 18px;
+}
+
+h2 {
+  margin: 0 0 18px;
+  font-size: 22px;
+  font-weight: 650;
+}
+
+.dica {
+  margin: -12px 0 18px;
+}
+
+.enviar {
+  height: 50px;
+  margin-top: 6px;
+  font-size: 16px;
+}
+
+.enviar mat-spinner {
+  --mat-progress-spinner-active-indicator-color: var(--sobre-verde);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  border-radius: var(--raio);
+  background: var(--aviso-suave);
+  border: 1px solid var(--aviso-borda);
+  color: var(--aviso);
+  font-size: 14px;
+}
+
+.trocar {
+  margin: 14px 0 0;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.trocar button {
+  font-weight: 600;
+}
+
+/* ---------- Celular: só o formulário, com a marca em cima ---------- */
+@media (max-width: 860px) {
+  .tela {
+    grid-template-columns: 1fr;
+  }
+
+  .apresentacao {
+    padding: 28px 20px 8px;
+    border-right: 0;
+    background: transparent;
+  }
+
+  h1 {
+    margin: 22px 0 6px;
+    font-size: 24px;
+  }
+
+  .sub {
+    margin-bottom: 0;
+    font-size: 15px;
+  }
+
+  .passos {
+    display: none;
+  }
+
+  .lado-form {
+    place-items: start center;
+    padding: 20px 14px 40px;
+  }
+
+  .form {
+    padding: 22px 20px 16px;
+  }
+}

@@ -1,0 +1,8 @@
+<ul aria-label="Regras da senha">
+  @for (r of regras(); track r.texto) {
+    <li [class.ok]="r.ok">
+      <mat-icon [class.icone-cheio]="r.ok">{{ r.ok ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+      {{ r.texto }}
+    </li>
+  }
+</ul>

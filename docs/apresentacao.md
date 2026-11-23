@@ -14,7 +14,7 @@ Conta e Categoria viram cadastros; o filtro do Excel vira o filtro da tela; as s
 
 | # | Mostrar | Explicar no código |
 |---|---|---|
-| 1 | **Criar cadastro** e cair logado | `AuthController.cadastrar` → `AuthService.cadastrar` (hash da senha, categorias padrão) |
+| 1 | Aba **Criar conta** (a lista da senha vai marcando) e o passo a passo "Onde você guarda seu dinheiro?" | `AuthController.cadastrar` → `AuthService.cadastrar` (hash da senha, categorias padrão); `boas-vindas.ts` cria as contas com o saldo inicial |
 | 2 | Abrir o DevTools → Application → Cookies: `financas_sessao` com **HttpOnly** | `CookieSessao.criar` (HttpOnly + SameSite=Strict) e `application.properties` (`mp.jwt.token.cookie`) |
 | 3 | **Contas**: cadastrar "Nubank" (saldo inicial 1.000) e "Carteira" (100) | `ContaService` + `Conta` (entidade Panache) |
 | 4 | **Categorias**: criar "Pets" | `CategoriaService` (nome repetido → erro 422) |

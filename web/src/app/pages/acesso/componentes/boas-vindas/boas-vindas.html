@@ -1,0 +1,64 @@
+<div class="tela">
+  <header class="topo">
+    <app-marca />
+    <app-botao-tema />
+  </header>
+
+  <main class="cartao caixa">
+    <span class="etapa">Primeiro passo</span>
+    <h1>Olá, {{ auth.primeiroNome() }}! Onde você guarda seu dinheiro?</h1>
+    <p class="muted">Toque em todos que você usa. Depois é só dizer quanto tem em cada um hoje.</p>
+
+    <!-- Botões prontos -->
+    <mat-chip-set class="sugestoes" aria-label="Lugares onde guardo dinheiro">
+      @for (s of sugestoes; track s) {
+        <mat-chip-option [selected]="marcada(s)" (selectionChange)="$event.isUserInput && alternar(s)">
+          {{ s }}
+        </mat-chip-option>
+      }
+    </mat-chip-set>
+
+    <form class="outra" (ngSubmit)="adicionarOutra()">
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Outro lugar</mat-label>
+        <input matInput [formControl]="outra" placeholder="Ex.: Mercado Pago, cofrinho" />
+        <mat-icon matPrefix>add</mat-icon>
+      </mat-form-field>
+      <button matButton="outlined" type="submit" [disabled]="!outra.value.trim()">Adicionar</button>
+    </form>
+
+    <!-- Quanto tem em cada um -->
+    @if (linhas.length > 0) {
+      <h2>Quanto tem em cada um hoje?</h2>
+      <p class="muted pequeno">Se não souber certinho, coloque um valor aproximado. Dá para mudar depois.</p>
+
+      <div class="lista">
+        @for (linha of linhas.controls; track linha; let i = $index) {
+          <div class="linha" [formGroup]="linha">
+            <span class="ico-tx entrada"><mat-icon>account_balance_wallet</mat-icon></span>
+            <span class="nome">{{ linha.controls.descricao.value }}</span>
+            <mat-form-field subscriptSizing="dynamic" class="valor">
+              <span matTextPrefix>R$&nbsp;</span>
+              <input matInput type="number" step="0.01" formControlName="saldo" placeholder="0,00" />
+            </mat-form-field>
+            <button matIconButton type="button" (click)="remover(i)" [attr.aria-label]="'Tirar ' + linha.controls.descricao.value">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    @if (erro()) {
+      <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
+    }
+
+    <footer class="rodape">
+      <button matButton type="button" (click)="linhas.clear(); comecar()">Pular por enquanto</button>
+      <span class="espaco"></span>
+      <button matButton="filled" type="button" (click)="comecar()" [disabled]="salvando() || linhas.length === 0">
+        Começar a usar<mat-icon iconPositionEnd>arrow_forward</mat-icon>
+      </button>
+    </footer>
+  </main>
+</div>

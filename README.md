@@ -39,7 +39,10 @@ npm install
 npm start
 ```
 
-Abra **http://localhost:4200**, clique em **Criar cadastro** e pronto: você já entra logado e com as categorias padrão.
+Abra **http://localhost:4200**, vá na aba **Criar conta** e pronto: você já entra logado, com as categorias padrão,
+e um passo a passo pergunta onde você guarda dinheiro (Carteira, Nubank...) e quanto tem em cada lugar.
+
+O site tem **tema claro** (padrão) e **tema escuro**: o botão de lua/sol troca, e a escolha fica salva no navegador.
 
 As portas (8090, 4200 e 5434) são diferentes das do banco-hidra (8080, 4300 e 5433): os dois projetos rodam ao mesmo tempo.
 

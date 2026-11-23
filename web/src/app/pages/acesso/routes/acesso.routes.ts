@@ -1,17 +1,23 @@
 import { Routes } from '@angular/router';
-import { visitanteGuard } from '../../../common/auth/auth.guards';
+import { logadoGuard, visitanteGuard } from '../../../common/auth/auth.guards';
+
+const acesso = () => import('../componentes/acesso/acesso').then((m) => m.Acesso);
 
 export const ACESSO_ROUTES: Routes = [
-  {
-    path: 'entrar',
-    title: 'Entrar · Hidra Finanças',
-    canActivate: [visitanteGuard],
-    loadComponent: () => import('../componentes/entrar/entrar').then((m) => m.Entrar),
-  },
+  // Entrar e Criar conta são a mesma tela, cada uma numa aba
+  { path: 'entrar', title: 'Entrar · Hidra Finanças', canActivate: [visitanteGuard], data: { aba: 'entrar' }, loadComponent: acesso },
   {
     path: 'cadastro',
-    title: 'Criar cadastro · Hidra Finanças',
+    title: 'Criar conta · Hidra Finanças',
     canActivate: [visitanteGuard],
-    loadComponent: () => import('../componentes/cadastro/cadastro').then((m) => m.Cadastro),
+    data: { aba: 'cadastro' },
+    loadComponent: acesso,
+  },
+  // Primeiro acesso: logo depois de criar a conta
+  {
+    path: 'boas-vindas',
+    title: 'Boas-vindas · Hidra Finanças',
+    canActivate: [logadoGuard],
+    loadComponent: () => import('../componentes/boas-vindas/boas-vindas').then((m) => m.BoasVindas),
   },
 ];

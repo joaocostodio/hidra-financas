@@ -1,137 +1,171 @@
 /*
- * Hidra Finanças: identidade visual da Hidra (fundo escuro, verde e prata), a mesma do banco-hidra.
- * O tema do Angular Material vem pronto (azure-blue.css) e aqui as cores dele são trocadas pelas
- * da Hidra, só com CSS (variáveis --mat-sys-*).
+ * Hidra Finanças: identidade visual da Hidra (verde) em dois temas, claro (padrão) e escuro.
+ * Cada tema só define as cores (tokens) abaixo; o resto do CSS e o Angular Material usam esses tokens.
+ * O tema escolhido fica em <html data-tema="claro|escuro"> (ver common/tema/tema.service.ts).
  */
 
-/* ---------- Tokens da Hidra ---------- */
+/* ---------- Tema claro (padrão) ---------- */
 :root {
-  --verde: #3ddc97;
-  --verde-claro: #5fe3a9;
-  --verde-escuro: #14714a;
-  --verde-suave: rgb(61 220 151 / 12%);
-  --verde-borda: rgb(61 220 151 / 32%);
-  --prata: #c3cad2;
-  --prata-clara: #eef1f4;
-  --prata-escura: #8a939d;
-  --prata-gradiente: linear-gradient(90deg, #8a939d, #eef1f4 45%, #a9b1ba 70%, #e2e6ea);
-  --fundo-app: #0c0d11;
-  --superficie: #16181e;
-  --superficie-2: #1c1f27;
-  --superficie-3: #252833;
-  --borda: #2c303b;
-  --borda-forte: #3a3e4b;
-  --texto: #e8ebef;
-  --texto-suave: #9aa3ad;
-  --tinta: #06140d; /* texto em cima do verde */
-  --erro: #ff7a7a;
+  color-scheme: light;
+
+  --verde: #0f9460;
+  --verde-forte: #0b7a4e;
+  --verde-suave: rgb(15 148 96 / 9%);
+  --verde-borda: rgb(15 148 96 / 28%);
+  --sobre-verde: #ffffff;
+
+  --fundo-app: #f3f6f5;
+  --superficie: #ffffff;
+  --superficie-2: #f3f6f5;
+  --superficie-3: #e8eeeb;
+  --borda: #e2e8e5;
+  --borda-forte: #c9d3cf;
+  --texto: #1b2421;
+  --texto-suave: #5d6b66;
+  --saida: #3f4a46;
+
+  --erro: #c73a3a;
+  --erro-suave: rgb(199 58 58 / 7%);
+  --erro-borda: rgb(199 58 58 / 28%);
+  --aviso: #a86b12;
+  --aviso-suave: rgb(214 140 30 / 9%);
+  --aviso-borda: rgb(214 140 30 / 32%);
+
+  --destaque-fundo: linear-gradient(135deg, #0f9460, #11b373);
+  --sobre-destaque: #ffffff;
+  --marca-gradiente: linear-gradient(90deg, #0b7a4e, #18b877);
+  --topo-fundo: rgb(243 246 245 / 92%);
+  --sombra: 0 1px 2px rgb(20 40 30 / 6%), 0 6px 20px rgb(20 40 30 / 6%);
+  --sombra-forte: 0 2px 6px rgb(20 40 30 / 8%), 0 18px 48px rgb(20 40 30 / 12%);
+
+  --raio: 12px;
+  --raio-grande: 16px;
+  --fonte: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ---------- Tema escuro (suave: cinza-azulado, não preto) ---------- */
+html[data-tema='escuro'] {
+  color-scheme: dark;
+
+  --verde: #3fcf8e;
+  --verde-forte: #5fdba3;
+  --verde-suave: rgb(63 207 142 / 12%);
+  --verde-borda: rgb(63 207 142 / 32%);
+  --sobre-verde: #06140d;
+
+  --fundo-app: #14191d;
+  --superficie: #1b2126;
+  --superficie-2: #222930;
+  --superficie-3: #2a323a;
+  --borda: #2b333b;
+  --borda-forte: #3a444e;
+  --texto: #e7ecef;
+  --texto-suave: #9ba7b0;
+  --saida: #c9d1d7;
+
+  --erro: #ff8a8a;
+  --erro-suave: rgb(255 138 138 / 8%);
+  --erro-borda: rgb(255 138 138 / 28%);
   --aviso: #f0b866;
   --aviso-suave: rgb(240 184 102 / 10%);
   --aviso-borda: rgb(240 184 102 / 32%);
-  --raio: 10px;
-  --raio-grande: 14px;
-  --sombra: 0 12px 40px rgb(0 0 0 / 55%), 0 2px 8px rgb(0 0 0 / 40%);
-  --fonte: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
-  --mono: 'Cascadia Code', 'Cascadia Mono', Consolas, monospace;
-  --altura-rodape: 28px;
+
+  --destaque-fundo: linear-gradient(135deg, #1d6b4b, #23885e);
+  --sobre-destaque: #f2fbf6;
+  --marca-gradiente: linear-gradient(90deg, #a9b4bd, #eef1f4 45%, #a9b4bd);
+  --topo-fundo: rgb(20 25 29 / 92%);
+  --sombra: 0 1px 2px rgb(0 0 0 / 25%), 0 6px 20px rgb(0 0 0 / 20%);
+  --sombra-forte: 0 2px 6px rgb(0 0 0 / 30%), 0 18px 48px rgb(0 0 0 / 40%);
 }
 
-/* ---------- Angular Material com as cores da Hidra (tema escuro) ---------- */
+/* ---------- Angular Material usando as cores do tema ---------- */
 html {
-  color-scheme: dark;
-
   --mat-sys-primary: var(--verde);
-  --mat-sys-on-primary: var(--tinta);
-  --mat-sys-primary-container: var(--verde-escuro);
-  --mat-sys-on-primary-container: #d6fbe9;
-  --mat-sys-primary-fixed: #8ff0c4;
+  --mat-sys-on-primary: var(--sobre-verde);
+  --mat-sys-primary-container: var(--verde-suave);
+  --mat-sys-on-primary-container: var(--verde-forte);
+  --mat-sys-primary-fixed: var(--verde-suave);
   --mat-sys-primary-fixed-dim: var(--verde);
-  --mat-sys-on-primary-fixed: var(--tinta);
-  --mat-sys-on-primary-fixed-variant: var(--verde-escuro);
-  --mat-sys-inverse-primary: var(--verde-escuro);
-  --mat-sys-surface-tint: var(--verde);
+  --mat-sys-on-primary-fixed: var(--texto);
+  --mat-sys-on-primary-fixed-variant: var(--verde-forte);
+  --mat-sys-inverse-primary: var(--verde-forte);
+  --mat-sys-surface-tint: transparent;
 
-  --mat-sys-secondary: var(--prata);
-  --mat-sys-on-secondary: #1b1e23;
-  --mat-sys-secondary-container: var(--superficie-3);
+  --mat-sys-secondary: var(--texto-suave);
+  --mat-sys-on-secondary: var(--superficie);
+  --mat-sys-secondary-container: var(--verde-suave);
   --mat-sys-on-secondary-container: var(--texto);
-  --mat-sys-secondary-fixed: var(--prata-clara);
-  --mat-sys-secondary-fixed-dim: var(--prata);
-  --mat-sys-on-secondary-fixed: #1b1e23;
-  --mat-sys-on-secondary-fixed-variant: var(--superficie-3);
-
-  --mat-sys-tertiary: #8ff0c4;
-  --mat-sys-on-tertiary: var(--tinta);
-  --mat-sys-tertiary-container: var(--verde-escuro);
-  --mat-sys-on-tertiary-container: #d6fbe9;
-  --mat-sys-tertiary-fixed: #d6fbe9;
-  --mat-sys-tertiary-fixed-dim: #8ff0c4;
-  --mat-sys-on-tertiary-fixed: var(--tinta);
-  --mat-sys-on-tertiary-fixed-variant: var(--verde-escuro);
+  --mat-sys-tertiary: var(--verde-forte);
+  --mat-sys-on-tertiary: var(--sobre-verde);
+  --mat-sys-tertiary-container: var(--verde-suave);
+  --mat-sys-on-tertiary-container: var(--texto);
 
   --mat-sys-error: var(--erro);
-  --mat-sys-on-error: #3a0a0a;
-  --mat-sys-error-container: #5c1b1b;
-  --mat-sys-on-error-container: #ffd9d9;
+  --mat-sys-on-error: #ffffff;
+  --mat-sys-error-container: var(--erro-suave);
+  --mat-sys-on-error-container: var(--erro);
 
   --mat-sys-background: var(--fundo-app);
   --mat-sys-on-background: var(--texto);
-  --mat-sys-surface: var(--fundo-app);
+  --mat-sys-surface: var(--superficie);
   --mat-sys-surface-dim: var(--fundo-app);
-  --mat-sys-surface-bright: var(--borda);
-  --mat-sys-surface-container-lowest: #0a0b0e;
-  --mat-sys-surface-container-low: #121318;
+  --mat-sys-surface-bright: var(--superficie);
+  --mat-sys-surface-container-lowest: var(--superficie);
+  --mat-sys-surface-container-low: var(--superficie);
   --mat-sys-surface-container: var(--superficie);
-  --mat-sys-surface-container-high: var(--superficie-2);
+  --mat-sys-surface-container-high: var(--superficie);
   --mat-sys-surface-container-highest: var(--superficie-3);
   --mat-sys-surface-variant: var(--superficie-3);
   --mat-sys-on-surface: var(--texto);
   --mat-sys-on-surface-variant: var(--texto-suave);
   --mat-sys-inverse-surface: var(--texto);
   --mat-sys-inverse-on-surface: var(--superficie);
-  --mat-sys-outline: #4a4f5d;
+  --mat-sys-outline: var(--borda-forte);
   --mat-sys-outline-variant: var(--borda);
   --mat-sys-scrim: #000;
   --mat-sys-shadow: #000;
 
   /* Tipografia: a mesma fonte em tudo */
-  --mat-sys-display-large-font: var(--fonte);
-  --mat-sys-display-medium-font: var(--fonte);
-  --mat-sys-display-small-font: var(--fonte);
-  --mat-sys-headline-large-font: var(--fonte);
-  --mat-sys-headline-medium-font: var(--fonte);
-  --mat-sys-headline-small-font: var(--fonte);
-  --mat-sys-title-large-font: var(--fonte);
-  --mat-sys-title-medium-font: var(--fonte);
-  --mat-sys-title-small-font: var(--fonte);
   --mat-sys-body-large-font: var(--fonte);
   --mat-sys-body-medium-font: var(--fonte);
   --mat-sys-body-small-font: var(--fonte);
   --mat-sys-label-large-font: var(--fonte);
   --mat-sys-label-medium-font: var(--fonte);
   --mat-sys-label-small-font: var(--fonte);
+  --mat-sys-title-large-font: var(--fonte);
+  --mat-sys-title-medium-font: var(--fonte);
+  --mat-sys-title-small-font: var(--fonte);
+  --mat-sys-headline-small-font: var(--fonte);
+  --mat-sys-headline-medium-font: var(--fonte);
+  --mat-sys-headline-large-font: var(--fonte);
+  --mat-sys-body-large-size: 16px;
+  --mat-sys-body-medium-size: 15px;
+  --mat-sys-label-large-size: 15px;
 
   /* Ajustes de componentes */
-  --mat-dialog-container-shape: 18px;
+  --mat-dialog-container-shape: 20px;
   --mat-dialog-container-color: var(--superficie);
   --mat-table-background-color: transparent;
-  --mat-paginator-container-background-color: transparent;
-  --mat-menu-container-color: var(--superficie-2);
-  --mat-snack-bar-container-color: var(--superficie-3);
-  --mat-snack-bar-supporting-text-color: var(--texto);
-  --mat-snack-bar-button-color: var(--verde);
-  --mat-tooltip-container-color: var(--superficie-3);
-  --mat-tooltip-supporting-text-color: var(--texto);
-  --mat-datepicker-calendar-container-background-color: var(--superficie-2);
-  --mat-select-panel-background-color: var(--superficie-2);
-  --mat-chip-selected-container-color: var(--verde-suave);
-  --mat-chip-selected-label-text-color: var(--verde);
-  --mat-chip-selected-outline-width: 1px;
-  --mat-chip-outline-color: var(--borda-forte);
-}
-
-.mat-mdc-chip-selected {
-  border: 1px solid var(--verde-borda);
+  --mat-menu-container-color: var(--superficie);
+  --mat-select-panel-background-color: var(--superficie);
+  --mat-datepicker-calendar-container-background-color: var(--superficie);
+  --mat-snack-bar-container-color: var(--texto);
+  --mat-snack-bar-supporting-text-color: var(--superficie);
+  --mat-snack-bar-button-color: var(--verde-suave);
+  --mat-tooltip-container-color: var(--texto);
+  --mat-tooltip-supporting-text-color: var(--superficie);
+  --mat-button-filled-container-shape: 12px;
+  --mat-button-outlined-container-shape: 12px;
+  --mat-button-text-container-shape: 12px;
+  --mat-button-filled-container-height: 44px;
+  --mat-button-outlined-container-height: 44px;
+  --mat-form-field-outlined-container-shape: 12px;
+  --mat-tab-active-indicator-color: var(--verde);
+  --mat-tab-active-label-text-color: var(--verde);
+  --mat-tab-active-focus-label-text-color: var(--verde);
+  --mat-tab-active-hover-label-text-color: var(--verde);
+  --mat-tab-active-focus-indicator-color: var(--verde);
+  --mat-tab-active-hover-indicator-color: var(--verde);
 }
 
 /* ---------- Base ---------- */
@@ -148,23 +182,18 @@ body {
   margin: 0;
   background: var(--fundo-app);
   color: var(--texto);
-  font: 14px/1.45 var(--fonte);
+  font: 15px/1.5 var(--fonte);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s;
 }
 
 a {
   color: var(--verde);
 }
 
-code,
-kbd,
+/* Valores em dinheiro: mesma fonte do texto, com algarismos de largura igual (alinham nas colunas) */
 .num {
-  font-family: var(--mono);
   font-variant-numeric: tabular-nums;
-}
-
-.num {
-  font-size: 0.95em;
 }
 
 ::selection {
@@ -185,20 +214,21 @@ kbd,
   background: var(--superficie);
   border: 1px solid var(--borda);
   border-radius: var(--raio-grande);
+  box-shadow: var(--sombra);
 }
 
 .cartao-cab {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 56px;
+  min-height: 58px;
   padding: 10px 20px;
   border-bottom: 1px solid var(--borda);
 }
 
 .cartao-cab h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -211,17 +241,17 @@ kbd,
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .titulo-pagina h2 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 650;
 }
 
 .titulo-pagina p {
-  margin: 2px 0 0;
+  margin: 4px 0 0;
   color: var(--texto-suave);
 }
 
@@ -240,7 +270,11 @@ kbd,
 }
 
 .saida {
-  color: var(--prata);
+  color: var(--saida);
+}
+
+.negativo {
+  color: var(--erro);
 }
 
 .dir {
@@ -250,37 +284,33 @@ kbd,
 /* Avatar com iniciais */
 .avatar {
   flex: none;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   font-size: 12px;
   font-weight: 700;
-  color: var(--tinta);
-  background: linear-gradient(135deg, #8ff0c4, #2fbf80);
+  color: var(--sobre-destaque);
+  background: var(--destaque-fundo);
 }
 
-.avatar.prata {
-  background: linear-gradient(135deg, #eef1f4, #8a939d);
-}
-
-/* Ícone redondo de transação */
+/* Ícone redondo de transação/categoria */
 .ico-tx {
   flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   display: grid;
   place-items: center;
-  background: var(--superficie-2);
-  color: var(--prata);
+  background: var(--superficie-3);
+  color: var(--saida);
 }
 
 .ico-tx .mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .ico-tx.entrada {
@@ -288,7 +318,7 @@ kbd,
   color: var(--verde);
 }
 
-/* Pessoa ou transação: ícone + duas linhas */
+/* Ícone + duas linhas */
 .duas-linhas {
   display: flex;
   align-items: center;
@@ -299,18 +329,18 @@ kbd,
 .duas-linhas small {
   display: block;
   color: var(--texto-suave);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* Tabelas do Material */
 .mat-mdc-table .mat-mdc-header-cell {
   color: var(--texto-suave);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .mat-mdc-table .mat-mdc-row:hover .mat-mdc-cell {
-  background: rgb(255 255 255 / 2%);
+  background: var(--superficie-2);
 }
 
 .mat-mdc-table .dir {
@@ -336,10 +366,6 @@ kbd,
   padding-right: 20px !important;
 }
 
-.mat-mdc-paginator {
-  border-top: 1px solid var(--borda);
-}
-
 /* Linha vazia / carregando dentro de cartões */
 .vazio {
   padding: 40px 20px;
@@ -350,7 +376,6 @@ kbd,
 .vazio .mat-icon {
   display: block;
   margin: 0 auto 8px;
-  color: var(--prata-escura);
 }
 
 /* Mensagem de erro geral em formulários */
@@ -361,26 +386,22 @@ kbd,
   padding: 10px 14px;
   margin-bottom: 14px;
   border-radius: var(--raio);
-  background: rgb(255 122 122 / 8%);
-  border: 1px solid rgb(255 122 122 / 30%);
-  color: #ffb3b3;
-  font-size: 13px;
+  background: var(--erro-suave);
+  border: 1px solid var(--erro-borda);
+  color: var(--erro);
+  font-size: 14px;
 }
 
 .erro-geral .mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: var(--erro);
+  flex: none;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-/* Diálogos */
+/* Diálogos e formulários */
 .mat-mdc-dialog-container .mat-mdc-dialog-title {
   font-weight: 650;
-}
-
-.dialogo-largo .mat-mdc-dialog-content {
-  min-width: min(440px, 80vw);
 }
 
 .campos-lado-a-lado {
@@ -393,13 +414,12 @@ kbd,
   width: 100%;
 }
 
+.perigo {
+  --mat-button-text-label-text-color: var(--erro);
+}
+
 @media (max-width: 600px) {
   .campos-lado-a-lado {
     grid-template-columns: 1fr;
   }
-}
-
-/* Valor negativo (saldo no vermelho) */
-.negativo {
-  color: var(--erro);
 }

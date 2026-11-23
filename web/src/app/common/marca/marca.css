@@ -23,7 +23,7 @@ b {
 em {
   font-style: normal;
   font-weight: 700;
-  background: var(--prata-gradiente);
+  background: var(--marca-gradiente);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

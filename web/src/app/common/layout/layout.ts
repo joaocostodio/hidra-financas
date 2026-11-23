@@ -12,6 +12,7 @@ import { map } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { IniciaisPipe } from '../formatos';
 import { Marca } from '../marca/marca';
+import { BotaoTema } from '../tema/botao-tema';
 
 interface ItemMenu {
   rota: string;
@@ -36,6 +37,7 @@ interface ItemMenu {
     MatButtonModule,
     MatTooltipModule,
     Marca,
+    BotaoTema,
     IniciaisPipe,
   ],
   templateUrl: './layout.html',

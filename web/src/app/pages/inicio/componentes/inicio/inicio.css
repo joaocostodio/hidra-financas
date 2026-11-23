@@ -22,11 +22,21 @@ section {
   padding: 20px;
 }
 
+/* Cartão de destaque: fundo verde, texto claro (nos dois temas) */
 .saldo-geral {
-  background:
-    radial-gradient(circle at 100% 0%, rgb(61 220 151 / 14%), transparent 60%),
-    var(--superficie) !important;
-  border-color: var(--verde-borda) !important;
+  background: var(--destaque-fundo) !important;
+  border-color: transparent !important;
+  color: var(--sobre-destaque);
+}
+
+.saldo-geral .rotulo,
+.saldo-geral small {
+  color: var(--sobre-destaque);
+  opacity: 0.85;
+}
+
+.saldo-geral .negativo {
+  color: var(--sobre-destaque);
 }
 
 .valor-grande {

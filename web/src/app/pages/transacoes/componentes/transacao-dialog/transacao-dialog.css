@@ -11,8 +11,8 @@
 }
 
 .tipo .despesa.mat-button-toggle-checked {
-  --mat-button-toggle-selected-state-background-color: rgb(195 202 210 / 12%);
-  --mat-button-toggle-selected-state-text-color: var(--prata-clara);
+  --mat-button-toggle-selected-state-background-color: var(--superficie-3);
+  --mat-button-toggle-selected-state-text-color: var(--texto);
 }
 
 .tipo .mat-icon {

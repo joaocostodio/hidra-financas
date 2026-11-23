@@ -33,6 +33,7 @@
         <b>{{ auth.usuario()?.nome }}</b>
         <small>{{ auth.usuario()?.email }}</small>
       </div>
+      <app-botao-tema />
       <button matIconButton (click)="auth.sair()" matTooltip="Sair" aria-label="Sair">
         <mat-icon>logout</mat-icon>
       </button>

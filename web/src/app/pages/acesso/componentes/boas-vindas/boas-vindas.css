@@ -1,0 +1,130 @@
+.tela {
+  min-height: 100vh;
+  padding: 0 16px 48px;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 18px 0;
+}
+
+.caixa {
+  max-width: 680px;
+  margin: 12px auto 0;
+  padding: 32px 36px 24px;
+  box-shadow: var(--sombra-forte);
+}
+
+.etapa {
+  display: inline-block;
+  padding: 3px 10px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  background: var(--verde-suave);
+  color: var(--verde);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 28px 0 2px;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.pequeno {
+  margin: 0 0 14px;
+  font-size: 14px;
+}
+
+.sugestoes {
+  display: block;
+  margin: 20px 0 16px;
+  --mat-chip-container-height: 40px;
+  --mat-chip-label-text-size: 15px;
+  --mat-chip-container-shape-radius: 999px;
+  --mat-chip-selected-container-color: var(--verde);
+  --mat-chip-elevated-selected-container-color: var(--verde);
+  --mat-chip-flat-selected-container-color: var(--verde);
+  --mat-chip-selected-trailing-icon-color: var(--sobre-verde);
+  --mat-chip-selected-disabled-label-text-color: var(--sobre-verde);
+  --mat-chip-selected-label-text-color: var(--sobre-verde);
+  --mat-chip-with-icon-selected-icon-color: var(--sobre-verde);
+  --mat-chip-outline-color: var(--borda-forte);
+}
+
+.outra {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.outra mat-form-field {
+  flex: 1;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 6px 8px 12px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--superficie-2);
+}
+
+.nome {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.valor {
+  width: 170px;
+  flex: none;
+  --mat-form-field-container-height: 44px;
+  --mat-form-field-container-vertical-padding: 10px;
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--borda);
+}
+
+@media (max-width: 600px) {
+  .caixa {
+    padding: 24px 18px 18px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .valor {
+    width: 130px;
+  }
+}

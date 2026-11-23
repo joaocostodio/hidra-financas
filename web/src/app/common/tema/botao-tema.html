@@ -1,0 +1,10 @@
+@let escuro = temas.tema() === 'escuro';
+<button
+  matIconButton
+  type="button"
+  (click)="temas.alternar()"
+  [matTooltip]="escuro ? 'Usar tema claro' : 'Usar tema escuro'"
+  [attr.aria-label]="escuro ? 'Usar tema claro' : 'Usar tema escuro'"
+>
+  <mat-icon>{{ escuro ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</button>
