@@ -3,6 +3,9 @@
 Ideia em uma frase: **é uma planilha de gastos transformada em sistema**. Cada linha é uma transação; as colunas
 Conta e Categoria viram cadastros; o filtro do Excel vira o filtro da tela; as somas viram a tela inicial.
 
+Na tela as palavras são do dia a dia; ao explicar, use os termos do pedido: **Movimentações = transações**,
+**Entrou/Saiu = receita/despesa**, **Passar entre contas = transferência**.
+
 ## Antes de começar
 
 1. `docker compose up -d` (Docker Desktop ligado)
@@ -18,9 +21,9 @@ Conta e Categoria viram cadastros; o filtro do Excel vira o filtro da tela; as s
 | 2 | Abrir o DevTools → Application → Cookies: `financas_sessao` com **HttpOnly** | `CookieSessao.criar` (HttpOnly + SameSite=Strict) e `application.properties` (`mp.jwt.token.cookie`) |
 | 3 | **Contas**: cadastrar "Nubank" (saldo inicial 1.000) e "Carteira" (100) | `ContaService` + `Conta` (entidade Panache) |
 | 4 | **Categorias**: criar "Pets" | `CategoriaService` (nome repetido → erro 422) |
-| 5 | **Início → Receita**: salário 3.000 no Nubank; **Despesa**: mercado 250 | `TransacaoService.lancar` e `Validar.valorPositivo` |
-| 6 | **Transações**: filtrar por conta, depois por categoria | `TransacaoService.listar` (monta o `where` só com os filtros preenchidos) |
-| 7 | **Transferir**: 100 do Nubank para a Carteira | `TransacaoService.transferir`: uma `S` + uma `E`, mesmo código, `@Transactional` |
+| 5 | **+ Anotar**: "Entrou" 3.000 (Salário) no Nubank; "Saiu" 250 (Alimentação) | `TransacaoService.lancar` e `Validar.valorPositivo`; no site, `transacao-dialog` e `common/dinheiro.ts` (lê "1.500,00") |
+| 6 | **Movimentações**: filtrar por conta, depois por categoria | `TransacaoService.listar` (monta o `where` só com os filtros preenchidos) |
+| 7 | **Passar entre contas**: 100 do Nubank para a Carteira | `TransacaoService.transferir`: uma `S` + uma `E`, mesmo código, `@Transactional` |
 | 8 | **Início**: saldo de cada conta e geral | `Conta.saldo()` = saldo inicial + entradas − saídas |
 | 9 | Sair e tentar abrir `/contas` | `logadoGuard` no site e `@Authenticated` na API (401 sem cookie) |
 

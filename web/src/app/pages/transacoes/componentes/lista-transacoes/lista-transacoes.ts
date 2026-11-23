@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { mensagemDeErro } from '../../../../common/erros';
 import { IconeTransacaoPipe } from '../../../../common/formatos';
@@ -21,7 +21,7 @@ import { TransacaoService } from '../../services/transacao.service';
 import { AnotarService } from '../../services/anotar.service';
 
 /**
- * Lista de transações com filtros por conta, categoria e tipo.
+ * Movimentações (transações) com filtros por conta, categoria e tipo (entrou/saiu).
  * Os filtros ficam na URL (?contaId=1&categoriaId=2&tipo=S): dá para chegar aqui já filtrado
  * (o cartão da conta na tela inicial faz isso) e o F5 mantém o filtro.
  */
@@ -29,6 +29,7 @@ import { AnotarService } from '../../services/anotar.service';
   selector: 'app-lista-transacoes',
   imports: [
     ReactiveFormsModule,
+    RouterLink,
     CurrencyPipe,
     DatePipe,
     MatTableModule,

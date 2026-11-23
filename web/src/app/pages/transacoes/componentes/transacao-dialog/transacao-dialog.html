@@ -1,6 +1,6 @@
 @if (existente?.transferencia) {
   <!-- Transferência: só mostra e deixa excluir -->
-  <h2 mat-dialog-title>Transferência</h2>
+  <h2 mat-dialog-title>Dinheiro passado entre contas</h2>
   <mat-dialog-content>
     @if (erro()) {
       <div class="erro-geral" role="alert"><mat-icon>error</mat-icon> {{ erro() }}</div>
@@ -17,7 +17,7 @@
     </dl>
     <p class="muted dica">
       <mat-icon>info</mat-icon>
-      Transferência não se edita: se estiver errada, exclua (as duas partes) e faça de novo.
+      Isso não se edita: se estiver errado, exclua (sai das duas contas) e faça de novo.
     </p>
   </mat-dialog-content>
   <mat-dialog-actions>

@@ -108,7 +108,7 @@ public class TransacaoService {
         BigDecimal valor = Validar.valorPositivo(form.valor());
         LocalDate data = Validar.data(form.datatransacao());
         String descricao = form.descricao() == null || form.descricao().isBlank()
-                ? "Transferência " + origem.descricao + " → " + destino.descricao
+                ? "De " + origem.descricao + " para " + destino.descricao
                 : Validar.texto(form.descricao(), "a descrição", 500);
         String codigo = UUID.randomUUID().toString();
 

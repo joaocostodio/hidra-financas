@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
+import { lerValor, valorValido } from '../../../../common/dinheiro';
 import { mensagemDeErro } from '../../../../common/erros';
 import { Conta } from '../../../contas/model/conta.model';
 import { ContaService } from '../../../contas/services/conta.service';
@@ -49,7 +50,7 @@ export class Transferir implements OnInit {
   protected readonly form = new FormGroup({
     origemId: new FormControl<number | null>(null, Validators.required),
     destinoId: new FormControl<number | null>(null, Validators.required),
-    valor: new FormControl<number | null>(null, [Validators.required, Validators.min(0.01)]),
+    valor: new FormControl('', { nonNullable: true, validators: [valorValido] }),
     datatransacao: new FormControl<Date>(new Date(), { nonNullable: true, validators: [Validators.required] }),
     descricao: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(500)] }),
   });
@@ -93,15 +94,15 @@ export class Transferir implements OnInit {
       .transferir({
         origemId: v.origemId!,
         destinoId: v.destinoId!,
-        valor: Number(v.valor),
+        valor: lerValor(v.valor)!,
         datatransacao: paraDataApi(v.datatransacao),
         descricao: v.descricao.trim(),
       })
       .subscribe({
         next: () => {
-          this.aviso.open('Transferência feita', 'OK', { duration: 3000 });
+          this.aviso.open('Pronto! O dinheiro passou de uma conta para a outra.', 'OK', { duration: 3500 });
           this.enviando.set(false);
-          this.form.reset({ origemId: null, destinoId: null, valor: null, datatransacao: new Date(), descricao: '' });
+          this.form.reset({ origemId: null, destinoId: null, valor: '', datatransacao: new Date(), descricao: '' });
           this.carregarContas(); // saldos atualizados
         },
         error: (e) => {

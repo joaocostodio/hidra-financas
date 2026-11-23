@@ -1,10 +1,11 @@
 <div class="titulo-pagina">
   <div>
-    <h2>Transações</h2>
-    <p>Receitas, despesas e transferências de todas as contas.</p>
+    <h2>Movimentações</h2>
+    <p>Tudo o que entrou e saiu. Clique numa linha para corrigir ou excluir.</p>
   </div>
   <div class="acoes">
-    <button matButton="filled" (click)="abrir()"><mat-icon>add</mat-icon>Nova transação</button>
+    <a matButton="outlined" routerLink="/transferencia"><mat-icon>swap_horiz</mat-icon>Passar entre contas</a>
+    <button matButton="filled" (click)="abrir()"><mat-icon>add</mat-icon>Anotar</button>
   </div>
 </div>
 
@@ -32,23 +33,23 @@
     <mat-icon matPrefix>sell</mat-icon>
   </mat-form-field>
 
-  <mat-button-toggle-group formControlName="tipo" class="tipo" aria-label="Tipo">
+  <mat-button-toggle-group hideSingleSelectionIndicator formControlName="tipo" class="tipo" aria-label="Entrou ou saiu">
     <mat-button-toggle value="">Todas</mat-button-toggle>
-    <mat-button-toggle value="E">Receitas</mat-button-toggle>
-    <mat-button-toggle value="S">Despesas</mat-button-toggle>
+    <mat-button-toggle value="E">Entrou</mat-button-toggle>
+    <mat-button-toggle value="S">Saiu</mat-button-toggle>
   </mat-button-toggle-group>
 
   @if (temFiltro()) {
-    <button matButton type="button" (click)="limparFiltros()"><mat-icon>filter_alt_off</mat-icon>Limpar</button>
+    <button matButton type="button" (click)="limparFiltros()"><mat-icon>filter_alt_off</mat-icon>Mostrar tudo</button>
   }
 </form>
 
 <!-- Totais do filtro -->
 <div class="totais">
-  <span>{{ transacoes().length }} {{ transacoes().length === 1 ? 'transação' : 'transações' }}</span>
+  <span>{{ transacoes().length }} {{ transacoes().length === 1 ? 'movimentação' : 'movimentações' }}</span>
   <span class="espaco"></span>
-  <span>Entradas <b class="num entrada">{{ totalEntradas() | currency }}</b></span>
-  <span>Saídas <b class="num saida">{{ totalSaidas() | currency }}</b></span>
+  <span>Entrou <b class="num entrada">{{ totalEntradas() | currency }}</b></span>
+  <span>Saiu <b class="num saida">{{ totalSaidas() | currency }}</b></span>
 </div>
 
 <section class="cartao">
@@ -61,7 +62,7 @@
 
   <table mat-table [dataSource]="transacoes()">
     <ng-container matColumnDef="data">
-      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <th mat-header-cell *matHeaderCellDef>Dia</th>
       <td mat-cell *matCellDef="let t" class="num muted">{{ t.datatransacao | date: 'dd/MM/yyyy' }}</td>
     </ng-container>
 
@@ -79,7 +80,7 @@
 
     <ng-container matColumnDef="categoria">
       <th mat-header-cell *matHeaderCellDef>Categoria</th>
-      <td mat-cell *matCellDef="let t" class="muted">{{ t.categoria ?? 'Transferência' }}</td>
+      <td mat-cell *matCellDef="let t" class="muted">{{ t.categoria ?? 'Entre contas' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="conta">
@@ -107,7 +108,7 @@
       <td class="vazio" [attr.colspan]="colunas.length">
         @if (!carregando()) {
           <mat-icon>receipt_long</mat-icon>
-          {{ temFiltro() ? 'Nenhuma transação com esses filtros.' : 'Nenhuma transação ainda.' }}
+          {{ temFiltro() ? 'Nada encontrado com esses filtros.' : 'Nada anotado ainda. Use o botão + Anotar.' }}
         }
       </td>
     </tr>

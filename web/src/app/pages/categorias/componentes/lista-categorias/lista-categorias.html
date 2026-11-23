@@ -1,7 +1,7 @@
 <div class="titulo-pagina">
   <div>
     <h2>Categorias</h2>
-    <p>Para saber com o que o dinheiro entra e sai.</p>
+    <p>Para saber com o que você gasta e de onde vem o dinheiro. Clique numa para trocar nome ou ícone.</p>
   </div>
   <div class="acoes">
     <button matButton="filled" (click)="abrir()"><mat-icon>add</mat-icon>Nova categoria</button>
@@ -23,7 +23,7 @@
         <span class="nome">{{ c.descricao }}</span>
         <mat-icon class="editar">edit</mat-icon>
       </button>
-      <a class="filtrar" routerLink="/transacoes" [queryParams]="{ categoriaId: c.id }">Ver transações</a>
+      <a class="filtrar" routerLink="/transacoes" [queryParams]="{ categoriaId: c.id }">Ver movimentações</a>
     </div>
   } @empty {
     @if (!carregando()) {

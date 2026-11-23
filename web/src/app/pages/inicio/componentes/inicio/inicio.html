@@ -1,7 +1,7 @@
 <div class="titulo-pagina">
   <div>
     <h2>Olá, {{ auth.primeiroNome() }}</h2>
-    <p>Seu dinheiro em todas as contas.</p>
+    <p>Veja quanto você tem e anote o que entra e o que sai.</p>
   </div>
   <div class="acoes">
     <button matButton="outlined" (click)="novaTransacao('S')"><mat-icon>arrow_upward</mat-icon>Saiu dinheiro</button>
@@ -21,46 +21,46 @@
 }
 
 @if (resumo(); as r) {
-  <!-- Saldo geral + o mês -->
+  <!-- Quanto tem + o mês -->
   <section class="topo-resumo">
     <div class="cartao saldo-geral">
-      <span class="rotulo">Saldo geral</span>
+      <span class="rotulo">Você tem</span>
       <strong class="num valor-grande" [class.negativo]="r.saldoGeral < 0">
         {{ r.saldoGeral | currency }}
       </strong>
-      <small>Soma de {{ r.contas.length }} {{ r.contas.length === 1 ? 'conta' : 'contas' }}</small>
+      <small>Somando {{ r.contas.length === 1 ? 'sua conta' : 'suas ' + r.contas.length + ' contas' }}</small>
     </div>
 
     <div class="cartao mes">
-      <span class="rotulo">Receitas do mês</span>
+      <span class="rotulo">Entrou em {{ mes }}</span>
       <strong class="num entrada">{{ r.entradasMes | currency }}</strong>
     </div>
     <div class="cartao mes">
-      <span class="rotulo">Despesas do mês</span>
+      <span class="rotulo">Saiu em {{ mes }}</span>
       <strong class="num saida">{{ r.saidasMes | currency }}</strong>
     </div>
     <div class="cartao mes">
-      <span class="rotulo">Resultado do mês</span>
+      <span class="rotulo">{{ resultadoMes() < 0 ? 'Gastou a mais' : 'Sobrou' }} em {{ mes }}</span>
       <strong class="num" [class.entrada]="resultadoMes() > 0" [class.negativo]="resultadoMes() < 0">
         {{ resultadoMes() | currency }}
       </strong>
     </div>
   </section>
 
-  <!-- Saldo por conta -->
+  <!-- Quanto tem em cada conta -->
   <section>
     <div class="secao-cab">
-      <h3>Saldo por conta</h3>
+      <h3>Suas contas</h3>
       <span class="espaco"></span>
-      <a matButton routerLink="/transferencia"><mat-icon>swap_horiz</mat-icon>Transferir</a>
-      <a matButton routerLink="/contas"><mat-icon>tune</mat-icon>Gerenciar</a>
+      <a matButton routerLink="/transferencia"><mat-icon>swap_horiz</mat-icon>Passar entre contas</a>
+      <a matButton routerLink="/contas"><mat-icon>tune</mat-icon>Editar contas</a>
     </div>
 
     @if (r.contas.length === 0) {
       <div class="cartao vazio">
         <mat-icon>account_balance_wallet</mat-icon>
-        Você ainda não cadastrou nenhuma conta.
-        <div><a matButton="filled" routerLink="/contas" class="criar">Cadastrar conta</a></div>
+        Diga onde você guarda dinheiro (banco, carteira, poupança) para começar.
+        <div><a matButton="filled" routerLink="/contas" class="criar">Cadastrar uma conta</a></div>
       </div>
     } @else {
       <div class="contas">
@@ -69,17 +69,17 @@
             <span class="ico-conta"><mat-icon>account_balance_wallet</mat-icon></span>
             <span class="nome">{{ c.descricao }}</span>
             <strong class="num" [class.negativo]="c.saldo < 0">{{ c.saldo | currency }}</strong>
-            <small class="muted">Ver transações <mat-icon>chevron_right</mat-icon></small>
+            <small class="muted">Ver movimentações <mat-icon>chevron_right</mat-icon></small>
           </a>
         }
       </div>
     }
   </section>
 
-  <!-- Últimas transações -->
+  <!-- Últimas movimentações -->
   <section class="cartao">
     <div class="cartao-cab">
-      <h3>Últimas transações</h3>
+      <h3>Últimas movimentações</h3>
       <span class="espaco"></span>
       <a matButton routerLink="/transacoes">Ver todas</a>
     </div>
@@ -91,7 +91,7 @@
           </span>
           <div>
             {{ t.descricao }}
-            <small>{{ t.datatransacao | date: 'dd/MM' }} · {{ t.categoria ?? 'Transferência' }} · {{ t.conta }}</small>
+            <small>{{ t.datatransacao | date: 'dd/MM' }} · {{ t.categoria ?? 'Entre contas' }} · {{ t.conta }}</small>
           </div>
         </div>
         <strong class="num" [class.entrada]="t.tipo === 'E'">

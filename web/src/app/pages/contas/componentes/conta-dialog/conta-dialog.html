@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{ conta ? 'Detalhes da conta' : 'Nova conta' }}</h2>
+<h2 mat-dialog-title>{{ conta ? 'Editar conta' : 'Nova conta' }}</h2>
 
 <form [formGroup]="form" (ngSubmit)="salvar()">
   <mat-dialog-content>
@@ -8,23 +8,23 @@
 
     @if (conta) {
       <div class="saldo-atual">
-        <span class="muted">Saldo atual</span>
+        <span class="muted">Tem agora</span>
         <b class="num" [class.negativo]="conta.saldo < 0">{{ conta.saldo | currency }}</b>
       </div>
     }
 
     <mat-form-field>
-      <mat-label>Descrição</mat-label>
+      <mat-label>Nome da conta</mat-label>
       <input matInput formControlName="descricao" placeholder="Ex.: Nubank, Carteira, Poupança" cdkFocusInitial />
-      <mat-error>Informe a descrição</mat-error>
+      <mat-error>Digite o nome da conta</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Saldo inicial</mat-label>
+      <mat-label>Quanto tinha no começo</mat-label>
       <span matTextPrefix>R$&nbsp;</span>
-      <input matInput type="number" step="0.01" formControlName="saldoInicial" />
-      <mat-hint>Quanto já tinha nessa conta ao começar a usar o sistema</mat-hint>
-      <mat-error>Informe o saldo inicial (pode ser 0)</mat-error>
+      <input matInput formControlName="saldoInicial" inputmode="decimal" placeholder="0,00" autocomplete="off" />
+      <mat-hint>Quanto tinha nessa conta quando começou a usar o app (pode deixar 0)</mat-hint>
+      <mat-error>Digite um valor como 1.200,50</mat-error>
     </mat-form-field>
   </mat-dialog-content>
 

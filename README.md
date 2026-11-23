@@ -15,11 +15,23 @@ Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/financ
 | Quarkus e Angular | `api/` (Quarkus + Panache + PostgreSQL) e `web/` (Angular 22 + Angular Material) |
 | Lançamento de contas | Tela **Contas**: cadastrar, editar e excluir, com saldo inicial — `/contas` |
 | Categorias | Tela **Categorias** (cada usuário tem as suas; 7 prontas no cadastro) — `/categorias` |
-| Transações | Receitas (E) e despesas (S): lançar, editar e excluir — `/transacoes` |
-| Transações filtradas por categoria e conta | Tela **Transações** com filtros — `GET /transacoes?contaId=&categoriaId=` |
-| Transferência entre contas | Tela **Transferir** — `POST /transacoes/transferencia` (uma saída + uma entrada) |
+| Transações | Receitas (E) e despesas (S): botão **+ Anotar** em todas as telas; editar e excluir — `/transacoes` |
+| Transações filtradas por categoria e conta | Tela **Movimentações** com filtros — `GET /transacoes?contaId=&categoriaId=` |
+| Transferência entre contas | Botão **Passar entre contas** (no Início, em Contas e em Movimentações) — `POST /transacoes/transferencia` (uma saída + uma entrada) |
 | Tela inicial com saldo por conta e geral | Tela **Início** — `GET /resumo` |
 | Autenticação JWT em cookie httpOnly | `AuthController` + `CookieSessao`: o token vai no cookie `financas_sessao` (HttpOnly, SameSite=Strict) |
+
+### Palavras do site × termos do pedido
+
+O site usa palavras do dia a dia; no código e na API ficam os termos do pedido:
+
+| No site | No pedido / no código |
+|---|---|
+| Movimentações | Transações (`Transacao`, `/transacoes`) |
+| Entrou / Saiu | Receita / Despesa (tipo `E` / `S`) |
+| Passar entre contas | Transferência (`/transacoes/transferencia`) |
+| Você tem | Saldo geral |
+| Tem agora / Tinha no começo | Saldo atual / Saldo inicial |
 
 ## Como executar
 

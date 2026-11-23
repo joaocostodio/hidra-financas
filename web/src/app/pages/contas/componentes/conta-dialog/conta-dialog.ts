@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Confirmacao } from '../../../../common/confirmacao/confirmacao';
+import { escreverValor, lerValor } from '../../../../common/dinheiro';
 import { mensagemDeErro } from '../../../../common/erros';
 import { Conta } from '../../model/conta.model';
 import { ContaService } from '../../services/conta.service';
@@ -42,9 +43,10 @@ export class ContaDialog {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(150)],
     }),
-    saldoInicial: new FormControl<number>(this.conta?.saldoInicial ?? 0, {
+    // Texto, para aceitar o jeito brasileiro ("1.200,50"); vazio vale 0
+    saldoInicial: new FormControl(escreverValor(this.conta?.saldoInicial ?? 0), {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [(c) => (c.value === '' || lerValor(c.value) !== null ? null : { valor: true })],
     }),
   });
 
@@ -57,7 +59,7 @@ export class ContaDialog {
     this.salvando.set(true);
     this.erro.set('');
     this.service
-      .salvar({ descricao: v.descricao.trim(), saldoInicial: Number(v.saldoInicial) || 0 }, this.conta?.id)
+      .salvar({ descricao: v.descricao.trim(), saldoInicial: lerValor(v.saldoInicial) ?? 0 }, this.conta?.id)
       .subscribe({
         next: () => {
           this.aviso.open(this.conta ? 'Conta atualizada' : 'Conta cadastrada', 'OK', { duration: 3000 });

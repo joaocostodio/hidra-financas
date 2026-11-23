@@ -173,7 +173,7 @@ export class TransacaoDialog implements OnInit {
       return;
     }
     const mensagem = t.transferencia
-      ? 'As duas partes da transferência (a saída e a entrada) serão excluídas.'
+      ? 'Vai sair das duas contas (de onde saiu e para onde foi).'
       : `"${t.descricao}" será excluída.`;
     this.dialog
       .open(Confirmacao, { data: { titulo: 'Excluir?', mensagem } })

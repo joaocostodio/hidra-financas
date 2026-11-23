@@ -58,9 +58,9 @@ export class Layout {
 
   protected readonly menu: ItemMenu[] = [
     { rota: '/', icone: 'home', nome: 'Início', exato: true },
-    { rota: '/transacoes', icone: 'receipt_long', nome: 'Transações' },
+    { rota: '/transacoes', icone: 'receipt_long', nome: 'Movimentações' },
     { rota: '/contas', icone: 'account_balance_wallet', nome: 'Contas' },
     { rota: '/categorias', icone: 'sell', nome: 'Categorias' },
-    { rota: '/transferencia', icone: 'swap_horiz', nome: 'Transferir' },
+    // "Transferir" não fica no menu (usa-se pouco): é um botão no Início e na tela de Contas
   ];
 }

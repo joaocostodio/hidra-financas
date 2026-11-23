@@ -1,3 +1,7 @@
+.voltar {
+  margin: 0 0 6px -12px;
+}
+
 .caixa {
   max-width: 640px;
   padding: 24px;

@@ -27,7 +27,10 @@ export class Inicio {
   protected readonly carregando = signal(true);
   protected readonly erro = signal('');
 
-  /** Resultado do mês: receitas − despesas. */
+  /** Nome do mês atual ("novembro"), para os cartões "Entrou em novembro"... */
+  protected readonly mes = new Date().toLocaleDateString('pt-BR', { month: 'long' });
+
+  /** Quanto sobrou no mês: o que entrou − o que saiu. */
   protected readonly resultadoMes = computed(() => {
     const r = this.resumo();
     return r ? r.entradasMes - r.saidasMes : 0;
