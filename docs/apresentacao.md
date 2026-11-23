@@ -58,5 +58,5 @@ Na tela as palavras são do dia a dia; ao explicar, use os termos do pedido: **M
   a segunda espera a primeira terminar, relê a próxima data (já avançada) e não lança de novo.
 - **Por que o CSV usa ponto e vírgula?** No Excel em português a vírgula é o separador de centavos; com `;` e o
   BOM do UTF-8 o arquivo abre direto, com as colunas e os acentos certos.
-- **Como testaram?** `mvnw test`: 22 testes de ponta a ponta (saldo, filtros por conta/categoria/mês/texto,
+- **Como testaram?** `mvnw test`: 23 testes de ponta a ponta (saldo, filtros por conta/categoria/mês/texto,
   transferência, fixos, limite, planilha, login, cookie, CSRF e isolamento entre usuários).

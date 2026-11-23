@@ -11,6 +11,8 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import security.CookieSessao;
@@ -34,6 +36,10 @@ public class AuthController {
     @Inject
     UsuarioLogado logado;
 
+    /** Cabeçalhos da requisição atual: dizem se o acesso veio por HTTPS (túnel), para o cookie ganhar Secure. */
+    @Context
+    HttpHeaders cabecalhos;
+
     @POST
     @Path("/cadastro")
     public Response cadastrar(CadastroForm form) {
@@ -51,7 +57,7 @@ public class AuthController {
     @POST
     @Path("/sair")
     public Response sair() {
-        return Response.noContent().cookie(cookie.apagar()).build();
+        return Response.noContent().cookie(cookie.apagar(cabecalhos)).build();
     }
 
     /** Quem está logado (o site usa para saber se a sessão ainda vale). */
@@ -64,6 +70,6 @@ public class AuthController {
 
     private Response comSessao(Response.ResponseBuilder resposta, Usuario usuario) {
         String token = auth.gerarToken(usuario);
-        return resposta.cookie(cookie.criar(token)).entity(UsuarioDto.de(usuario)).build();
+        return resposta.cookie(cookie.criar(token, cabecalhos)).entity(UsuarioDto.de(usuario)).build();
     }
 }

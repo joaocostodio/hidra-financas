@@ -92,13 +92,37 @@ O site tem **tema claro** (padrão) e **tema escuro**: o botão de lua/sol troca
 
 As portas (8090, 4200 e 5434) são diferentes das do banco-hidra (8080, 4300 e 5433): os dois projetos rodam ao mesmo tempo.
 
+### Acessar de outro computador (professor ou colegas)
+
+Com o sistema rodando no notebook (passos acima), um **túnel da Cloudflare** dá um endereço `https://` público
+para o site, sem conta, sem abrir porta no roteador e de qualquer rede. Precisa do
+[cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+(Windows: `winget install --id Cloudflare.cloudflared`). Em outro terminal:
+
+```bash
+cloudflared tunnel --url http://localhost:4200
+```
+
+Ele mostra um link `https://<palavras-aleatorias>.trycloudflare.com`: é só mandar para quem vai usar. Cada pessoa
+cria a sua conta e só vê os próprios dados. O link muda toda vez que o túnel é aberto e para de funcionar quando
+o terminal é fechado (Ctrl+C).
+
+Por que funciona sem mexer na segurança:
+
+- Só o **site** fica exposto; a API continua escutando só no próprio PC (`127.0.0.1`). O site repassa `/api` para
+  ela (`web/proxy.conf.json`), trocando o endereço para `127.0.0.1` (`changeOrigin`), porque o Quarkus recusa
+  qualquer outro endereço (proteção contra *DNS rebinding*).
+- O `ng serve` só aceita o próprio PC e endereços `*.trycloudflare.com` (`allowedHosts` no `angular.json`).
+- Pelo túnel o acesso é HTTPS, e o cookie da sessão ganha a marca **Secure** (`CookieSessao`, teste
+  `cookieViaHttpsEhSecure`).
+
 ### Testes da API
 
 Sobem um PostgreSQL descartável sozinhos (pelo Docker):
 
 ```bash
 cd api
-./mvnw test                 # 22 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários
+./mvnw test                 # 23 testes: saldo, filtros, transferência, fixos, limite, planilha, login, cookie, CSRF, isolamento entre usuários
 ```
 
 ### Compilar para produção

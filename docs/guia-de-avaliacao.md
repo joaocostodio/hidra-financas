@@ -5,7 +5,11 @@ Para conferir cada item pedido em poucos minutos. Para cada requisito há três 
 
 Os testes ficam todos em [`api/src/test/java/controller/FinancasTest.java`](../api/src/test/java/controller/FinancasTest.java)
 e rodam com `cd api` → `mvnw.cmd test` (Windows) ou `./mvnw test` (Linux/Mac). Resultado esperado:
-`Tests run: 22, Failures: 0, Errors: 0`.
+`Tests run: 23, Failures: 0, Errors: 0`.
+
+> **Sem instalar nada:** se o aluno mandou um link `https://….trycloudflare.com`, o sistema está rodando no
+> notebook dele e dá para usar direto pelo navegador (crie uma conta na aba **Criar conta**). Como funciona:
+> README, seção "Acessar de outro computador".
 
 ## 1. Preparar (uma vez)
 
@@ -30,7 +34,7 @@ Abra http://localhost:4200 → aba **Criar conta** (qualquer e-mail; senha com 8
 | 5 | **Transações filtradas por categoria e conta** | Menu **Movimentações**: selects "Conta" e "Categoria" (e tipo). O filtro vai para a URL | `TransacaoService.listar` (monta o `where` só com os filtros preenchidos) | `filtraTransacoesPorContaECategoria` |
 | 6 | **Transferência entre contas** | **Passar entre contas** (Início, Contas ou Movimentações) | `TransacaoService.transferir`: uma saída + uma entrada, mesmo código, `@Transactional` | `transferenciaGeraSaidaEEntrada`, `transferenciaParaAMesmaContaRecusada` |
 | 7 | **Tela inicial com saldo por conta e geral** | **Início**: cartão "Você tem hoje" (geral) e um cartão por conta | `TransacaoService.resumo` + `Conta.saldo()` | `saldoDaContaSomaEntradasESubtraiSaidas`, `resumoDoMesComGastosPorCategoria` |
-| 8 | **Autenticação JWT em cookie httpOnly** | DevTools (F12) → Application → Cookies → `financas_sessao` com **HttpOnly** ✓ e **SameSite Strict** | `AuthService.gerarToken`, `CookieSessao`, `application.properties` (`mp.jwt.token.cookie`) | `cookieDeSessaoEhHttpOnly`, `semLoginRecusa`, `loginComSenhaErradaRecusa`, `entraDepoisComAMesmaSenha` |
+| 8 | **Autenticação JWT em cookie httpOnly** | DevTools (F12) → Application → Cookies → `financas_sessao` com **HttpOnly** ✓ e **SameSite Strict** (e **Secure** quando aberto pelo link `https://`) | `AuthService.gerarToken`, `CookieSessao`, `application.properties` (`mp.jwt.token.cookie`) | `cookieDeSessaoEhHttpOnly`, `cookieViaHttpsEhSecure`, `semLoginRecusa`, `loginComSenhaErradaRecusa`, `entraDepoisComAMesmaSenha` |
 
 ## 3. Além do pedido
 

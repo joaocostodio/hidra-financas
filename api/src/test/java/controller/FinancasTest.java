@@ -75,6 +75,22 @@ class FinancasTest {
                 .extract().header("Set-Cookie");
         org.hamcrest.MatcherAssert.assertThat(setCookie, containsString("HttpOnly"));
         org.hamcrest.MatcherAssert.assertThat(setCookie, containsString("SameSite=Strict"));
+        // Em http://localhost o cookie não pode ser Secure (o navegador não o guardaria)
+        org.hamcrest.MatcherAssert.assertThat(setCookie, org.hamcrest.Matchers.not(containsString("Secure")));
+    }
+
+    /** Pelo túnel (HTTPS), quem está na frente avisa com X-Forwarded-Proto e o cookie ganha Secure. */
+    @Test
+    void cookieViaHttpsEhSecure() {
+        String email = "https-" + UUID.randomUUID() + "@email.com";
+        String setCookie = given().contentType(ContentType.JSON).header("X-Requested-With", "teste")
+                .header("X-Forwarded-Proto", "https")
+                .body(Map.of("nome", "Fulano", "email", email, "senha", "senha1234"))
+                .post("/auth/cadastro")
+                .then().statusCode(201)
+                .extract().header("Set-Cookie");
+        org.hamcrest.MatcherAssert.assertThat(setCookie, containsString("Secure"));
+        org.hamcrest.MatcherAssert.assertThat(setCookie, containsString("HttpOnly"));
     }
 
     @Test
