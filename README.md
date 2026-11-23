@@ -18,7 +18,7 @@ Baseado nos projetos de aula [finance-api](https://github.com/tiagoseibel/financ
 | Transações | Receitas (E) e despesas (S): botão **+ Anotar** em todas as telas; editar e excluir — `/transacoes` |
 | Transações filtradas por categoria e conta | Tela **Movimentações** com filtros — `GET /transacoes?contaId=&categoriaId=` |
 | Transferência entre contas | Botão **Passar entre contas** (no Início, em Contas e em Movimentações) — `POST /transacoes/transferencia` (uma saída + uma entrada) |
-| Tela inicial com saldo por conta e geral | Tela **Início** — `GET /resumo` |
+| Tela inicial com saldo por conta e geral | Tela **Início** — `GET /resumo` (mais o resumo do mês com o gráfico "Para onde foi o dinheiro") |
 | Autenticação JWT em cookie httpOnly | `AuthController` + `CookieSessao`: o token vai no cookie `financas_sessao` (HttpOnly, SameSite=Strict) |
 
 ### Palavras do site × termos do pedido
@@ -64,7 +64,7 @@ Sobem um PostgreSQL descartável sozinhos (pelo Docker):
 
 ```bash
 cd api
-./mvnw test                 # 16 testes: saldo, filtros, transferência, login, cookie, CSRF, isolamento entre usuários
+./mvnw test                 # 17 testes: saldo, filtros, transferência, login, cookie, CSRF, isolamento entre usuários
 ```
 
 ### Compilar para produção
@@ -164,4 +164,4 @@ Todas as rotas (menos cadastro e login) exigem o cookie de sessão. Erros voltam
 | POST | `/transacoes` | Lança: `descricao`, `valor`, `tipo` (E/S), `datatransacao`, `contaId`, `categoriaId` |
 | GET / PUT / DELETE | `/transacoes/{id}` | Busca / atualiza / exclui |
 | POST | `/transacoes/transferencia` | `origemId`, `destinoId`, `valor`, `datatransacao`, `descricao` |
-| GET | `/resumo` | Saldo de cada conta, saldo geral, receitas/despesas do mês e últimas transações |
+| GET | `/resumo?mes=2026-11` | Saldo de cada conta e geral (hoje); receitas, despesas e gastos por categoria do mês; últimas transações |

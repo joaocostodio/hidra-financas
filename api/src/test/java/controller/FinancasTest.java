@@ -223,6 +223,45 @@ class FinancasTest {
     }
 
     @Test
+    void resumoDoMesComGastosPorCategoria() {
+        String sessao = novoUsuario();
+        int nubank = criarConta(sessao, "Nubank", "1000");
+        int carteira = criarConta(sessao, "Carteira", "0");
+        int alimentacao = categoria(sessao, "Alimentação");
+        int transporte = categoria(sessao, "Transporte");
+        int salario = categoria(sessao, "Salário");
+
+        lancar(sessao, nubank, alimentacao, "S", "100").statusCode(201);     // 10/11
+        lancar(sessao, nubank, alimentacao, "S", "50").statusCode(201);      // 10/11
+        lancar(sessao, carteira, transporte, "S", "30").statusCode(201);     // 10/11
+        lancar(sessao, nubank, salario, "E", "2000").statusCode(201);        // 10/11
+        // Outro mês: não entra no resumo de novembro
+        como(sessao).body(Map.of("descricao", "Outubro", "valor", "999", "tipo", "S",
+                        "datatransacao", "2026-10-15", "contaId", nubank, "categoriaId", transporte))
+                .post("/transacoes").then().statusCode(201);
+        // Transferência: não é gasto
+        como(sessao).body(Map.of("origemId", nubank, "destinoId", carteira, "valor", "40",
+                        "datatransacao", "2026-11-10"))
+                .post("/transacoes/transferencia").then().statusCode(201);
+
+        como(sessao).queryParam("mes", "2026-11").get("/resumo").then().statusCode(200)
+                .body("mes", equalTo("2026-11"))
+                .body("entradasMes", equalTo(2000.0f))
+                .body("saidasMes", equalTo(180.0f))
+                .body("gastosPorCategoria", hasSize(2))
+                .body("gastosPorCategoria[0].categoria", equalTo("Alimentação"))
+                .body("gastosPorCategoria[0].total", equalTo(150.0f))
+                .body("gastosPorCategoria[0].icone", equalTo("restaurant"))
+                .body("gastosPorCategoria[1].total", equalTo(30.0f));
+
+        como(sessao).queryParam("mes", "2026-10").get("/resumo").then()
+                .body("saidasMes", equalTo(999.0f))
+                .body("gastosPorCategoria[0].categoria", equalTo("Transporte"));
+
+        como(sessao).queryParam("mes", "novembro").get("/resumo").then().statusCode(422);
+    }
+
+    @Test
     void semDescricaoUsaONomeDaCategoria() {
         String sessao = novoUsuario();
         int nubank = criarConta(sessao, "Nubank", "0");

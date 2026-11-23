@@ -1,0 +1,32 @@
+@if (barras().length === 0) {
+  <p class="vazio-gastos">
+    <mat-icon>pie_chart</mat-icon>
+    Nenhum gasto anotado em {{ mes() }}.
+  </p>
+} @else {
+  <ol class="barras" [attr.aria-label]="'Para onde foi o dinheiro em ' + mes()">
+    @for (b of barras(); track b.categoriaId) {
+      <li>
+        <a
+          class="barra"
+          routerLink="/transacoes"
+          [queryParams]="{ categoriaId: b.categoriaId }"
+          [matTooltip]="(b.total | currency) + ' · ' + (b.parte | percent: '1.0-0') + ' do que saiu em ' + mes() + '. Clique para ver.'"
+          matTooltipPosition="above"
+        >
+          <span class="ico-tx"><mat-icon>{{ b.icone }}</mat-icon></span>
+          <span class="corpo">
+            <span class="topo">
+              <span class="nome">{{ b.categoria }}</span>
+              <span class="valor num">{{ b.total | currency }}</span>
+              <span class="parte num">{{ b.parte | percent: '1.0-0' }}</span>
+            </span>
+            <span class="trilho" aria-hidden="true">
+              <span class="preenchido" [style.width.%]="b.largura"></span>
+            </span>
+          </span>
+        </a>
+      </li>
+    }
+  </ol>
+}

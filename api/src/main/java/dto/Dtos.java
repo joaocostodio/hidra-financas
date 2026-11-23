@@ -81,9 +81,15 @@ public final class Dtos {
 
     // ---------- Tela inicial ----------
 
-    public record ResumoDto(List<ContaDto> contas, BigDecimal saldoGeral,
+    /** mes: "2026-11". As somas e os gastos são desse mês; os saldos são sempre os de hoje. */
+    public record ResumoDto(String mes, List<ContaDto> contas, BigDecimal saldoGeral,
                             BigDecimal entradasMes, BigDecimal saidasMes,
+                            List<GastoCategoriaDto> gastosPorCategoria,
                             List<TransacaoDto> ultimas) {
+    }
+
+    /** Quanto saiu numa categoria no mês ("para onde foi o dinheiro"). */
+    public record GastoCategoriaDto(Long categoriaId, String categoria, String icone, BigDecimal total) {
     }
 
     // ---------- Erros ----------

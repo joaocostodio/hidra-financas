@@ -1,29 +1,37 @@
 section {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .rotulo {
-  color: var(--texto-suave);
-  font-size: 13px;
-}
-
-/* ---------- Saldo geral + mês ---------- */
-.topo-resumo {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 14px;
-}
-
-.topo-resumo .cartao {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  padding: 20px;
+  align-items: center;
+  gap: 4px;
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+
+.rotulo .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- Hoje: total + contas ---------- */
+.hoje {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 2fr;
+  gap: 20px;
+  align-items: start;
 }
 
 /* Cartão de destaque: fundo verde, texto claro (nos dois temas) */
 .saldo-geral {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-height: 150px;
+  padding: 22px;
   background: var(--destaque-fundo) !important;
   border-color: transparent !important;
   color: var(--sobre-destaque);
@@ -32,7 +40,7 @@ section {
 .saldo-geral .rotulo,
 .saldo-geral small {
   color: var(--sobre-destaque);
-  opacity: 0.85;
+  opacity: 0.88;
 }
 
 .saldo-geral .negativo {
@@ -40,22 +48,16 @@ section {
 }
 
 .valor-grande {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-.mes strong {
-  font-size: 19px;
-  font-weight: 650;
-}
-
-/* ---------- Saldo por conta ---------- */
 .secao-cab {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 12px;
+  margin: -6px 0 6px;
 }
 
 .secao-cab h3 {
@@ -66,15 +68,15 @@ section {
 
 .contas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
 }
 
 .conta {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 18px;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px 14px 16px;
   color: inherit;
   text-decoration: none;
   transition:
@@ -84,13 +86,13 @@ section {
 
 .conta:hover {
   border-color: var(--verde-borda);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .ico-conta {
-  width: 36px;
-  height: 36px;
-  margin-bottom: 8px;
+  flex: none;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   display: grid;
   place-items: center;
@@ -98,33 +100,96 @@ section {
   color: var(--verde);
 }
 
+.dados {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .conta .nome {
   color: var(--texto-suave);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .conta strong {
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 650;
 }
 
-.conta small {
-  display: flex;
-  align-items: center;
-  margin-top: 6px;
-  font-size: 12px;
-}
-
-.conta small .mat-icon {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
+.seta {
+  color: var(--texto-suave);
 }
 
 .criar {
   margin-top: 14px;
 }
 
-/* ---------- Últimas transações ---------- */
+/* ---------- Resumo do mês ---------- */
+.mes {
+  padding: 8px 20px 18px;
+  transition: opacity 0.15s;
+}
+
+.mes.carregando {
+  opacity: 0.6;
+}
+
+.mes-cab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+}
+
+.mes-cab h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.navegar {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+}
+
+.nome-mes {
+  min-width: 150px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 14px 0 18px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.numeros > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.numeros strong {
+  font-size: 22px;
+  font-weight: 650;
+}
+
+h4 {
+  margin: 18px 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ---------- Últimas movimentações ---------- */
 .linha {
   width: 100%;
   border: 0;
@@ -160,12 +225,27 @@ section {
   font-weight: 600;
 }
 
-@media (max-width: 860px) {
-  .topo-resumo {
-    grid-template-columns: 1fr 1fr;
+@media (max-width: 900px) {
+  .hoje {
+    grid-template-columns: 1fr;
   }
 
   .saldo-geral {
-    grid-column: 1 / -1;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .mes-cab {
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+  }
+
+  .numeros {
+    grid-template-columns: 1fr;
+  }
+
+  .nome-mes {
+    min-width: 120px;
   }
 }

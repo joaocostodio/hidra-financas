@@ -1,0 +1,99 @@
+.barras {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Uma linha: ícone + (nome, valor, %) + barra. A área de clique é a linha inteira. */
+.barra {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--raio);
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+
+.barra:hover,
+.barra:focus-visible {
+  background: var(--superficie-2);
+  outline: none;
+}
+
+.barra:hover .preenchido,
+.barra:focus-visible .preenchido {
+  background: var(--verde-forte);
+}
+
+.corpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.topo {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.nome {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.valor {
+  font-weight: 600;
+}
+
+.parte {
+  width: 40px;
+  text-align: right;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+/* Barra fina, com a ponta arredondada, saindo da esquerda */
+.trilho {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--superficie-3);
+  overflow: hidden;
+}
+
+.preenchido {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--verde);
+  transition:
+    width 0.4s ease,
+    background 0.12s;
+}
+
+.vazio-gastos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 18px 4px;
+  color: var(--texto-suave);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preenchido {
+    transition: none;
+  }
+}

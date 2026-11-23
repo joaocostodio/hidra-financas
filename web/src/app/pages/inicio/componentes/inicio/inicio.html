@@ -21,62 +21,102 @@
 }
 
 @if (resumo(); as r) {
-  <!-- Quanto tem + o mês -->
-  <section class="topo-resumo">
+  <!-- ---------- Hoje: quanto tem no total e em cada conta ---------- -->
+  <section class="hoje">
     <div class="cartao saldo-geral">
-      <span class="rotulo">Você tem</span>
+      <span class="rotulo">Você tem hoje</span>
       <strong class="num valor-grande" [class.negativo]="r.saldoGeral < 0">
         {{ r.saldoGeral | currency }}
       </strong>
       <small>Somando {{ r.contas.length === 1 ? 'sua conta' : 'suas ' + r.contas.length + ' contas' }}</small>
     </div>
 
-    <div class="cartao mes">
-      <span class="rotulo">Entrou em {{ mes }}</span>
-      <strong class="num entrada">{{ r.entradasMes | currency }}</strong>
-    </div>
-    <div class="cartao mes">
-      <span class="rotulo">Saiu em {{ mes }}</span>
-      <strong class="num saida">{{ r.saidasMes | currency }}</strong>
-    </div>
-    <div class="cartao mes">
-      <span class="rotulo">{{ resultadoMes() < 0 ? 'Gastou a mais' : 'Sobrou' }} em {{ mes }}</span>
-      <strong class="num" [class.entrada]="resultadoMes() > 0" [class.negativo]="resultadoMes() < 0">
-        {{ resultadoMes() | currency }}
-      </strong>
+    <div class="suas-contas">
+      <div class="secao-cab">
+        <h3>Suas contas</h3>
+        <span class="espaco"></span>
+        <a matButton routerLink="/transferencia"><mat-icon>swap_horiz</mat-icon>Passar entre contas</a>
+        <a matButton routerLink="/contas"><mat-icon>tune</mat-icon>Editar</a>
+      </div>
+
+      @if (r.contas.length === 0) {
+        <div class="cartao vazio">
+          <mat-icon>account_balance_wallet</mat-icon>
+          Diga onde você guarda dinheiro (banco, carteira, poupança) para começar.
+          <div><a matButton="filled" routerLink="/contas" class="criar">Cadastrar uma conta</a></div>
+        </div>
+      } @else {
+        <div class="contas">
+          @for (c of r.contas; track c.id) {
+            <a
+              class="cartao conta"
+              routerLink="/transacoes"
+              [queryParams]="{ contaId: c.id }"
+              [matTooltip]="'Ver movimentações de ' + c.descricao"
+            >
+              <span class="ico-conta"><mat-icon>account_balance_wallet</mat-icon></span>
+              <span class="dados">
+                <span class="nome">{{ c.descricao }}</span>
+                <strong class="num" [class.negativo]="c.saldo < 0">{{ c.saldo | currency }}</strong>
+              </span>
+              <mat-icon class="seta">chevron_right</mat-icon>
+            </a>
+          }
+        </div>
+      }
     </div>
   </section>
 
-  <!-- Quanto tem em cada conta -->
-  <section>
-    <div class="secao-cab">
-      <h3>Suas contas</h3>
+  <!-- ---------- O mês: entrou, saiu, sobrou e para onde foi ---------- -->
+  <section class="cartao mes" [class.carregando]="carregando()">
+    <div class="mes-cab">
+      <h3>Resumo do mês</h3>
       <span class="espaco"></span>
-      <a matButton routerLink="/transferencia"><mat-icon>swap_horiz</mat-icon>Passar entre contas</a>
-      <a matButton routerLink="/contas"><mat-icon>tune</mat-icon>Editar contas</a>
+      @if (!ehMesAtual()) {
+        <button matButton (click)="voltarParaHoje()">Mês atual</button>
+      }
+      <div class="navegar" role="group" aria-label="Escolher o mês">
+        <button matIconButton (click)="trocarMes(-1)" aria-label="Mês anterior" matTooltip="Mês anterior">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <span class="nome-mes" aria-live="polite">{{ nomeMes() }}</span>
+        <button
+          matIconButton
+          (click)="trocarMes(1)"
+          [disabled]="ehMesAtual()"
+          aria-label="Próximo mês"
+          matTooltip="Próximo mês"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
     </div>
 
-    @if (r.contas.length === 0) {
-      <div class="cartao vazio">
-        <mat-icon>account_balance_wallet</mat-icon>
-        Diga onde você guarda dinheiro (banco, carteira, poupança) para começar.
-        <div><a matButton="filled" routerLink="/contas" class="criar">Cadastrar uma conta</a></div>
+    <div class="numeros">
+      <div>
+        <span class="rotulo"><mat-icon class="entrada">arrow_downward</mat-icon> Entrou</span>
+        <strong class="num entrada">{{ r.entradasMes | currency }}</strong>
       </div>
-    } @else {
-      <div class="contas">
-        @for (c of r.contas; track c.id) {
-          <a class="cartao conta" routerLink="/transacoes" [queryParams]="{ contaId: c.id }">
-            <span class="ico-conta"><mat-icon>account_balance_wallet</mat-icon></span>
-            <span class="nome">{{ c.descricao }}</span>
-            <strong class="num" [class.negativo]="c.saldo < 0">{{ c.saldo | currency }}</strong>
-            <small class="muted">Ver movimentações <mat-icon>chevron_right</mat-icon></small>
-          </a>
-        }
+      <div>
+        <span class="rotulo"><mat-icon>arrow_upward</mat-icon> Saiu</span>
+        <strong class="num">{{ r.saidasMes | currency }}</strong>
       </div>
-    }
+      <div>
+        <span class="rotulo">
+          <mat-icon>{{ resultadoMes() < 0 ? 'trending_down' : 'savings' }}</mat-icon>
+          {{ resultadoMes() < 0 ? 'Gastou a mais' : 'Sobrou' }}
+        </span>
+        <strong class="num" [class.entrada]="resultadoMes() > 0" [class.negativo]="resultadoMes() < 0">
+          {{ resultadoMes() | currency }}
+        </strong>
+      </div>
+    </div>
+
+    <h4>Para onde foi o dinheiro</h4>
+    <app-gastos-categoria [gastos]="r.gastosPorCategoria" [mes]="nomeMesCurto()" />
   </section>
 
-  <!-- Últimas movimentações -->
+  <!-- ---------- Últimas movimentações ---------- -->
   <section class="cartao">
     <div class="cartao-cab">
       <h3>Últimas movimentações</h3>

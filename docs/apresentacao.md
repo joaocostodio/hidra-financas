@@ -24,7 +24,7 @@ Na tela as palavras são do dia a dia; ao explicar, use os termos do pedido: **M
 | 5 | **+ Anotar**: "Entrou" 3.000 (Salário) no Nubank; "Saiu" 250 (Alimentação) | `TransacaoService.lancar` e `Validar.valorPositivo`; no site, `transacao-dialog` e `common/dinheiro.ts` (lê "1.500,00") |
 | 6 | **Movimentações**: filtrar por conta, depois por categoria | `TransacaoService.listar` (monta o `where` só com os filtros preenchidos) |
 | 7 | **Passar entre contas**: 100 do Nubank para a Carteira | `TransacaoService.transferir`: uma `S` + uma `E`, mesmo código, `@Transactional` |
-| 8 | **Início**: saldo de cada conta e geral | `Conta.saldo()` = saldo inicial + entradas − saídas |
+| 8 | **Início**: saldo de cada conta e geral; no resumo do mês, o gráfico "Para onde foi o dinheiro" e ‹ mês anterior › | `Conta.saldo()` = saldo inicial + entradas − saídas; `TransacaoService.gastosPorCategoria` (JPQL com `group by` e `sum`); `gastos-categoria` (gráfico só com HTML/CSS) |
 | 9 | Sair e tentar abrir `/contas` | `logadoGuard` no site e `@Authenticated` na API (401 sem cookie) |
 
 ## Perguntas que o professor pode fazer
@@ -43,5 +43,5 @@ Na tela as palavras são do dia a dia; ao explicar, use os termos do pedido: **M
 - **Onde tem POO?** Encapsulamento da senha no `Usuario`; herança de `PanacheEntity`; cada objeto com sua
   responsabilidade (`Conta.saldo()`, `Transacao.ehTransferencia()`); exceções próprias herdando de
   `RuntimeException`.
-- **Como testaram?** `mvnw test`: 16 testes de ponta a ponta (saldo, filtros, transferência, login, cookie,
+- **Como testaram?** `mvnw test`: 17 testes de ponta a ponta (saldo, filtros, transferência, login, cookie,
   CSRF e isolamento entre usuários).

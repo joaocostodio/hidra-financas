@@ -1,6 +1,7 @@
 package service;
 
 import dto.Dtos.ContaDto;
+import dto.Dtos.GastoCategoriaDto;
 import dto.Dtos.ResumoDto;
 import dto.Dtos.TransacaoDto;
 import dto.Dtos.TransacaoForm;
@@ -18,6 +19,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,20 +119,48 @@ public class TransacaoService {
         return List.of(saida, entrada);
     }
 
-    /** Tela inicial: saldo de cada conta, saldo geral, entradas e saídas do mês e as últimas transações. */
-    public ResumoDto resumo(Usuario usuario) {
+    /**
+     * Tela inicial: saldo de cada conta e geral (sempre de hoje), e do mês escolhido: entradas, saídas e
+     * para onde foi o dinheiro (saídas por categoria). Também as últimas transações.
+     */
+    public ResumoDto resumo(Usuario usuario, YearMonth mes) {
         List<ContaDto> lista = Conta.doUsuario(usuario).stream().map(ContaDto::de).toList();
         BigDecimal saldoGeral = lista.stream().map(ContaDto::saldo).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        LocalDate inicioMes = LocalDate.now().withDayOfMonth(1);
-        BigDecimal entradas = somarMes(usuario, Transacao.ENTRADA, inicioMes);
-        BigDecimal saidas = somarMes(usuario, Transacao.SAIDA, inicioMes);
+        LocalDate inicio = mes.atDay(1);
+        LocalDate fim = mes.atEndOfMonth();
+        BigDecimal entradas = somarMes(usuario, Transacao.ENTRADA, inicio, fim);
+        BigDecimal saidas = somarMes(usuario, Transacao.SAIDA, inicio, fim);
+        List<GastoCategoriaDto> gastos = gastosPorCategoria(usuario, inicio, fim);
 
         List<TransacaoDto> ultimas = Transacao
                 .find("conta.usuario = ?1 order by datatransacao desc, id desc", usuario)
                 .page(0, 5).<Transacao>list().stream().map(TransacaoDto::de).toList();
 
-        return new ResumoDto(lista, saldoGeral, entradas, saidas, ultimas);
+        return new ResumoDto(mes.toString(), lista, saldoGeral, entradas, saidas, gastos, ultimas);
+    }
+
+    /**
+     * Para onde foi o dinheiro no período: total das saídas de cada categoria, do maior para o menor.
+     * Transferências ficam de fora (o dinheiro só mudou de conta).
+     */
+    private static List<GastoCategoriaDto> gastosPorCategoria(Usuario usuario, LocalDate inicio, LocalDate fim) {
+        List<Object[]> linhas = Transacao.getEntityManager().createQuery("""
+                        select c.id, c.descricao, c.icone, sum(t.valor)
+                        from Transacao t join t.categoria c
+                        where t.conta.usuario = :usuario and t.tipo = :saida
+                          and t.datatransacao between :inicio and :fim
+                        group by c.id, c.descricao, c.icone
+                        order by sum(t.valor) desc""", Object[].class)
+                .setParameter("usuario", usuario)
+                .setParameter("saida", Transacao.SAIDA)
+                .setParameter("inicio", inicio)
+                .setParameter("fim", fim)
+                .getResultList();
+        return linhas.stream()
+                .map(l -> new GastoCategoriaDto((Long) l[0], (String) l[1],
+                        l[2] == null ? Categoria.ICONE_PADRAO : (String) l[2], (BigDecimal) l[3]))
+                .toList();
     }
 
     // ---------- auxiliares ----------
@@ -173,14 +203,15 @@ public class TransacaoService {
     }
 
     /** Entradas ou saídas do mês, sem contar as transferências (dinheiro que só mudou de conta). */
-    private static BigDecimal somarMes(Usuario usuario, String tipo, LocalDate inicio) {
+    private static BigDecimal somarMes(Usuario usuario, String tipo, LocalDate inicio, LocalDate fim) {
         BigDecimal soma = Transacao.getEntityManager().createQuery("""
                         select sum(t.valor) from Transacao t
                         where t.conta.usuario = :usuario and t.tipo = :tipo
-                          and t.transferencia is null and t.datatransacao >= :inicio""", BigDecimal.class)
+                          and t.transferencia is null and t.datatransacao between :inicio and :fim""", BigDecimal.class)
                 .setParameter("usuario", usuario)
                 .setParameter("tipo", tipo)
                 .setParameter("inicio", inicio)
+                .setParameter("fim", fim)
                 .getSingleResult();
         return soma == null ? BigDecimal.ZERO : soma;
     }
